@@ -1,6 +1,5 @@
 <?php
 
-use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages\ViewUser;
 use App\Filament\Resources\UserResource\RelationManagers\NotesRelationManager;
 use App\Models\Note;
@@ -12,61 +11,74 @@ use function Pest\Livewire\livewire;
 beforeEach(function () {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
-    $user = User::factory()->create();
-    $user->assignRole('coach');
-    $this->actingAs($user);
-    $this->page = NotesRelationManager::class;
-    $this->factory = User::factory();
+
 });
 
-it('can render note relation manager in edit page', function () {
-    $ownerRecord = $this->factory
+it('coach can render relation manager', function () {
+    $coachUser = User::factory()->create()->assignRole('coach');
+    $this->actingAs($coachUser);
+
+    $wellnessUser = User::factory()
         ->has(Note::factory()->count(5))
         ->create()
         ->assignRole('wellness');
 
-    livewire($this->page, [
-        'ownerRecord' => $ownerRecord,
-        'pageClass' => EditUser::class,
-    ])
-        ->assertSuccessful();
-});
-
-it('can list notes in edit page', function () {
-    $ownerRecord = $this->factory
-        ->has(Note::factory()->count(5))
-        ->create()
-        ->assignRole('wellness');
-
-    livewire($this->page, [
-        'ownerRecord' => $ownerRecord,
-        'pageClass' => EditUser::class,
-    ])
-        ->assertCanSeeTableRecords($ownerRecord->notes);
-});
-
-it('can render note relation manager in view page', function () {
-    $ownerRecord = $this->factory
-        ->has(Note::factory()->count(5))
-        ->create()
-        ->assignRole('wellness');
-
-    livewire($this->page, [
-        'ownerRecord' => $ownerRecord,
+    livewire(NotesRelationManager::class, [
+        'ownerRecord' => $wellnessUser,
         'pageClass' => ViewUser::class,
     ])
         ->assertSuccessful();
 });
 
-it('can list notes in view page', function () {
-    $ownerRecord = $this->factory
+it('wellness can render relation manager', function () {
+
+    $wellnessUser = User::factory()
         ->has(Note::factory()->count(5))
         ->create()
         ->assignRole('wellness');
 
-    livewire($this->page, [
-        'ownerRecord' => $ownerRecord,
+    $this->actingAs($wellnessUser);
+
+    livewire(NotesRelationManager::class, [
+        'ownerRecord' => $wellnessUser,
         'pageClass' => ViewUser::class,
     ])
-        ->assertCanSeeTableRecords($ownerRecord->notes);
+        ->assertSuccessful();
+});
+
+it('wellness can list notes', function () {
+    $wellnessUser = User::factory()
+        ->has(Note::factory()->count(5))
+        ->create()
+        ->assignRole('wellness');
+
+    $this->actingAs($wellnessUser);
+
+    livewire(NotesRelationManager::class, [
+        'ownerRecord' => $wellnessUser,
+        'pageClass' => ViewUser::class,
+    ])
+        ->assertCanSeeTableRecords($wellnessUser->notes)
+        ->assertCountTableRecords(5);
+});
+
+it('wellness can list only your notes', function () {
+    $wellnessUser = User::factory()
+        ->has(Note::factory()->count(5))
+        ->create()
+        ->assignRole('wellness');
+
+    User::factory()
+        ->has(Note::factory()->count(2))
+        ->create()
+        ->assignRole('wellness');
+
+    $this->actingAs($wellnessUser);
+
+    livewire(NotesRelationManager::class, [
+        'ownerRecord' => $wellnessUser,
+        'pageClass' => ViewUser::class,
+    ])
+        ->assertCanSeeTableRecords($wellnessUser->notes)
+        ->assertCountTableRecords(5);
 });

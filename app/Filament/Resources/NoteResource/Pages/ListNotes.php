@@ -10,6 +10,7 @@ class ListNotes extends ListRecords
 {
     protected static string $resource = NoteResource::class;
 
+    
     protected function getHeaderActions(): array
     {
         return [

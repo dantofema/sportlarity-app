@@ -13,7 +13,7 @@ class UserFactory extends Factory
 
     public function definition(): array
     {
-        $files = Storage::disk('avatars')->allFiles();
+        $files = Storage::disk('tests')->allFiles();
         array_shift($files);
         $randomFile = 'avatars/'.$files[rand(0, count($files) - 1)];
         return [

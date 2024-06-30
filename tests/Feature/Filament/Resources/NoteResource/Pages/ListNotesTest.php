@@ -13,35 +13,58 @@ use function PHPUnit\Framework\assertNull;
 beforeEach(function () {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
-    $user = User::factory()->create();
-    $user->assignRole('coach');
+});
+
+it('can render list notes page', function (string $role) {
+    $user = User::factory()->create()->assignRole($role);
     $this->actingAs($user);
-    $this->page = ListNotes::class;
-    $this->factory = Note::factory();
-});
 
-it('can render list notes page', function () {
     $this->get(NoteResource::getUrl())->assertSuccessful();
-});
+})->with([
+    ['coach'],
+    ['profesional'],
+    ['wellness'],
+]);
 
-it('can list notes', function () {
-    $records = $this->factory->count(5)->create();
+it('can list all notes', function (string $role) {
+    $user = User::factory()->create()->assignRole($role);
+    $this->actingAs($user);
 
-    livewire($this->page)
+    $records = Note::factory()->count(5)->create();
+
+    livewire(ListNotes::class)
         ->assertCanSeeTableRecords($records);
+})->with([
+    ['coach'],
+    ['profesional'],
+]);
+
+it('wellness can list your notes', function () {
+
+    $wellness = User::factory()->create()->assignRole('wellness');
+    $this->actingAs($wellness);
+
+    $record = Note::factory()->create();
+    $record->users()->attach($wellness);
+
+    $note = Note::factory()->create();
+
+    livewire(ListNotes::class)
+        ->assertCanSeeTableRecords([$record])
+        ->assertCanNotSeeTableRecords([$note]);
 });
 
 it('can render notes author.name', function () {
-    $this->factory->count(5)->create();
+    Note::factory()->count(5)->create();
 
-    livewire($this->page)
+    livewire(ListNotes::class)
         ->assertCanRenderTableColumn('author.name');
 });
 
 it('can delete note', function () {
-    $record = $this->factory->create();
+    $record = Note::factory()->create();
 
-    livewire($this->page)
+    livewire(ListNotes::class)
         ->callTableAction(DeleteAction::class, $record);
 
     assertNull(Note::find($record->id));
