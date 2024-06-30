@@ -22,7 +22,7 @@ it('can render list notes page', function (string $role) {
     $this->get(NoteResource::getUrl())->assertSuccessful();
 })->with([
     ['coach'],
-    ['profesional'],
+    ['professional'],
     ['wellness'],
 ]);
 
@@ -36,7 +36,7 @@ it('can list all notes', function (string $role) {
         ->assertCanSeeTableRecords($records);
 })->with([
     ['coach'],
-    ['profesional'],
+    ['professional'],
 ]);
 
 it('wellness can list your notes', function () {
@@ -54,14 +54,25 @@ it('wellness can list your notes', function () {
         ->assertCanNotSeeTableRecords([$note]);
 });
 
-it('can render notes author.name', function () {
+it('can render notes author.name', function (string $role) {
+    $user = User::factory()->create()->assignRole($role);
+    $this->actingAs($user);
+
     Note::factory()->count(5)->create();
 
     livewire(ListNotes::class)
         ->assertCanRenderTableColumn('author.name');
-});
+})->with([
+    ['coach'],
+    ['professional'],
+    ['wellness'],
+]);
 
-it('can delete note', function () {
+it('coach can delete note', function () {
+
+    $user = User::factory()->create()->assignRole('coach');
+    $this->actingAs($user);
+
     $record = Note::factory()->create();
 
     livewire(ListNotes::class)
