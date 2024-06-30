@@ -9,7 +9,6 @@ use App\Filament\Resources\NoteResource\Pages\ViewNote;
 use App\Models\Note;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
@@ -42,9 +41,6 @@ class NoteResource extends Resource
                 return $query;
             })
             ->columns([
-                TextColumn::make('title')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('author.name')
                     ->searchable()
                     ->sortable(),
@@ -78,8 +74,6 @@ class NoteResource extends Resource
                         ->columnSpan(2)
                         ->columns()
                         ->schema([
-                            TextInput::make('title')
-                                ->required(),
                             Textarea::make('content')
                                 ->rows(10)
                                 ->required()

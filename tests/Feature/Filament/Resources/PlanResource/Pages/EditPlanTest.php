@@ -33,7 +33,6 @@ it('can retrieve plan data', function () {
     ])
         ->assertFormSet([
             'author_id' => $record->author->getKey(),
-            'title' => $record->title,
         ]);
 });
 
@@ -45,7 +44,6 @@ it('can save', function () {
         'record' => $record->getRouteKey(),
     ])
         ->fillForm([
-            'title' => $newData->title,
             'description' => $newData->description,
             'content' => $newData->content,
             'user_id' => $newData->user_id,
@@ -55,7 +53,6 @@ it('can save', function () {
 
     expect($record->refresh())
         ->author_id->toBe(auth()->user()->getKey())
-        ->title->toBe($newData->title)
         ->content->toBe($newData->content)
         ->description->toBe($newData->description)
         ->user_id->toBe($newData->user_id);
@@ -69,13 +66,12 @@ it('can validate edit plan inputs', function () {
         'record' => $record->getRouteKey(),
     ])
         ->fillForm([
-            'title' => null,
+
             'content' => null,
             'user_id' => null,
         ])
         ->call('save')
         ->assertHasFormErrors([
-            'title' => 'required',
             'content' => 'required',
             'user_id' => 'required',
         ]);

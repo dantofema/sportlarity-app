@@ -11,23 +11,33 @@ use function Pest\Livewire\livewire;
 beforeEach(function () {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
-    $user = User::factory()->create();
-    $user->assignRole('coach');
-    $this->actingAs($user);
-    $this->page = CreatePlan::class;
-    $this->factory = Plan::factory();
 });
 
 it('can render create note page', function () {
+    $user = User::factory()
+        ->create()
+        ->assignRole('coach');
+    $this->actingAs($user);
     $this->get(PlanResource::getUrl('create'))->assertSuccessful();
+});
+
+it('can not create note with wellness rol', function () {
+
+    $user = User::factory()
+        ->create()
+        ->assignRole('wellness');
+    $this->actingAs($user);
+    $this->get(PlanResource::getUrl('create'))->assertForbidden();
+
 });
 
 it('can create', function () {
     $user = User::factory()->create()->assignRole('coach');
     $this->actingAs($user);
-    $newData = $this->factory->make();
 
-    livewire($this->page)
+    $newData = Plan::factory()->make();
+
+    livewire(CreatePlan::class)
         ->fillForm([
             'user_id' => $newData->user->getKey(),
             'content' => $newData->content,
@@ -45,7 +55,10 @@ it('can create', function () {
 });
 
 it('can validate note inputs', function () {
-    livewire($this->page)
+    $user = User::factory()->create()->assignRole('coach');
+    $this->actingAs($user);
+
+    livewire(CreatePlan::class)
         ->fillForm([
             'user_id' => null,
             'content' => null,
