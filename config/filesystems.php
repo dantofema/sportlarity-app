@@ -33,7 +33,7 @@ return [
         'avatars' => [
             'driver' => 'local',
             'root' => storage_path('app/avatars'),
-            'url' => env('APP_URL') . '/avatars',
+            'url' => env('APP_URL').'/avatars',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -41,7 +41,15 @@ return [
         'documents' => [
             'driver' => 'local',
             'root' => storage_path('app/documents'),
-            'url' => env('APP_URL') . '/docs',
+            'url' => env('APP_URL').'/docs',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
+        'tests' => [
+            'driver' => 'local',
+            'root' => storage_path('app/tests'),
+            'url' => env('APP_URL').'/tests',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -68,7 +76,8 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT',
+                false),
             'throw' => false,
         ],
 
@@ -89,6 +98,7 @@ return [
         public_path('storage') => storage_path('app/public'),
         public_path('avatars') => storage_path('app/avatars'),
         public_path('docs') => storage_path('app/documents'),
+        public_path('tests') => storage_path('app/tests'),
     ],
 
 ];

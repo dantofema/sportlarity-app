@@ -35,9 +35,10 @@ class NoteResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->modifyQueryUsing(function (Builder $query) {
                 if (auth()->user()->hasRole('wellness')) {
-                    return $query->has('users', auth()->id());
+                    return $query->whereHas('users',
+                        fn(Builder $query) => $query
+                            ->where('users.id', auth()->id()));
                 }
-
                 return $query;
             })
             ->columns([

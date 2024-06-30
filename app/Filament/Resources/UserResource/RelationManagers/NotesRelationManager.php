@@ -32,37 +32,15 @@ class NotesRelationManager extends RelationManager
                 TextColumn::make('created_at')
                     ->sortable()
                     ->date('d-m-Y'),
-                TextColumn::make('title')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('author.name')
                     ->searchable()
                     ->sortable(),
             ])
-            ->filters([
-                //
-            ])
-            ->headerActions([
-//                Tables\Actions\CreateAction::make()
-//                    ->mutateFormDataUsing(function (array $data): array {
-//                        $data['author_id'] = auth()->id();
-//
-//                        return $data;
-//                    }),
-            ])
+            ->filters([])
+            ->headerActions([])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-//                Tables\Actions\EditAction::make()
-//                    ->mutateRecordDataUsing(function (array $data): array {
-//                        $data['author_id'] = auth()->id();
-//                        return $data;
-//                    }),
-//                Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-//                Tables\Actions\BulkActionGroup::make([
-//                    Tables\Actions\DeleteBulkAction::make(),
-//                ]),
-            ]);
+            ->bulkActions([]);
     }
 }
