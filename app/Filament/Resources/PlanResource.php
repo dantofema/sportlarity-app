@@ -13,6 +13,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -178,6 +179,9 @@ class PlanResource extends Resource
                         ->columnSpan(2)
                         ->columns()
                         ->schema([
+                            TextInput::make('title')
+                                ->columnSpanFull()
+                                ->required(),
                             Textarea::make('description')
                                 ->columnSpanFull(),
                             RichEditor::make('content')
