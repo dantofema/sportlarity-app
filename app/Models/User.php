@@ -31,6 +31,18 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'deleted_at' => 'timestamp',
     ];
 
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'dob',
+        'instagram',
+        'image',
+        'phone',
+        'phone_emergency',
+        'height',
+    ];
+
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
