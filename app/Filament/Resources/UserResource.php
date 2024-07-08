@@ -53,7 +53,7 @@ class UserResource extends Resource
                 ->schema([
                     FileUpload::make('image')
                         ->label('')
-                        ->directory('avatars')
+                        ->disk('avatars')
                         ->avatar(),
                     \Filament\Forms\Components\Group::make()
                         ->columnSpan(2)
@@ -75,7 +75,8 @@ class UserResource extends Resource
                                 ->relationship(
                                     'roles',
                                     'name',
-                                    fn(Builder $query) => $query->where('name', '!=', 'super_admin')
+                                    fn(Builder $query) => $query->where('name',
+                                        '!=', 'super_admin')
                                         ->where('name', '!=', 'panel_user'))
                                 ->live(),
 
@@ -110,13 +111,15 @@ class UserResource extends Resource
 
                 if (!auth()->user()->hasRole('super_admin')) {
                     return $query->whereHas('roles',
-                        fn(Builder $query) => $query->where('name', '!=', 'super_admin')
+                        fn(Builder $query) => $query->where('name', '!=',
+                            'super_admin')
                     );
                 }
 
                 if (auth()->user()->hasRole('professional')) {
                     return $query->whereHas('roles',
-                        fn(Builder $query) => $query->where('name', '=', 'wellness')
+                        fn(Builder $query) => $query->where('name', '=',
+                            'wellness')
                     );
                 }
 
@@ -124,6 +127,7 @@ class UserResource extends Resource
             })
             ->columns([
                 ImageColumn::make('image')
+                    ->disk('avatars')
                     ->label('')
                     ->circular(),
                 TextColumn::make('name')
@@ -172,11 +176,13 @@ class UserResource extends Resource
                 Filter::make('has_instagram')
                     ->label('Tienen Instagram')
                     ->toggle()
-                    ->query(fn(Builder $query): Builder => $query->where('instagram', '!=', null)),
+                    ->query(fn(Builder $query
+                    ): Builder => $query->where('instagram', '!=', null)),
                 Filter::make('has_phone')
                     ->label('Tienen teléfono')
                     ->toggle()
-                    ->query(fn(Builder $query): Builder => $query->where('phone', '!=', null)),
+                    ->query(fn(Builder $query
+                    ): Builder => $query->where('phone', '!=', null)),
                 TableFilterDate::make()
             ])
             ->actions([
@@ -213,7 +219,8 @@ class UserResource extends Resource
                                 TextEntry::make('roles.name')
                                     ->label('Rol')
                                     ->badge()
-                                    ->color(fn(string $state): string => match ($state) {
+                                    ->color(fn(string $state
+                                    ): string => match ($state) {
                                         'wellness' => 'info',
                                         'professional' => 'warning',
                                         'coach' => 'success',
@@ -228,8 +235,9 @@ class UserResource extends Resource
                     ->schema([
                         TextEntry::make('instagram')
                             ->label('Instagram')
-                            ->state(fn(User $record) => '@' . $record->instagram)
-                            ->url(fn(User $record) => $record->instagram_url, true),
+                            ->state(fn(User $record) => '@'.$record->instagram)
+                            ->url(fn(User $record) => $record->instagram_url,
+                                true),
                         TextEntry::make('dob')->label('Fecha de nacimiento'),
                         TextEntry::make('height')->label('Altura'),
                         TextEntry::make('phone')->label('Teléfono'),
