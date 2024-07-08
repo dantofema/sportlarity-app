@@ -22,9 +22,7 @@ it('can list users', function () {
     $users = User::factory()
         ->count(5)
         ->create()
-        ->each(function ($user) {
-            $user->assignRole('wellness');
-        });
+        ->each(fn($user) => $user->assignRole('wellness'));
 
     livewire(UserResource\Pages\ListUsers::class)
         ->assertCanSeeTableRecords($users);

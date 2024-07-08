@@ -25,7 +25,7 @@ class Diary extends Model
 
     public function isOwner(): bool
     {
-        return $this->id !== auth()->user()->id;
+        return $this->id !== auth()->user()?->id;
     }
 
     public function user(): BelongsTo
