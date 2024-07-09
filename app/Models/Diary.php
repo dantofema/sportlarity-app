@@ -19,8 +19,17 @@ class Diary extends Model
 
     protected $fillable = [
         'date',
-        'content',
         'user_id',
+        'sleep_time',
+        'preparation',
+        'strength_training',
+        'activity',
+        'intensity',
+        'feeding',
+        'hydration',
+        'weight',
+        'sleep_quality',
+        'stress',
     ];
 
     public function isOwner(): bool

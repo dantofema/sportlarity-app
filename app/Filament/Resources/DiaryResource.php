@@ -54,68 +54,86 @@ class DiaryResource extends Resource
                     ->numeric()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('assessment.value')
-                    ->formatStateUsing(fn(string $state): string => AssessmentType::description
+                    ->formatStateUsing(fn(string $state
+                    ): string => AssessmentType::description
                     (AssessmentType::from($state)))
                     ->badge()
-                    ->color(fn(string $state): string => AssessmentType::color(AssessmentType::from($state)))
+                    ->color(fn(string $state
+                    ): string => AssessmentType::color(AssessmentType::from($state)))
                     ->toggleable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('activity')
-                    ->formatStateUsing(fn(string $state): string => ActivityType::description
+                    ->formatStateUsing(fn(string $state
+                    ): string => ActivityType::description
                     (ActivityType::from($state)))
                     ->badge()
-                    ->color(fn(string $state): string => ActivityType::color(ActivityType::from($state)))
+                    ->color(fn(string $state
+                    ): string => ActivityType::color(ActivityType::from($state)))
                     ->toggleable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('stress')
-                    ->formatStateUsing(fn(string $state): string => StressType::description
+                    ->formatStateUsing(fn(string $state
+                    ): string => StressType::description
                     (StressType::from($state)))
                     ->badge()
                     ->toggleable()
-                    ->color(fn(string $state): string => StressType::color(StressType::from($state)))
+                    ->color(fn(string $state
+                    ): string => StressType::color(StressType::from($state)))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sleep_time')
-                    ->formatStateUsing(fn(string $state): string => SleepTimeType::description
+                    ->formatStateUsing(fn(string $state
+                    ): string => SleepTimeType::description
                     (SleepTimeType::from($state)))
                     ->badge()
-                    ->color(fn(string $state): string => SleepTimeType::color(SleepTimeType::from($state)))
+                    ->color(fn(string $state
+                    ): string => SleepTimeType::color(SleepTimeType::from($state)))
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('strength_training')
-                    ->formatStateUsing(fn(string $state): string => StrengthTrainingType::description
+                    ->formatStateUsing(fn(string $state
+                    ): string => StrengthTrainingType::description
                     (StrengthTrainingType::from($state)))
                     ->badge()
-                    ->color(fn(string $state): string => StrengthTrainingType::color(StrengthTrainingType::from($state)))
+                    ->color(fn(string $state
+                    ): string => StrengthTrainingType::color(StrengthTrainingType::from($state)))
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('sleep_quality')
-                    ->formatStateUsing(fn(string $state): string => SleepQualityType::description
+                    ->formatStateUsing(fn(string $state
+                    ): string => SleepQualityType::description
                     (SleepQualityType::from($state)))
                     ->badge()
-                    ->color(fn(string $state): string => SleepQualityType::color(SleepQualityType::from($state)))
+                    ->color(fn(string $state
+                    ): string => SleepQualityType::color(SleepQualityType::from($state)))
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('feeding')
-                    ->formatStateUsing(fn(string $state): string => FeedingType::description
+                    ->formatStateUsing(fn(string $state
+                    ): string => FeedingType::description
                     (FeedingType::from($state)))
                     ->badge()
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->color(fn(string $state): string => FeedingType::color(FeedingType::from($state)))
+                    ->color(fn(string $state
+                    ): string => FeedingType::color(FeedingType::from($state)))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('preparation')
-                    ->formatStateUsing(fn(string $state): string => PreparationType::description
+                    ->formatStateUsing(fn(string $state
+                    ): string => PreparationType::description
                     (PreparationType::from($state)))
                     ->badge()
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->color(fn(string $state): string => PreparationType::color(PreparationType::from($state)))
+                    ->color(fn(string $state
+                    ): string => PreparationType::color(PreparationType::from($state)))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('hydration')
-                    ->formatStateUsing(fn(string $state): string => HydrationType::description
+                    ->formatStateUsing(fn(string $state
+                    ): string => HydrationType::description
                     (HydrationType::from($state)))
                     ->badge()
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->color(fn(string $state): string => HydrationType::color(HydrationType::from($state)))
+                    ->color(fn(string $state
+                    ): string => HydrationType::color(HydrationType::from($state)))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('weight')
                     ->toggleable(isToggledHiddenByDefault: true)

@@ -13,7 +13,7 @@ class DiaryFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => $this->faker->dateTime(),
+            'date' => $this->faker->dateTimeBetween('-1 week'),
             'user_id' => User::factory()->create()->assignRole('wellness')->id,
             'sleep_time' => $this->faker->numberBetween(1, 4),
             'preparation' => $this->faker->numberBetween(1, 4),
@@ -23,6 +23,8 @@ class DiaryFactory extends Factory
             'feeding' => $this->faker->numberBetween(1, 4),
             'hydration' => $this->faker->numberBetween(1, 4),
             'weight' => $this->faker->numberBetween(60, 90),
+            'sleep_quality' => $this->faker->numberBetween(1, 4),
+            'stress' => $this->faker->numberBetween(1, 4),
         ];
     }
 }
