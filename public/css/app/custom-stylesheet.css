@@ -1,0 +1,9 @@
+.fi-in-text p a {
+    color: #1e40af;
+    text-decoration: underline;
+    text-decoration-color: #1e40af;
+}
+
+.fi-in-text p a:hover {
+    font-weight: bold;
+}

@@ -16,6 +16,7 @@ class UserFactory extends Factory
         $files = Storage::disk('tests')->allFiles();
         array_shift($files);
         $randomFile = 'avatars/'.$files[rand(0, count($files) - 1)];
+
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->safeEmail(),

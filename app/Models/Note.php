@@ -13,7 +13,9 @@ class Note extends Model
 
     protected $fillable = [
         'content',
+        'title',
         'author_id',
+        'goal_id',
     ];
 
 
@@ -21,6 +23,11 @@ class Note extends Model
         'id' => 'integer',
         'author_id' => 'integer',
     ];
+
+    public function goal(): BelongsTo
+    {
+        return $this->belongsTo(Goal::class);
+    }
 
     public function users(): BelongsToMany
     {

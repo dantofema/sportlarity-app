@@ -7,8 +7,9 @@ use App\Filament\Resources\NoteResource\Pages\EditNote;
 use App\Filament\Resources\NoteResource\Pages\ListNotes;
 use App\Filament\Resources\NoteResource\Pages\ViewNote;
 use App\Models\Note;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
@@ -42,6 +43,9 @@ class NoteResource extends Resource
                 return $query;
             })
             ->columns([
+                TextColumn::make('title')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('author.name')
                     ->searchable()
                     ->sortable(),
@@ -75,10 +79,17 @@ class NoteResource extends Resource
                         ->columnSpan(2)
                         ->columns()
                         ->schema([
-                            Textarea::make('content')
-                                ->rows(10)
-                                ->required()
+                            TextInput::make('title')
                                 ->columnSpanFull(),
+                            RichEditor::make('content')
+                                ->required()
+                                ->columnSpanFull()
+                                ->toolbarButtons([
+                                    'link'
+                                ]),
+                            Select::make('goal_id')
+                                ->label('Goal')
+                                ->relationship('goal', 'name'),
                             Select::make('users')
                                 ->hidden(function () use ($userId) {
                                     return $userId !== null;
@@ -129,12 +140,16 @@ class NoteResource extends Resource
                 Section::make('Note')
                     ->columns()
                     ->schema([
+                        TextEntry::make('title')
+                            ->columnSpanFull()
+                            ->label('Título'),
                         Group::make()
-                            ->columnSpan(2)
-                            ->columns()
+                            ->columnSpan(3)
+                            ->columns(3)
                             ->schema([
                                 TextEntry::make('author.name')
                                     ->label('Author')
+                                    ->columnSpan(1)
                                     ->url(function ($record) {
                                         return auth()->user()->can('view_user')
                                             ? UserResource::getUrl('view',
@@ -142,14 +157,21 @@ class NoteResource extends Resource
                                             : null;
                                     })
                                     ->badge(),
-                                TextEntry::make('users.name')
-                                    ->label('User Wellness')
+                                TextEntry::make('goal.name')
+                                    ->label('Goal')
+                                    ->columnSpan(1)
                                     ->color(fn($record) => 'info')
                                     ->badge(),
-                                TextEntry::make('content')
-                                    ->columnSpan(2)
-                                    ->label('Contenido')
-                            ])
+                                TextEntry::make('users.name')
+                                    ->label('User Wellness')
+                                    ->columnSpan(1)
+                                    ->color(fn($record) => 'info')
+                                    ->badge(),
+                            ]),
+                        TextEntry::make('content')
+                            ->columnSpanFull()
+                            ->label('Contenido')
+                            ->html()
                     ])
             ]);
     }
