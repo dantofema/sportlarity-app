@@ -84,9 +84,12 @@ class UserResource extends Resource
 
                 ]),
             \Filament\Forms\Components\Section::make('Wellness user')
-                ->columns(5)
+                ->columns(3)
                 ->hidden(fn(Get $get) => $get('rol') != '4')
                 ->schema([
+                    Select::make('goal_id')
+                        ->label('Objetivo')
+                        ->relationship('goal', 'name'),
                     DatePicker::make('dob')
                         ->label('Fecha de Nacimiento')
                         ->format('d-m-Y'),
@@ -242,6 +245,7 @@ class UserResource extends Resource
                         TextEntry::make('height')->label('Altura'),
                         TextEntry::make('phone')->label('Teléfono'),
                         TextEntry::make('phone_emergency')->label('Teléfono de emergencias'),
+                        TextEntry::make('goal.name')->label('Objetivo'),
                     ])
             ]);
     }

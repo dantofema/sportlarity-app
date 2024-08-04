@@ -8,6 +8,7 @@ use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -41,11 +42,17 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'phone',
         'phone_emergency',
         'height',
+        'goal_id',
     ];
 
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
+    }
+
+    public function goal(): BelongsTo
+    {
+        return $this->belongsTo(Goal::class);
     }
 
     public function plans(): HasMany

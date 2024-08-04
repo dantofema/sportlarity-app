@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Assessment;
 use App\Models\Diary;
+use App\Models\Goal;
 use App\Models\Note;
 use App\Models\Plan;
 use App\Models\User;
@@ -77,13 +78,14 @@ class UserSeeder extends Seeder
         $this->wellness(['phone' => null]);
         $this->wellness(['phone_emergency' => null]);
         $this->wellness(['deleted_at' => now()]);
-
-
+        $this->wellness(['goal_id' => null]);
     }
 
     public function wellness(array $attributes = []): void
     {
-        $user = User::factory()
+        $user = User::factory([
+            'goal_id' => Goal::inRandomOrder()->first()->id
+        ])
             ->has(Note::factory([
                 'author_id' => User::role("professional")->inRandomOrder()->first()->id
             ])->count(rand(2, 5)))
