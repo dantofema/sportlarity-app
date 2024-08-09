@@ -49,6 +49,7 @@ class NoteResource extends Resource
                 TextColumn::make('author.name')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('users.name'),
                 TextColumn::make('created_at')
                     ->date('d-m-Y')
                     ->sortable()
@@ -89,7 +90,12 @@ class NoteResource extends Resource
                                 ]),
                             Select::make('goal_id')
                                 ->label('Goal')
-                                ->relationship('goal', 'name'),
+                                ->relationship(
+                                    'goal',
+                                    'name',
+                                    modifyQueryUsing: fn(Builder $query
+                                    ) => $query->orderBy('id', 'asc'),
+                                ),
                             Select::make('users')
                                 ->hidden(function () use ($userId) {
                                     return $userId !== null;

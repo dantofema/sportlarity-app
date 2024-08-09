@@ -28,6 +28,7 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Spatie\Permission\Models\Role;
 
 
 class UserResource extends Resource
@@ -85,11 +86,17 @@ class UserResource extends Resource
                 ]),
             \Filament\Forms\Components\Section::make('Wellness user')
                 ->columns(3)
-                ->hidden(fn(Get $get) => $get('rol') != '4')
+                ->hidden(fn(Get $get
+                ) => $get('rol') != Role::whereName('wellness')->first()->id)
                 ->schema([
                     Select::make('goal_id')
                         ->label('Objetivo')
-                        ->relationship('goal', 'name'),
+                        ->relationship(
+                            'goal',
+                            'name',
+                            modifyQueryUsing: fn(Builder $query
+                            ) => $query->orderBy('id', 'asc'),
+                        ),
                     DatePicker::make('dob')
                         ->label('Fecha de Nacimiento')
                         ->format('d-m-Y'),
