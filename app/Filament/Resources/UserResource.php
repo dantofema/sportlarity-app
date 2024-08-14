@@ -27,6 +27,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\Permission\Models\Role;
 
@@ -86,8 +87,24 @@ class UserResource extends Resource
                 ]),
             \Filament\Forms\Components\Section::make('Wellness user')
                 ->columns(3)
-                ->hidden(fn(Get $get
-                ) => $get('rol') != Role::whereName('wellness')->first()->id)
+                ->hidden(function (
+                    Get $get,
+                    ?Model $record,
+                    string $operation
+                ) {
+                    if (is_null($get('rol'))) {
+                        return true;
+                    }
+
+                    $rolId = (int) Role::whereName('wellness')->first()->id;
+                    $rolSelected = (int) $get('rol')[0];
+                    
+                    if ($rolSelected === $rolId) {
+                        return false;
+                    }
+
+                    return true;
+                })
                 ->schema([
                     Select::make('goal_id')
                         ->label('Objetivo')
