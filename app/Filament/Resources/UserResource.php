@@ -71,6 +71,7 @@ class UserResource extends Resource
                                 ->email()
                                 ->required()
                                 ->maxLength(191),
+
                             Select::make('rol')
                                 ->label('Rol')
                                 ->required()
@@ -95,10 +96,10 @@ class UserResource extends Resource
                     if (is_null($get('rol'))) {
                         return true;
                     }
-
-                    $rolId = (int) Role::whereName('wellness')->first()->id;
-                    $rolSelected = (int) $get('rol')[0];
                     
+                    $rolId = (int) Role::whereName('wellness')->first()->id;
+                    $rolSelected = (int) $get('rol');
+
                     if ($rolSelected === $rolId) {
                         return false;
                     }

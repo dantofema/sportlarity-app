@@ -29,7 +29,7 @@
 <div style="display: flex; align-items: center; justify-content: center; flex-direction: column; margin-top: 1.25rem; font-family : Nunito, sans-serif ">
     <section style="max-width: 42rem; background-color: #fff;">
         <header style="padding-top: 1rem; padding-bottom: 1rem; display: flex; justify-content: center; width: 100%;">
-            <a href="https://sportlarity.com">
+            <a href="{{ config('app.url') }}">
                 <img src="{{ asset('images/logo.gif') }}"
                      style="height: 75px"
                      alt="sportlarity"/>
@@ -76,7 +76,7 @@
                 <span style="font-weight : bold;">No olvides cambiar tu password</span>
             </p>
 
-            <a href="https://sportlarity.com">
+            <a href="{{ config('app.url') }}">
 
                 <button style="padding: 0.5rem 1.25rem;margin-top: 1.5rem; font-size: 14px; font-weight: bold; text-transform: capitalize; background-color: #182D4B; color: #fff; transition-property: background-color; transition-duration: 300ms; transform: none; border-radius: 0.375rem; border: 1px none;outline: none; cursor: pointer;">
                     Visitar sitio
