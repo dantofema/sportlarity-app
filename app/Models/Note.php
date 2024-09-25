@@ -17,8 +17,7 @@ class Note extends Model
         'author_id',
         'goal_id',
     ];
-
-
+    
     protected $casts = [
         'id' => 'integer',
         'author_id' => 'integer',
