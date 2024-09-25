@@ -32,7 +32,7 @@ class CreateUser extends CreateRecord
 
         Mail::to($user->email)->send(new UserWelcomeMail($user));
 
-        $this->emailVerification($user);
+//        $this->emailVerification($user);
 
         Notification::make()
             ->title('Email sent successfully')
