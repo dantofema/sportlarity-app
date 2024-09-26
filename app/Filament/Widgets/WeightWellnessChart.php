@@ -15,6 +15,15 @@ class WeightWellnessChart extends ChartWidget
     protected static ?int $sort = 20;
     protected int|string|array $columnSpan = 'full';
 
+    public static function canView(): bool
+    {
+        if (auth()->user()->hasRole('wellness')) {
+            return true;
+        }
+        return false;
+
+    }
+
     protected function getData(): array
     {
         $data = Trend::query(
@@ -46,4 +55,5 @@ class WeightWellnessChart extends ChartWidget
     {
         return 'bar';
     }
+
 }
