@@ -135,6 +135,17 @@ class DiaryResource extends Resource
                     ->color(fn(string $state
                     ): string => HydrationType::color(HydrationType::from($state)))
                     ->searchable(),
+
+                Tables\Columns\TextColumn::make('intensity')
+                    ->formatStateUsing(fn(string $state
+                    ): string => IntensityType::description
+                    (IntensityType::from($state)))
+                    ->badge()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->color(fn(string $state
+                    ): string => IntensityType::color(IntensityType::from($state)))
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('weight')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
