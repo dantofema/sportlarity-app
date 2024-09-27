@@ -82,7 +82,7 @@ class PlanResource extends Resource
                                 TextEntry::make('document.title')
                                     ->color(fn($record) => 'info')
                                     ->url(fn(Plan $record
-                                    ): string => Storage::disk('documents')->url($record->document?->file),
+                                    ): string => Storage::disk('public')->url($record->document?->file),
                                         true),
                                 TextEntry::make('created_at')
                                     ->date('d-m-Y H:i:s'),

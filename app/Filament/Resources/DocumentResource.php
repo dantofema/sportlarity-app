@@ -27,7 +27,7 @@ class DocumentResource extends Resource
                     ->required()
                     ->maxLength(191),
                 Forms\Components\FileUpload::make('image')
-                    ->disk('documents')
+                    ->disk('public')
                     ->rule([
                         'image',
                         'mimes:jpeg,png',
@@ -35,7 +35,7 @@ class DocumentResource extends Resource
                     ])
                     ->image(),
                 Forms\Components\FileUpload::make('file')
-                    ->disk('documents')
+                    ->disk('public')
                     ->rules([
                         'file',
                         'mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar,csv',
@@ -57,12 +57,12 @@ class DocumentResource extends Resource
                     ->label('')
                     ->icon('heroicon-o-arrow-down-on-square')
                     ->url(fn(Document $document
-                    ) => Storage::disk('documents')->url($document->file),
+                    ) => Storage::disk('public')->url($document->file),
                         true),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 ImageColumn::make('image')
-                    ->disk('documents')
+                    ->disk('public')
                     ->label('')
                     ->circular(),
                 Tables\Columns\TextColumn::make('user.name')
