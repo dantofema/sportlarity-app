@@ -28,9 +28,19 @@ class DocumentResource extends Resource
                     ->maxLength(191),
                 Forms\Components\FileUpload::make('image')
                     ->disk('documents')
+                    ->rule([
+                        'image',
+                        'mimes:jpeg,png',
+                        'max:1024',
+                    ])
                     ->image(),
                 Forms\Components\FileUpload::make('file')
                     ->disk('documents')
+                    ->rules([
+                        'file',
+                        'mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar,csv',
+                        'max:1024',
+                    ])
                     ->required(),
                 Forms\Components\Textarea::make('description')
                     ->maxLength(65535)

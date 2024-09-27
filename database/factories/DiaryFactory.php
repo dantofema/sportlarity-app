@@ -25,6 +25,7 @@ class DiaryFactory extends Factory
             'weight' => $this->faker->numberBetween(60, 90),
             'sleep_quality' => $this->faker->numberBetween(1, 4),
             'stress' => $this->faker->numberBetween(1, 4),
+            'screen_hours' => $this->faker->numberBetween(0, 12),
         ];
     }
 }

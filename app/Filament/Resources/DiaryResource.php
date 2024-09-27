@@ -150,6 +150,10 @@ class DiaryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
 
+                Tables\Columns\TextColumn::make('screen_hours')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -303,6 +307,27 @@ class DiaryResource extends Resource
                         ->label('')
                         ->numeric()
                         ->rules(['numeric', 'between:40,199.99']),
+                ]),
+
+            Forms\Components\Section::make('Cuántas horas de pantalla (móvil o tableta) consumió ayer?')
+                ->schema([
+                    Forms\Components\Select::make('screen_hours')
+                        ->label('')
+                        ->options([
+                            0 => '0 horas',
+                            1 => '1 hora',
+                            2 => '2 horas',
+                            3 => '3 horas',
+                            4 => '4 horas',
+                            5 => '5 horas',
+                            6 => '6 horas',
+                            7 => '7 horas',
+                            8 => '8 horas',
+                            9 => '9 horas',
+                            10 => '10 horas',
+                            11 => '11 horas',
+                            12 => '12 horas',
+                        ]),
                 ]),
 
         ];

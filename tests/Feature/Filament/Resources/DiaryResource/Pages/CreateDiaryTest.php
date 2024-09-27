@@ -35,6 +35,7 @@ test('can create diary', function () {
             'feeding' => $newData->feeding,
             'hydration' => $newData->hydration,
             'weight' => $newData->weight,
+            'screen_hours' => $newData->screen_hours,
         ])
         ->call('create')
         ->assertHasNoFormErrors();
@@ -51,6 +52,7 @@ test('can create diary', function () {
         'feeding' => $newData->feeding,
         'hydration' => $newData->hydration,
         'weight' => $newData->weight,
+        'screen_hours' => $newData->screen_hours,
     ]);
 
 });
