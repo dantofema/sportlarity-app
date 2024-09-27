@@ -30,21 +30,21 @@ return [
 
     'disks' => [
 
-        'avatars' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/avatars'),
-            'url' => env('APP_URL').'/avatars',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-
-        'documents' => [
-            'driver' => 'local',
-            'root' => storage_path('app/documents'),
-            'url' => env('APP_URL').'/docs',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
+//        'avatars' => [
+//            'driver' => 'local',
+//            'root' => storage_path('app/public/avatars'),
+//            'url' => env('APP_URL').'/avatars',
+//            'visibility' => 'public',
+//            'throw' => false,
+//        ],
+//
+//        'documents' => [
+//            'driver' => 'local',
+//            'root' => storage_path('app/documents'),
+//            'url' => env('APP_URL').'/docs',
+//            'visibility' => 'public',
+//            'throw' => false,
+//        ],
 
         'tests' => [
             'driver' => 'local',
@@ -96,8 +96,8 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('avatars') => storage_path('app/public/avatars'),
-        public_path('docs') => storage_path('app/documents'),
+//        public_path('avatars') => storage_path('app/public/avatars'),
+//        public_path('docs') => storage_path('app/documents'),
         public_path('tests') => storage_path('app/tests'),
     ],
 

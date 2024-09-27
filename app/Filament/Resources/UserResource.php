@@ -55,7 +55,7 @@ class UserResource extends Resource
                 ->schema([
                     FileUpload::make('image')
                         ->label('')
-                        ->disk('avatars')
+                        ->disk('public')
                         ->avatar(),
                     \Filament\Forms\Components\Group::make()
                         ->columnSpan(2)
@@ -96,7 +96,7 @@ class UserResource extends Resource
                     if (is_null($get('rol'))) {
                         return true;
                     }
-                    
+
                     $rolId = (int) Role::whereName('wellness')->first()->id;
                     $rolSelected = (int) $get('rol');
 
@@ -155,7 +155,7 @@ class UserResource extends Resource
             })
             ->columns([
                 ImageColumn::make('image')
-                    ->disk('avatars')
+                    ->disk('public')
                     ->label('')
                     ->circular(),
                 TextColumn::make('name')
