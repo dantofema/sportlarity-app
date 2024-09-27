@@ -30,6 +30,7 @@ class Diary extends Model
         'weight',
         'sleep_quality',
         'stress',
+        'screen_hours',
     ];
 
     public function isOwner(): bool
