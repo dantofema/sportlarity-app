@@ -11,8 +11,11 @@ class CreateFeedback extends CreateRecord
 
     protected function getHeaderActions(): array
     {
-        return [
+        return [];
+    }
 
-        ];
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }

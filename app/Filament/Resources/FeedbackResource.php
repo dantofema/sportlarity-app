@@ -16,7 +16,6 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
 class FeedbackResource extends Resource
@@ -111,29 +110,7 @@ class FeedbackResource extends Resource
         return [
             'index' => Pages\ListFeedbacks::route('/'),
             'create' => Pages\CreateFeedback::route('/create'),
-            'view' => Pages\ViewFeedback::route('/{record}'),
             'edit' => Pages\EditFeedback::route('/{record}/edit'),
         ];
-    }
-
-    public static function getGlobalSearchEloquentQuery(): Builder
-    {
-        return parent::getGlobalSearchEloquentQuery()->with(['user']);
-    }
-
-    public static function getGloballySearchableAttributes(): array
-    {
-        return ['title', 'user.name'];
-    }
-
-    public static function getGlobalSearchResultDetails(Model $record): array
-    {
-        $details = [];
-
-        if ($record->user) {
-            $details['User'] = $record->user->name;
-        }
-
-        return $details;
     }
 }
