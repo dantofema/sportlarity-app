@@ -22,7 +22,9 @@ class FeedbackResource extends Resource
 {
     protected static ?string $model = Feedback::class;
 
-    protected static ?string $slug = 'feedback';
+    protected static ?string $navigationLabel = 'Feedbacks';
+
+    protected static ?string $pluralLabel = 'Feedbacks';
 
     protected static ?string $navigationIcon = 'heroicon-o-heart';
 
