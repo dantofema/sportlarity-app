@@ -72,6 +72,7 @@ class FeedbackResource extends Resource
 
                 return $query->orderBy('created_at', 'desc');
             })
+            ->recordUrl(null)
             ->defaultSort('created_at', 'desc')
             ->columns([
                 IconColumn::make('file')
