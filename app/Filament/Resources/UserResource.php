@@ -105,6 +105,10 @@ class UserResource extends Resource
 
                     if ($operation === 'edit') {
 
+                        if (is_null($get('rol')) or empty($get('rol'))) {
+                            return true;
+                        }
+                        
                         $rolSelected = (int) $get('rol')[0];
 
                         if ($rolSelected === $rolId) {
