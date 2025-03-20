@@ -52,6 +52,7 @@ class DiaryResource extends Resource
                     ->dateTime('d-m-Y'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
+                    ->searchable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('assessment.value')
                     ->formatStateUsing(fn(string $state
