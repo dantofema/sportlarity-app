@@ -78,10 +78,11 @@ class UserResource extends Resource
                                 ->relationship(
                                     'roles',
                                     'name',
-                                    fn(Builder $query) => $query->where('name',
-                                        '!=', 'super_admin')
-                                        ->where('name', '!=', 'panel_user'))
-                                ->live(),
+                                    fn(Builder $query) => $query->where(
+                                        'name',
+                                        '!=',
+                                        \App\Enums\Role::SUPER_ADMIN)
+                                )->live(),
 
                         ]),
 
@@ -93,14 +94,26 @@ class UserResource extends Resource
                     ?Model $record,
                     string $operation
                 ) {
-                    if (is_null($get('rol'))) {
+                    if ($operation === 'edit') {
+
+                        $rolId = (int) Role::where(
+                            'name',
+                            '=',
+                            \App\Enums\Role::WELLNESS)
+                            ->first()
+                            ->id;
+
+                        $rolSelected = (int) $get('rol')[0];
+                        
+                        if ($rolSelected === $rolId) {
+                            return false;
+                        }
+
                         return true;
                     }
 
-                    $rolId = (int) Role::whereName('wellness')->first()->id;
-                    $rolSelected = (int) $get('rol');
 
-                    if ($rolSelected === $rolId) {
+                    if ($record->hasRole(\App\Enums\Role::WELLNESS)) {
                         return false;
                     }
 
@@ -257,8 +270,9 @@ class UserResource extends Resource
                             ])
 
                     ]),
-                Section::make('Información adicional')
-                    ->hidden(fn(User $record) => !$record->hasRole(4))
+                Section::make('Información adicional del usuario wellness')
+                    ->hidden(fn(User $record
+                    ) => !$record->hasRole(\App\Enums\Role::WELLNESS))
                     ->columns(3)
                     ->schema([
                         TextEntry::make('instagram')
