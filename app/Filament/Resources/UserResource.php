@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Helpers\TableFilterDate;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use Exception;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -137,7 +138,7 @@ class UserResource extends Resource
                             'goal',
                             'name',
                             modifyQueryUsing: fn(Builder $query
-                            ) => $query->orderBy('id', 'asc'),
+                            ) => $query->orderBy('id'),
                         ),
                     DatePicker::make('dob')
                         ->label('Fecha de Nacimiento')
@@ -155,6 +156,9 @@ class UserResource extends Resource
         ];
     }
 
+    /**
+     * @throws Exception
+     */
     public static function table(Table $table): Table
     {
         return $table
