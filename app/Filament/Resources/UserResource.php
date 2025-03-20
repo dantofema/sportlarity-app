@@ -116,7 +116,7 @@ class UserResource extends Resource
 
                     if ($operation === 'create') {
 
-                        if (is_null($get('rol'))) {
+                        if (is_null($get('rol')) or empty($get('rol'))) {
                             return true;
                         }
 
