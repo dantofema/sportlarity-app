@@ -115,6 +115,11 @@ class UserResource extends Resource
                     }
 
                     if ($operation === 'create') {
+
+                        if (is_null($get('rol'))) {
+                            return true;
+                        }
+
                         $rolSelected = (int) $get('rol')[0];
 
                         if ($rolSelected === $rolId) {
