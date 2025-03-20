@@ -94,17 +94,28 @@ class UserResource extends Resource
                     ?Model $record,
                     string $operation
                 ) {
+
+                    $rolId = (int) Role::where(
+                        'name',
+                        '=',
+                        \App\Enums\Role::WELLNESS)
+                        ->first()
+                        ->id;
+
                     if ($operation === 'edit') {
 
-                        $rolId = (int) Role::where(
-                            'name',
-                            '=',
-                            \App\Enums\Role::WELLNESS)
-                            ->first()
-                            ->id;
-
                         $rolSelected = (int) $get('rol')[0];
-                        
+
+                        if ($rolSelected === $rolId) {
+                            return false;
+                        }
+
+                        return true;
+                    }
+
+                    if ($operation === 'create') {
+                        $rolSelected = (int) $get('rol')[0];
+
                         if ($rolSelected === $rolId) {
                             return false;
                         }
