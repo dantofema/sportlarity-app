@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('/')
+            ->favicon(asset('images/logo.jpg'))
             ->login()
             ->emailVerification()
             ->profile(EditProfile::class)
