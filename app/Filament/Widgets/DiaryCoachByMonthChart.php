@@ -20,7 +20,7 @@ class DiaryCoachByMonthChart extends ChartWidget
     protected function getData(): array
     {
         $data = Trend::model(Diary::class)
-            ->dateColumn('created_at')
+            ->dateColumn('date')
             ->between(
                 start: now()->startOfYear(),
                 end: now()->endOfYear(),
@@ -32,8 +32,9 @@ class DiaryCoachByMonthChart extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Registros creados',
-                    'data' => $data->map(fn(TrendValue $value
-                    ) => $value->aggregate),
+                    'data' => $data->map(
+                        fn(TrendValue $value) => $value->aggregate
+                    ),
                 ],
             ],
             'labels' => $data->map(fn(TrendValue $value) => $value->date),
