@@ -108,10 +108,12 @@ class ChangePassword extends Page implements HasForms
         }
 
         // Actualizar la contraseña
-        $user->update([
-            'password' => Hash::make($data['password']),
-            'password_change_required' => false,
-        ]);
+        $user->password = Hash::make($data['password']);
+        $user->password_change_required = false;
+        $user->save();
+
+        // Regenerar la sesión para evitar problemas de autenticación
+        request()->session()->regenerate();
 
         Notification::make()
             ->title('¡Contraseña actualizada!')
@@ -120,6 +122,6 @@ class ChangePassword extends Page implements HasForms
             ->send();
 
         // Redirigir al home (dashboard de Filament)
-        $this->redirect('/');
+        $this->redirect('/', navigate: true);
     }
 }
