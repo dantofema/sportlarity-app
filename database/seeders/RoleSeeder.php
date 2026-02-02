@@ -3,25 +3,15 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
     public function run(): void
     {
-        Artisan::call('shield:generate --all');
-//        Role::create(['name' => 'super_admin']);
-        $coach = Role::create(['name' => 'coach']);
-        $coach->givePermissionTo([
-            'view_user',
-            'view_any_user',
-            'create_user',
-            'update_user',
-            'delete_user',
-            'delete_any_user',
-        ]);
-        Role::create(['name' => 'professional']);
-        Role::create(['name' => 'wellness']);
+        // Los roles 'super_admin' y 'coach' ya se crean en ShieldSeeder con sus permisos
+        // Solo creamos los roles adicionales que no están en ShieldSeeder
+        Role::firstOrCreate(['name' => 'professional', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'wellness', 'guard_name' => 'web']);
     }
 }

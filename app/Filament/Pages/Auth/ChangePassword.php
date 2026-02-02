@@ -2,13 +2,13 @@
 
 namespace App\Filament\Pages\Auth;
 
-use Filament\Schemas\Schema;
 use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
@@ -16,11 +16,11 @@ class ChangePassword extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-lock-closed';
-
-    protected string $view = 'filament.pages.auth.change-password';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-lock-closed';
 
     protected static bool $shouldRegisterNavigation = false;
+
+    protected string $view = 'filament.pages.auth.change-password';
 
     protected ?string $heading = 'Cambiar Contraseña';
 
@@ -30,7 +30,9 @@ class ChangePassword extends Page implements HasForms
     {
         // Si el usuario no requiere cambiar la contraseña, redirigir al dashboard
         if (! auth()->user()->password_change_required) {
-            redirect()->route('filament.admin.pages.dashboard');
+            $this->redirect(route('filament.admin.pages.dashboard'));
+
+            return;
         }
 
         $this->form->fill();
@@ -43,22 +45,15 @@ class ChangePassword extends Page implements HasForms
                 TextInput::make('current_password')
                     ->label('Contraseña Actual')
                     ->password()
-                    ->required()
-                    ->dehydrated(false)
-                    ->rules(['required']),
+                    ->required(),
 
                 TextInput::make('password')
                     ->label('Nueva Contraseña')
                     ->password()
                     ->required()
-                    ->rules([
-                        'required',
-                        'confirmed',
-                        'different:current_password',
-                        Password::min(8)
-                            ->mixedCase()
-                            ->numbers(),
-                    ])
+                    ->confirmed()
+                    ->different('current_password')
+                    ->rule(Password::min(8)->mixedCase()->numbers())
                     ->helperText('La contraseña debe tener al menos 8 caracteres, mayúsculas, minúsculas y números.'),
 
                 TextInput::make('password_confirmation')
@@ -68,6 +63,21 @@ class ChangePassword extends Page implements HasForms
                     ->dehydrated(false),
             ])
             ->statePath('data');
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            Action::make('submit')
+                ->label('Cambiar Contraseña')
+                ->submit('submit')
+                ->color('primary'),
+            Action::make('logout')
+                ->label('Cerrar Sesión')
+                ->url(route('filament.admin.auth.logout'))
+                ->color('gray')
+                ->outlined(),
+        ];
     }
 
     public function submit(): void
@@ -109,16 +119,7 @@ class ChangePassword extends Page implements HasForms
             ->body('Tu contraseña ha sido cambiada exitosamente.')
             ->send();
 
-        // Redirigir al dashboard
-        redirect()->route('filament.admin.pages.dashboard');
-    }
-
-    protected function getFormActions(): array
-    {
-        return [
-            Action::make('submit')
-                ->label('Cambiar Contraseña')
-                ->submit('submit'),
-        ];
+        // Redirigir al home (dashboard de Filament)
+        $this->redirect('/');
     }
 }

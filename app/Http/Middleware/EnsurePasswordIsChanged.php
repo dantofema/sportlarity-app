@@ -11,7 +11,7 @@ class EnsurePasswordIsChanged
     /**
      * Handle an incoming request.
      *
-     * @param Closure(Request):Response $next
+     * @param  Closure(Request):Response  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -19,10 +19,18 @@ class EnsurePasswordIsChanged
 
         // Si el usuario está autenticado y requiere cambiar contraseña
         if ($user && $user->password_change_required) {
-            // Permitir acceso solo a la página de cambio de contraseña y logout
-            if (! $request->routeIs('filament.admin.auth.change-password') &&
-                ! $request->routeIs('filament.admin.auth.logout')) {
-                return redirect()->route('filament.admin.auth.change-password');
+            // Rutas permitidas cuando se requiere cambio de contraseña
+            $allowedRoutes = [
+                'filament.admin.pages.change-password',
+                'filament.admin.auth.logout',
+                'livewire.update', // Para las actualizaciones de Livewire
+                'livewire.message', // Para los mensajes de Livewire
+            ];
+
+            // Permitir requests de Livewire y las rutas específicas
+            if (! $request->routeIs($allowedRoutes) &&
+                ! str_starts_with($request->path(), 'livewire/')) {
+                return redirect()->route('filament.admin.pages.change-password');
             }
         }
 
