@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             GoalSeeder::class,
             UserSeeder::class,
             DocumentSeeder::class,
+            SecurityTestSeeder::class
         ]);
 
     }
