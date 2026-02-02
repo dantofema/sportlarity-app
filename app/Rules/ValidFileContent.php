@@ -27,9 +27,7 @@ class ValidFileContent implements ValidationRule
         'text/csv' => [],
     ];
 
-    public function __construct(protected array $allowedMimeTypes)
-    {
-    }
+    public function __construct(protected array $allowedMimeTypes) {}
 
     /**
      * Run the validation rule.

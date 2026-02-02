@@ -2,8 +2,8 @@
 
 namespace App\Filament\Helpers;
 
-use Filament\Tables\Filters\BaseFilter;
 use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\BaseFilter;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -19,14 +19,14 @@ class TableFilterDate
                 DatePicker::make('created_from'),
                 DatePicker::make('created_until'),
             ])
-            ->query(fn(Builder $query, array $data): Builder => $query
+            ->query(fn (Builder $query, array $data): Builder => $query
                 ->when(
                     $data['created_from'],
-                    fn(Builder $query, $date): Builder => $query->whereDate($column, '>=', $date),
+                    fn (Builder $query, $date): Builder => $query->whereDate($column, '>=', $date),
                 )
                 ->when(
                     $data['created_until'],
-                    fn(Builder $query, $date): Builder => $query->whereDate($column, '<=', $date),
+                    fn (Builder $query, $date): Builder => $query->whereDate($column, '<=', $date),
                 ));
     }
 }

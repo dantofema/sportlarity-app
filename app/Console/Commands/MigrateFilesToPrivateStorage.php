@@ -66,8 +66,9 @@ class MigrateFilesToPrivateStorage extends Command
             return Command::SUCCESS;
         }
 
-        if (! $force && !$dryRun && ! $this->confirm('Do you want to proceed with the migration?', true)) {
+        if (! $force && ! $dryRun && ! $this->confirm('Do you want to proceed with the migration?', true)) {
             $this->warn('Migration cancelled.');
+
             return Command::CANCELLED;
         }
 

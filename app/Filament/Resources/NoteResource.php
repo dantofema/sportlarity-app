@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources;
 
-use BackedEnum;
 use App\Filament\Resources\NoteResource\Pages\CreateNote;
 use App\Filament\Resources\NoteResource\Pages\EditNote;
 use App\Filament\Resources\NoteResource\Pages\ListNotes;
 use App\Filament\Resources\NoteResource\Pages\ViewNote;
 use App\Models\Note;
+use BackedEnum;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
@@ -97,7 +97,7 @@ class NoteResource extends Resource
                                     ) => $query->orderBy('id', 'asc'),
                                 ),
                             Select::make('users')
-                                ->hidden(fn(): bool => $userId !== null)
+                                ->hidden(fn (): bool => $userId !== null)
                                 ->relationship(
                                     'users',
                                     'name',
@@ -154,7 +154,7 @@ class NoteResource extends Resource
                                 TextEntry::make('author.name')
                                     ->label('Author')
                                     ->columnSpan(1)
-                                    ->url(fn($record): ?string => auth()->user()->can('view_user')
+                                    ->url(fn ($record): ?string => auth()->user()->can('view_user')
                                         ? UserResource::getUrl('view',
                                             ['record' => $record->author_id])
                                         : null)
