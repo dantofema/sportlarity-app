@@ -18,13 +18,15 @@ class Document extends Model
         'image',
     ];
 
-    protected $casts = [
-        'id' => 'integer',
-        'user_id' => 'integer',
-    ];
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    protected function casts(): array
+    {
+        return [
+            'id' => 'integer',
+            'user_id' => 'integer',
+        ];
     }
 }

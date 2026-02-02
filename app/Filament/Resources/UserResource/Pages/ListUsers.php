@@ -30,9 +30,7 @@ class ListUsers extends ListRecords
 
             $tabs[$slug] = Tab::make($name)
                 ->badge($role->users_count)
-                ->modifyQueryUsing(function ($query) use ($role) {
-                    return $query->whereHas('roles', fn ($q) => $q->where('name', $role->name));
-                });
+                ->modifyQueryUsing(fn($query) => $query->whereHas('roles', fn ($q) => $q->where('name', $role->name)));
         }
 
         return $tabs;

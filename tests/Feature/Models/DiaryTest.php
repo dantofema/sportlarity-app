@@ -10,11 +10,11 @@ use Database\Seeders\RoleSeeder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
 });
 
-test('casts', function () {
+test('casts', function (): void {
     $diary = Diary::factory()->create();
 
     expect($diary->id)->toBeInt()
@@ -22,7 +22,7 @@ test('casts', function () {
         ->and($diary->user_id)->toBeInt();
 });
 
-test('fillable', function () {
+test('fillable', function (): void {
     $diary = Diary::factory([
         'content' => 'content',
     ])->make();
@@ -31,7 +31,7 @@ test('fillable', function () {
         ->and($diary->user_id)->toBeInt();
 });
 
-test('is owner', function () {
+test('is owner', function (): void {
     $user = User::factory()->create();
 
     $diary = Diary::factory([
@@ -44,14 +44,14 @@ test('is owner', function () {
     expect($diary->isOwner())->toBeTrue();
 });
 
-test('user', function () {
+test('user', function (): void {
     $diary = Diary::factory()->make();
 
     expect($diary->user)->toBeInstanceOf(User::class)
         ->and($diary->user())->toBeInstanceOf(BelongsTo::class);
 });
 
-test('assessment', function () {
+test('assessment', function (): void {
     $diary = Diary::factory()
         ->has(Assessment::factory())
         ->create();

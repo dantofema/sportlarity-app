@@ -18,11 +18,6 @@ class Note extends Model
         'goal_id',
     ];
 
-    protected $casts = [
-        'id' => 'integer',
-        'author_id' => 'integer',
-    ];
-
     public function goal(): BelongsTo
     {
         return $this->belongsTo(Goal::class);
@@ -36,5 +31,12 @@ class Note extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    protected function casts(): array
+    {
+        return [
+            'id' => 'integer',
+            'author_id' => 'integer',
+        ];
     }
 }

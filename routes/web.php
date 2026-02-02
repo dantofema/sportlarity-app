@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
  * Rutas protegidas para descarga de archivos
  * Todas requieren autenticación
  */
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function (): void {
     Route::get('/secure/avatar/{filename}', [SecureFileController::class, 'downloadAvatar'])->name('secure.avatar');
     Route::get('/secure/document/{id}', [SecureFileController::class, 'downloadDocument'])->name('secure.document');
     Route::get('/secure/document-image/{id}', [SecureFileController::class, 'downloadDocumentImage'])->name('secure.document.image');

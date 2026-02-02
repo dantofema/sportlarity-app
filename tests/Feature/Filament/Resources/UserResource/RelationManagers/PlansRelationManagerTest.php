@@ -10,7 +10,7 @@ use Database\Seeders\ShieldSeeder;
 
 use function Pest\Livewire\livewire;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
     $user = User::factory()->create();
@@ -20,7 +20,7 @@ beforeEach(function () {
     $this->factory = User::factory();
 });
 
-it('can render plans relation manager', function () {
+it('can render plans relation manager', function (): void {
     $ownerRecord = $this->factory
         ->has(Plan::factory()->count(10))
         ->create()
@@ -33,7 +33,7 @@ it('can render plans relation manager', function () {
         ->assertSuccessful();
 });
 
-it('can list plans in edit page', function () {
+it('can list plans in edit page', function (): void {
     $ownerRecord = $this->factory
         ->has(Plan::factory()->count(5))
         ->create()
@@ -46,7 +46,7 @@ it('can list plans in edit page', function () {
         ->assertCanSeeTableRecords($ownerRecord->plans);
 });
 
-it('can render plans relation manager in view page', function () {
+it('can render plans relation manager in view page', function (): void {
     $ownerRecord = $this->factory
         ->has(Plan::factory()->count(5))
         ->create()
@@ -59,7 +59,7 @@ it('can render plans relation manager in view page', function () {
         ->assertSuccessful();
 });
 
-it('can list plans in view page', function () {
+it('can list plans in view page', function (): void {
     $ownerRecord = $this->factory
         ->has(Plan::factory()->count(5))
         ->create()

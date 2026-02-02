@@ -11,12 +11,12 @@ use Filament\Tables\Actions\DeleteAction;
 use function Pest\Livewire\livewire;
 use function PHPUnit\Framework\assertNull;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
 });
 
-it('can render list notes page', function (string $role) {
+it('can render list notes page', function (string $role): void {
     $user = User::factory()->create()->assignRole($role);
     $this->actingAs($user);
 
@@ -27,7 +27,7 @@ it('can render list notes page', function (string $role) {
     ['wellness'],
 ]);
 
-it('can list all notes', function (string $role) {
+it('can list all notes', function (string $role): void {
     $user = User::factory()->create()->assignRole($role);
     $this->actingAs($user);
 
@@ -40,7 +40,7 @@ it('can list all notes', function (string $role) {
     ['professional'],
 ]);
 
-it('wellness can list your notes', function () {
+it('wellness can list your notes', function (): void {
 
     $wellness = User::factory()->create()->assignRole('wellness');
     $this->actingAs($wellness);
@@ -55,7 +55,7 @@ it('wellness can list your notes', function () {
         ->assertCanNotSeeTableRecords([$note]);
 });
 
-it('can render notes author.name', function (string $role) {
+it('can render notes author.name', function (string $role): void {
     $user = User::factory()->create()->assignRole($role);
     $this->actingAs($user);
 
@@ -69,7 +69,7 @@ it('can render notes author.name', function (string $role) {
     ['wellness'],
 ]);
 
-it('coach can delete note', function () {
+it('coach can delete note', function (): void {
 
     $user = User::factory()->create()->assignRole('coach');
     $this->actingAs($user);

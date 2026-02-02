@@ -35,11 +35,11 @@ class StatsLastDiaryPrimary extends BaseWidget
         $stress = StressType::from($diary->stress);
         $sleepTime = SleepTimeType::from($diary->sleep_time);
 
-        $preparation = PreparationType::from($diary->preparation);
-        $strengthTraining = StrengthTrainingType::from($diary->strength_training);
-        $intensity = IntensityType::from($diary->intensity);
-        $feeding = FeedingType::from($diary->feeding);
-        $hydration = HydrationType::from($diary->hydration);
+        PreparationType::from($diary->preparation);
+        StrengthTrainingType::from($diary->strength_training);
+        IntensityType::from($diary->intensity);
+        FeedingType::from($diary->feeding);
+        HydrationType::from($diary->hydration);
 
         return [
             Stat::make('Último registro', SleepQualityType::description($sleepQuality))

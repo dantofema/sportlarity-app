@@ -11,7 +11,6 @@ use Filament\Actions\ActionGroup;
 use Filament\Actions\ViewAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
-use Filament\Tables;
 use Filament\Tables\Table;
 
 class DiariesRelationManager extends RelationManager
@@ -26,7 +25,7 @@ class DiariesRelationManager extends RelationManager
     public function form(Schema $schema): Schema
     {
         return $schema
-            ->components(DiaryResource::getForm(self::getOwnerRecord()->id));
+            ->components(DiaryResource::getForm());
     }
 
     public function table(Table $table): Table

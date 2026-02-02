@@ -10,12 +10,12 @@ use Database\Seeders\ShieldSeeder;
 
 use function Pest\Livewire\livewire;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
 });
 
-test('role wellness can view you diaries', function () {
+test('role wellness can view you diaries', function (): void {
 
     $user = User::factory()->create()->assignRole('wellness');
     $this->actingAs($user);
@@ -31,7 +31,7 @@ test('role wellness can view you diaries', function () {
         ->assertCanNotSeeTableRecords([$diary]);
 });
 
-test('role coach can view all diaries', function () {
+test('role coach can view all diaries', function (): void {
 
     $user = User::factory()->create()->assignRole('coach');
     $this->actingAs($user);

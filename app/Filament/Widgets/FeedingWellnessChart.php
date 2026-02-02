@@ -45,10 +45,10 @@ class FeedingWellnessChart extends ChartWidget
                 [
                     'label' => 'Alimentación',
                     'data' => $data->map(fn (TrendValue $value
-                    ) => $value->aggregate),
+                    ): mixed => $value->aggregate),
                 ],
             ],
-            'labels' => $data->map(fn (TrendValue $value) => $value->date),
+            'labels' => $data->map(fn (TrendValue $value): string => $value->date),
         ];
 
     }

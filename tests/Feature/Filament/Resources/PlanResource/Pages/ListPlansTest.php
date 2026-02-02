@@ -11,7 +11,7 @@ use Filament\Tables\Actions\DeleteAction;
 use function Pest\Livewire\livewire;
 use function PHPUnit\Framework\assertNull;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
     $user = User::factory()->create();
@@ -20,18 +20,18 @@ beforeEach(function () {
     $this->list = ListPlans::class;
 });
 
-it('can render list plans page', function () {
+it('can render list plans page', function (): void {
     $this->get(PlanResource::getUrl())->assertSuccessful();
 });
 
-it('can list plans', function () {
+it('can list plans', function (): void {
     $plans = Plan::factory()->count(5)->create();
 
     livewire($this->list)
         ->assertCanSeeTableRecords($plans);
 });
 
-it('can render plans title, user.name & author.name', function () {
+it('can render plans title, user.name & author.name', function (): void {
     Plan::factory()->count(5)->create();
 
     livewire($this->list)
@@ -40,7 +40,7 @@ it('can render plans title, user.name & author.name', function () {
         ->assertCanRenderTableColumn('author.name');
 });
 
-it('can sort plans by title', function () {
+it('can sort plans by title', function (): void {
     $records = Plan::factory()->count(5)->create();
 
     livewire($this->list)
@@ -51,7 +51,7 @@ it('can sort plans by title', function () {
             inOrder: true);
 });
 
-it('can sort plans by user', function () {
+it('can sort plans by user', function (): void {
     $records = Plan::factory()->count(5)->create();
 
     livewire($this->list)
@@ -62,7 +62,7 @@ it('can sort plans by user', function () {
             inOrder: true);
 });
 
-it('can search plans by title & user.name', function () {
+it('can search plans by title & user.name', function (): void {
     $records = Plan::factory()->count(5)->create();
 
     $title = $records->first()->title;
@@ -77,16 +77,16 @@ it('can search plans by title & user.name', function () {
     livewire($this->list)
         ->searchTable($userName)
         ->assertCanSeeTableRecords($records->where('user_id',
-            function ($query) use ($userName) {
+            function ($query) use ($userName): void {
                 $query->where('name', $userName);
             }))
         ->assertCanNotSeeTableRecords($records->where('user_id',
-            function ($query) use ($userName) {
+            function ($query) use ($userName): void {
                 $query->where('name', '!=', $userName);
             }));
 });
 
-it('can delete plan', function () {
+it('can delete plan', function (): void {
     $record = Plan::factory()->create();
 
     livewire($this->list)

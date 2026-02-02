@@ -31,7 +31,7 @@ class LastPlanWellnessStats extends BaseWidget
         ];
     }
 
-    protected function planStat()
+    protected function planStat(): array|Stat
     {
         $plan = Plan::whereUserId(auth()->id())->latest()->first();
 
@@ -49,7 +49,7 @@ class LastPlanWellnessStats extends BaseWidget
             ->color('info');
     }
 
-    protected function noteStat()
+    protected function noteStat(): array|Stat
     {
         $note = Note::whereUserId(auth()->id())->latest()->first();
 
@@ -67,7 +67,7 @@ class LastPlanWellnessStats extends BaseWidget
             ->color('info');
     }
 
-    protected function diaryStat()
+    protected function diaryStat(): Stat
     {
         return Stat::make('Nuevo registro', 'Crear')
             ->color('primary')

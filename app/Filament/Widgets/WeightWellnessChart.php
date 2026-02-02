@@ -21,12 +21,7 @@ class WeightWellnessChart extends ChartWidget
 
     public static function canView(): bool
     {
-        if (auth()->user()->hasRole('wellness')) {
-            return true;
-        }
-
-        return false;
-
+        return (bool) auth()->user()->hasRole('wellness');
     }
 
     protected function getData(): array
@@ -48,10 +43,10 @@ class WeightWellnessChart extends ChartWidget
                 [
                     'label' => 'Peso',
                     'data' => $data->map(fn (TrendValue $value
-                    ) => $value->aggregate),
+                    ): mixed => $value->aggregate),
                 ],
             ],
-            'labels' => $data->map(fn (TrendValue $value) => $value->date),
+            'labels' => $data->map(fn (TrendValue $value): string => $value->date),
         ];
 
     }

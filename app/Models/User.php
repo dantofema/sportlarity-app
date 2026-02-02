@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Date;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -24,12 +24,6 @@ class User extends Authenticatable implements FilamentUser
 
     protected $hidden = [
         'password',
-    ];
-
-    protected $casts = [
-        'dob' => 'datetime',
-        'deleted_at' => 'timestamp',
-        'password_change_required' => 'boolean',
     ];
 
     protected $fillable = [
@@ -84,9 +78,9 @@ class User extends Authenticatable implements FilamentUser
     protected function dob(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, array $attributes) => $value === null
+            get: fn ($value, array $attributes): ?string => $value === null
                 ? null
-                : Carbon::parse($value)->format('d-m-Y'),
+                : Date::parse($value)->format('d-m-Y'),
         );
     }
 
@@ -105,9 +99,17 @@ class User extends Authenticatable implements FilamentUser
     protected function avatarUrl(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, array $attributes) => $attributes['image'] === null
+            get: fn ($value, array $attributes): ?string => $attributes['image'] === null
                 ? null
                 : route('secure.avatar', ['filename' => basename($attributes['image'])]),
         );
+    }
+    protected function casts(): array
+    {
+        return [
+            'dob' => 'datetime',
+            'deleted_at' => 'timestamp',
+            'password_change_required' => 'boolean',
+        ];
     }
 }

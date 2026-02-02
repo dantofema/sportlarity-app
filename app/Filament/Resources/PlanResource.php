@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
 use App\Filament\Resources\PlanResource\Pages\CreatePlan;
 use App\Filament\Resources\PlanResource\Pages\EditPlan;
 use App\Filament\Resources\PlanResource\Pages\ListPlans;
@@ -29,7 +30,7 @@ class PlanResource extends Resource
 {
     protected static ?string $model = Plan::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function infolist(Schema $schema): Schema
     {
@@ -61,25 +62,21 @@ class PlanResource extends Resource
                             ->schema([
                                 TextEntry::make('author.name')
                                     ->label('Author')
-                                    ->url(function ($record) {
-                                        return auth()->user()->can('view_user')
-                                            ? UserResource::getUrl('view',
-                                                ['record' => $record->user_id])
-                                            : null;
-                                    })
+                                    ->url(fn($record): ?string => auth()->user()->can('view_user')
+                                        ? UserResource::getUrl('view',
+                                            ['record' => $record->user_id])
+                                        : null)
                                     ->badge(),
                                 TextEntry::make('user.name')
                                     ->label('User Wellness')
-                                    ->url(function ($record) {
-                                        return auth()->user()->can('view_user')
-                                            ? UserResource::getUrl('view',
-                                                ['record' => $record->user_id])
-                                            : null;
-                                    })
-                                    ->color(fn ($record) => 'info')
+                                    ->url(fn($record): ?string => auth()->user()->can('view_user')
+                                        ? UserResource::getUrl('view',
+                                            ['record' => $record->user_id])
+                                        : null)
+                                    ->color(fn ($record): string => 'info')
                                     ->badge(),
                                 TextEntry::make('document.title')
-                                    ->color(fn ($record) => 'info')
+                                    ->color(fn ($record): string => 'info')
                                     ->url(fn (Plan $record
                                     ): string => Storage::disk('public')->url($record->document?->file),
                                         true),
@@ -190,9 +187,7 @@ class PlanResource extends Resource
                                 ]),
                             Select::make('user_id')
                                 ->label('User wellness')
-                                ->hidden(function () use ($userId) {
-                                    return $userId !== null;
-                                })
+                                ->hidden(fn(): bool => $userId !== null)
                                 ->relationship(
                                     'user',
                                     'name',
@@ -208,7 +203,7 @@ class PlanResource extends Resource
                                 ),
                             Select::make('author_id')
                                 ->hidden(fn (string $operation
-                                ) => $operation == 'create')
+                                ): bool => $operation === 'create')
                                 ->relationship(
                                     'author',
                                     'name',

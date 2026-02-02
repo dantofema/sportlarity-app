@@ -7,7 +7,7 @@ use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
     $user = User::factory()->create();
@@ -17,7 +17,7 @@ beforeEach(function () {
     $this->factory = Plan::factory();
 });
 
-it('can render view plan page', function () {
+it('can render view plan page', function (): void {
     $this->get(PlanResource::getUrl('view', [
         'record' => $this->factory->create(),
     ]))->assertSuccessful();

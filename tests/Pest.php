@@ -10,15 +10,15 @@
 | need to change it using the "uses()" function to bind a different classes or traits.
 |
 */
-
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTruncation;
 
-uses(Tests\TestCase::class,
+uses(TestCase::class,
     DatabaseTruncation::class,
 
 )->in('Feature');
 
-beforeEach(function () {});
+beforeEach(function (): void {});
 /*
 |--------------------------------------------------------------------------
 | Expectations
@@ -30,9 +30,7 @@ beforeEach(function () {});
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
+expect()->extend('toBeOne', fn() => $this->toBe(1));
 
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +43,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function something(): void
 {
     // ..
 }

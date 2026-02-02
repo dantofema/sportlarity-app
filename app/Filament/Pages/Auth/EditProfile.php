@@ -19,7 +19,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                 $this->getPasswordConfirmationFormComponent(),
                 TextInput::make('height')
                     ->maxLength(255)
-                    ->hidden(fn (Get $get) => $get('rol') != '4'),
+                    ->hidden(fn (Get $get): bool => $get('rol') != '4'),
             ]);
     }
 }

@@ -30,7 +30,7 @@ class EnsurePasswordIsChanged
             // Permitir requests de Livewire y las rutas específicas
             if (! $request->routeIs($allowedRoutes) &&
                 ! str_starts_with($request->path(), 'livewire/')) {
-                return redirect()->route('filament.admin.pages.change-password');
+                return to_route('filament.admin.pages.change-password');
             }
         }
 

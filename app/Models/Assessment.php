@@ -17,11 +17,6 @@ class Assessment extends Model
         'diary_id',
     ];
 
-    protected $casts = [
-        'id' => 'integer',
-        'user_id' => 'integer',
-    ];
-
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
@@ -30,5 +25,12 @@ class Assessment extends Model
     public function diary(): BelongsTo
     {
         return $this->belongsTo(Diary::class);
+    }
+    protected function casts(): array
+    {
+        return [
+            'id' => 'integer',
+            'user_id' => 'integer',
+        ];
     }
 }

@@ -10,12 +10,12 @@ use Database\Seeders\ShieldSeeder;
 
 use function Pest\Livewire\livewire;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
 });
 
-test('can create diary', function () {
+test('can create diary', function (): void {
     $user = User::factory()
         ->create()
         ->assignRole('wellness');
@@ -58,7 +58,7 @@ test('can create diary', function () {
 
 });
 
-test('can not create diary with coach rol', function () {
+test('can not create diary with coach rol', function (): void {
 
     $user = User::factory()
         ->create()

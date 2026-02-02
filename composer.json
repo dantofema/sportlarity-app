@@ -20,6 +20,7 @@
     "sentry/sentry-laravel": "^4.6"
   },
   "require-dev": {
+    "driftingly/rector-laravel": "^2.1",
     "fakerphp/faker": "^1.23",
     "filament/upgrade": "^4.0",
     "larastan/larastan": "^3.0",
@@ -28,7 +29,8 @@
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^8.6",
     "pestphp/pest": "^3.0",
-    "pestphp/pest-plugin-livewire": "^3.0"
+    "pestphp/pest-plugin-livewire": "^3.0",
+    "rector/rector": "^2.3"
   },
   "autoload": {
     "psr-4": {
@@ -58,7 +60,17 @@
       "@php artisan key:generate --ansi",
       "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
       "@php artisan migrate --graceful --ansi"
-    ]
+    ],
+    "check": [
+      "@pint",
+      "@rector",
+      "@phpstan",
+      "@test"
+    ],
+    "pint": "./vendor/bin/sail bin pint",
+    "rector": "./vendor/bin/sail bin rector",
+    "phpstan": "./vendor/bin/sail bin phpstan analyse",
+    "test": "./vendor/bin/sail test"
   },
   "extra": {
     "laravel": {
