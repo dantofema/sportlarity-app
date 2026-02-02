@@ -2,20 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\FeedbackResource\Pages;
+use Filament\Schemas\Schema;
+use App\Filament\Resources\FeedbackResource\Pages\CreateFeedback;
+use App\Filament\Resources\FeedbackResource\Pages\EditFeedback;
+use App\Filament\Resources\FeedbackResource\Pages\ListFeedbacks;
 use App\Models\Feedback;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class FeedbackResource extends Resource
 {
@@ -25,12 +28,12 @@ class FeedbackResource extends Resource
 
     protected static ?string $pluralLabel = 'Feedbacks';
 
-    protected static ?string $navigationIcon = 'heroicon-o-heart';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-heart';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('title')
                     ->columnSpan(2)
                     ->required(),
@@ -73,7 +76,7 @@ class FeedbackResource extends Resource
                         fn ($file): string => sprintf(
                             'feedback-%s-%s.%s',
                             now()->format('Y-m-d-His'),
-                            \Illuminate\Support\Str::random(8),
+                            Str::random(8),
                             $file->getClientOriginalExtension()
                         )
                     ),
@@ -117,7 +120,7 @@ class FeedbackResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make()
                     ->hidden(fn () => auth()->user()->hasRole('wellness')),
                 DeleteAction::make()
@@ -128,9 +131,9 @@ class FeedbackResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFeedbacks::route('/'),
-            'create' => Pages\CreateFeedback::route('/create'),
-            'edit' => Pages\EditFeedback::route('/{record}/edit'),
+            'index' => ListFeedbacks::route('/'),
+            'create' => CreateFeedback::route('/create'),
+            'edit' => EditFeedback::route('/{record}/edit'),
         ];
     }
 }

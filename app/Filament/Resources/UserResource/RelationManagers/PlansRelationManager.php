@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
+use Filament\Schemas\Schema;
 use App\Filament\Resources\PlanResource;
-use Filament\Forms\Form;
+use Filament\Actions\ViewAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -17,10 +18,10 @@ class PlansRelationManager extends RelationManager
         return false;
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema(PlanResource::getForm(self::getOwnerRecord()->id));
+        return $schema
+            ->components(PlanResource::getForm(self::getOwnerRecord()->id));
     }
 
     public function table(Table $table): Table
@@ -29,14 +30,14 @@ class PlansRelationManager extends RelationManager
             ->defaultSort('created_at', 'desc')
             ->recordTitleAttribute('title')
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->searchable()
                     ->sortable()
                     ->date('d-m-Y'),
-                Tables\Columns\TextColumn::make('author.name')
+                TextColumn::make('author.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
 
@@ -45,26 +46,26 @@ class PlansRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-//                Tables\Actions\CreateAction::make()
-//                    ->mutateFormDataUsing(function (array $data): array {
-//                        $data['author_id'] = auth()->id();
-//
-//                        return $data;
-//                    }),
+                //                Tables\Actions\CreateAction::make()
+                //                    ->mutateFormDataUsing(function (array $data): array {
+                //                        $data['author_id'] = auth()->id();
+                //
+                //                        return $data;
+                //                    }),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-//                Tables\Actions\EditAction::make()
-//                    ->mutateRecordDataUsing(function (array $data): array {
-//                        $data['author_id'] = auth()->id();
-//                        return $data;
-//                    }),
-//                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                //                Tables\Actions\EditAction::make()
+                //                    ->mutateRecordDataUsing(function (array $data): array {
+                //                        $data['author_id'] = auth()->id();
+                //                        return $data;
+                //                    }),
+                //                Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-//                Tables\Actions\BulkActionGroup::make([
-//                    Tables\Actions\DeleteBulkAction::make(),
-//                ]),
+            ->toolbarActions([
+                //                Tables\Actions\BulkActionGroup::make([
+                //                    Tables\Actions\DeleteBulkAction::make(),
+                //                ]),
             ]);
     }
 }

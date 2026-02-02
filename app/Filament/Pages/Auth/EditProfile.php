@@ -2,17 +2,16 @@
 
 namespace App\Filament\Pages\Auth;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Pages\Auth\EditProfile as BaseEditProfile;
 
-class EditProfile extends BaseEditProfile
+class EditProfile extends \Filament\Auth\Pages\EditProfile
 {
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
 
                 $this->getNameFormComponent(),
                 $this->getEmailFormComponent(),
@@ -20,7 +19,7 @@ class EditProfile extends BaseEditProfile
                 $this->getPasswordConfirmationFormComponent(),
                 TextInput::make('height')
                     ->maxLength(255)
-                    ->hidden(fn(Get $get) => $get('rol') != '4')
+                    ->hidden(fn (Get $get) => $get('rol') != '4'),
             ]);
     }
 }

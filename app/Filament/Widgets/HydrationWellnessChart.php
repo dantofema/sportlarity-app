@@ -9,10 +9,10 @@ use Flowframe\Trend\TrendValue;
 
 class HydrationWellnessChart extends ChartWidget
 {
-    protected static ?string $heading = 'Hidratación';
-    protected static ?string $description = 'Última semana. Desde 1 (mal) hasta 4 (excelente)';
-    protected static ?string $maxHeight = '200px';
-    protected static string $color = 'info';
+    protected ?string $heading = 'Hidratación';
+    protected ?string $description = 'Última semana. Desde 1 (mal) hasta 4 (excelente)';
+    protected ?string $maxHeight = '200px';
+    protected string $color = 'info';
     protected static ?int $sort = 100;
 
     public static function canView(): bool

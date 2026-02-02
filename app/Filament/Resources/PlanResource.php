@@ -2,25 +2,24 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Group;
 use App\Filament\Resources\PlanResource\Pages\CreatePlan;
 use App\Filament\Resources\PlanResource\Pages\EditPlan;
 use App\Filament\Resources\PlanResource\Pages\ListPlans;
 use App\Filament\Resources\PlanResource\ViewPlan;
 use App\Models\Plan;
 use Exception;
-use Filament\Forms\Components\Group;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,16 +29,16 @@ class PlanResource extends Resource
 {
     protected static ?string $model = Plan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                \Filament\Infolists\Components\Section::make('Note')
+        return $schema
+            ->components([
+                Section::make('Note')
                     ->columns()
                     ->schema([
-                        \Filament\Infolists\Components\Group::make()
+                        Group::make()
                             ->columnSpanFull()
                             ->schema([
                                 TextEntry::make('title')
@@ -55,9 +54,9 @@ class PlanResource extends Resource
                             ]),
 
                     ]),
-                \Filament\Infolists\Components\Section::make('Información adicional')
+                Section::make('Información adicional')
                     ->schema([
-                        \Filament\Infolists\Components\Group::make()
+                        Group::make()
                             ->columns(4)
                             ->schema([
                                 TextEntry::make('author.name')
@@ -77,19 +76,19 @@ class PlanResource extends Resource
                                                 ['record' => $record->user_id])
                                             : null;
                                     })
-                                    ->color(fn($record) => 'info')
+                                    ->color(fn ($record) => 'info')
                                     ->badge(),
                                 TextEntry::make('document.title')
-                                    ->color(fn($record) => 'info')
-                                    ->url(fn(Plan $record
+                                    ->color(fn ($record) => 'info')
+                                    ->url(fn (Plan $record
                                     ): string => Storage::disk('public')->url($record->document?->file),
                                         true),
                                 TextEntry::make('created_at')
                                     ->date('d-m-Y H:i:s'),
                                 TextEntry::make('updated_at')
-                                    ->date('d-m-Y H:i:s')
-                            ])
-                    ])
+                                    ->date('d-m-Y H:i:s'),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -121,53 +120,52 @@ class PlanResource extends Resource
                     ->date('d-m-Y')
                     ->sortable()
                     ->toggleable(),
-//                TextColumn::make('updated_at')
-//                    ->date('d-m-Y')
-//                    ->sortable()
-//                    ->toggleable(isToggledHiddenByDefault: true),
+                //                TextColumn::make('updated_at')
+                //                    ->date('d-m-Y')
+                //                    ->sortable()
+                //                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-//                SelectFilter::make('user')
-//                    ->label('User wellness')
-//                    ->relationship(
-//                        'user',
-//                        'name',
-//                        fn(Builder $query) => $query->role('wellness')
-//                    ),
-//                SelectFilter::make('professional')
-//                    ->label('Author professional')
-//                    ->relationship(
-//                        'author',
-//                        'name',
-//                        fn(Builder $query) => $query->role('professional')
-//                    ),
-//                SelectFilter::make('coach')
-//                    ->label('Author coach')
-//                    ->relationship(
-//                        'author',
-//                        'name',
-//                        fn(Builder $query) => $query->role('coach')
-//                    ),
-//                TableFilterDate::make()
+                //                SelectFilter::make('user')
+                //                    ->label('User wellness')
+                //                    ->relationship(
+                //                        'user',
+                //                        'name',
+                //                        fn(Builder $query) => $query->role('wellness')
+                //                    ),
+                //                SelectFilter::make('professional')
+                //                    ->label('Author professional')
+                //                    ->relationship(
+                //                        'author',
+                //                        'name',
+                //                        fn(Builder $query) => $query->role('professional')
+                //                    ),
+                //                SelectFilter::make('coach')
+                //                    ->label('Author coach')
+                //                    ->relationship(
+                //                        'author',
+                //                        'name',
+                //                        fn(Builder $query) => $query->role('coach')
+                //                    ),
+                //                TableFilterDate::make()
             ])
-            ->actions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-//                BulkActionGroup::make([
-//                    DeleteBulkAction::make(),
-//                ]),
+            ->toolbarActions([
+                //                BulkActionGroup::make([
+                //                    DeleteBulkAction::make(),
+                //                ]),
             ]);
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema(self::getForm());
+        return $schema
+            ->components(self::getForm());
     }
-
 
     public static function getForm(?int $userId = null): array
     {
@@ -198,7 +196,7 @@ class PlanResource extends Resource
                                 ->relationship(
                                     'user',
                                     'name',
-                                    fn(Builder $query
+                                    fn (Builder $query
                                     ) => $query->role('wellness')
                                 )
                                 ->required(),
@@ -209,7 +207,7 @@ class PlanResource extends Resource
                                     'title'
                                 ),
                             Select::make('author_id')
-                                ->hidden(fn(string $operation
+                                ->hidden(fn (string $operation
                                 ) => $operation == 'create')
                                 ->relationship(
                                     'author',
@@ -217,8 +215,8 @@ class PlanResource extends Resource
                                 )
                                 ->disabled(),
 
-                        ])
-                ])
+                        ]),
+                ]),
         ];
     }
 

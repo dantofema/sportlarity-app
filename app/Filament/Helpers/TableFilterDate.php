@@ -15,7 +15,7 @@ class TableFilterDate
     {
         return Filter::make($column)
             ->label($label)
-            ->form([
+            ->schema([
                 DatePicker::make('created_from'),
                 DatePicker::make('created_until'),
             ])

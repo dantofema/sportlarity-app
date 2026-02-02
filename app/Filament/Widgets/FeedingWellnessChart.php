@@ -9,10 +9,10 @@ use Flowframe\Trend\TrendValue;
 
 class FeedingWellnessChart extends ChartWidget
 {
-    protected static ?string $heading = 'Alimentación';
-    protected static ?string $description = 'Última semana. Desde 1 (mal) hasta 4 (excelente)';
-    protected static ?string $maxHeight = '200px';
-    protected static string $color = 'warning';
+    protected ?string $heading = 'Alimentación';
+    protected ?string $description = 'Última semana. Desde 1 (mal) hasta 4 (excelente)';
+    protected ?string $maxHeight = '200px';
+    protected string $color = 'warning';
     protected static ?int $sort = 120;
 
     public static function canView(): bool

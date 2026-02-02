@@ -2,30 +2,39 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DocumentResource\Pages;
+use Filament\Schemas\Schema;
+use App\Filament\Resources\DocumentResource\Pages\CreateDocument;
+use App\Filament\Resources\DocumentResource\Pages\EditDocument;
+use App\Filament\Resources\DocumentResource\Pages\ListDocuments;
+use App\Filament\Resources\DocumentResource\Pages\ViewDocument;
 use App\Models\Document;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class DocumentResource extends Resource
 {
     protected static ?string $model = Document::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-duplicate';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
+        return $schema
+            ->components([
+                TextInput::make('title')
                     ->columnSpanFull()
                     ->required()
                     ->maxLength(191),
-                Forms\Components\FileUpload::make('image')
+                FileUpload::make('image')
                     ->disk('private_documents')
                     ->image()
                     ->maxSize(2048)
@@ -40,11 +49,11 @@ class DocumentResource extends Resource
                         fn ($file): string => sprintf(
                             'img-%s-%s.%s',
                             now()->format('Y-m-d-His'),
-                            \Illuminate\Support\Str::random(8),
+                            Str::random(8),
                             $file->getClientOriginalExtension()
                         )
                     ),
-                Forms\Components\FileUpload::make('file')
+                FileUpload::make('file')
                     ->disk('private_documents')
                     ->maxSize(5120)
                     ->acceptedFileTypes([
@@ -79,12 +88,12 @@ class DocumentResource extends Resource
                         fn ($file): string => sprintf(
                             'doc-%s-%s.%s',
                             now()->format('Y-m-d-His'),
-                            \Illuminate\Support\Str::random(8),
+                            Str::random(8),
                             $file->getClientOriginalExtension()
                         )
                     )
                     ->required(),
-                Forms\Components\Textarea::make('description')
+                Textarea::make('description')
                     ->maxLength(65535)
                     ->columnSpanFull(),
             ]);
@@ -95,26 +104,26 @@ class DocumentResource extends Resource
         return $table
             ->defaultSort('created_at', 'desc')
             ->columns([
-                Tables\Columns\IconColumn::make('file')
+                IconColumn::make('file')
                     ->label('')
                     ->icon('heroicon-o-arrow-down-on-square')
                     ->url(fn (Document $document) => route('secure.document', $document->id)),
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->searchable(),
                 ImageColumn::make('image')
                     ->label('')
                     ->circular()
                     ->defaultImageUrl(url('/images/placeholder.png'))
                     ->url(fn (Document $document) => $document->image ? route('secure.document.image', $document->id) : null),
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->label('Created by')
                     ->numeric()
                     ->sortable(),
 
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
             ]);
     }
 
@@ -128,10 +137,10 @@ class DocumentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDocuments::route('/'),
-            'create' => Pages\CreateDocument::route('/create'),
-            'view' => Pages\ViewDocument::route('/{record}'),
-            'edit' => Pages\EditDocument::route('/{record}/edit'),
+            'index' => ListDocuments::route('/'),
+            'create' => CreateDocument::route('/create'),
+            'view' => ViewDocument::route('/{record}'),
+            'edit' => EditDocument::route('/{record}/edit'),
         ];
     }
 }

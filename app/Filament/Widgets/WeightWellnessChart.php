@@ -9,9 +9,9 @@ use Flowframe\Trend\TrendValue;
 
 class WeightWellnessChart extends ChartWidget
 {
-    protected static ?string $heading = 'Peso';
-    protected static ?string $description = 'Última semana';
-    protected static ?string $maxHeight = '200px';
+    protected ?string $heading = 'Peso';
+    protected ?string $description = 'Última semana';
+    protected ?string $maxHeight = '200px';
     protected static ?int $sort = 20;
     protected int|string|array $columnSpan = 'full';
 

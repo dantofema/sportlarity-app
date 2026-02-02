@@ -9,7 +9,7 @@ use Filament\Widgets\ChartWidget;
 
 class StrengthTrainingCoachChart extends ChartWidget
 {
-    protected static ?string $heading = 'Entrenamiento de fuerza en los últimos 30 días';
+    protected ?string $heading = 'Entrenamiento de fuerza en los últimos 30 días';
     protected static ?int $sort = 100;
 
     public static function canView(): bool

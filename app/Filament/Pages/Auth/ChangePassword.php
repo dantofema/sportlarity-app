@@ -2,11 +2,11 @@
 
 namespace App\Filament\Pages\Auth;
 
+use Filament\Schemas\Schema;
 use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Hash;
@@ -16,9 +16,9 @@ class ChangePassword extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-lock-closed';
 
-    protected static string $view = 'filament.pages.auth.change-password';
+    protected string $view = 'filament.pages.auth.change-password';
 
     protected static bool $shouldRegisterNavigation = false;
 
@@ -36,10 +36,10 @@ class ChangePassword extends Page implements HasForms
         $this->form->fill();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('current_password')
                     ->label('Contraseña Actual')
                     ->password()

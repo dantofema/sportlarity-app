@@ -9,7 +9,7 @@ use Filament\Widgets\ChartWidget;
 
 class ActivityCoachChart extends ChartWidget
 {
-    protected static ?string $heading = 'Actividad en los últimos 30 días';
+    protected ?string $heading = 'Actividad en los últimos 30 días';
     protected static ?int $sort = 100;
 
     public static function canView(): bool
