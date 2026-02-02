@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
+use Filament\Schemas\Components\Tabs\Tab;
 use App\Filament\Resources\UserResource;
 use App\Models\User;
-use Filament\Actions;
-use Filament\Resources\Components\Tab;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Spatie\Permission\Models\Role;
 
@@ -16,7 +16,7 @@ class ListUsers extends ListRecords
     public function getTabs(): array
     {
         $tabs = [
-            'all' => Tab::make('All')->badge(User::where('email', '!=', 'admin@admin.com')->count())
+            'all' => Tab::make('All')->badge(User::where('email', '!=', 'admin@admin.com')->count()),
         ];
 
         $roles = Role::orderBy('name')
@@ -31,7 +31,7 @@ class ListUsers extends ListRecords
             $tabs[$slug] = Tab::make($name)
                 ->badge($role->users_count)
                 ->modifyQueryUsing(function ($query) use ($role) {
-                    return $query->whereHas('roles', fn($q) => $q->where('name', $role->name));
+                    return $query->whereHas('roles', fn ($q) => $q->where('name', $role->name));
                 });
         }
 
@@ -41,7 +41,7 @@ class ListUsers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

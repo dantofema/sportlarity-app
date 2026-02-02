@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use App\Enums\ActivityType;
 use App\Enums\AssessmentType;
 use App\Enums\FeedingType;
@@ -12,16 +14,22 @@ use App\Enums\SleepQualityType;
 use App\Enums\SleepTimeType;
 use App\Enums\StrengthTrainingType;
 use App\Enums\StressType;
-use App\Filament\Resources\DiaryResource\Pages;
+use App\Filament\Resources\DiaryResource\Pages\CreateDiary;
+use App\Filament\Resources\DiaryResource\Pages\EditDiary;
+use App\Filament\Resources\DiaryResource\Pages\ListDiaries;
+use App\Filament\Resources\DiaryResource\Pages\ViewDiary;
 use App\Models\Diary;
 use Exception;
-use Filament\Forms;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
-use Filament\Forms\Form;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -31,7 +39,7 @@ class DiaryResource extends Resource
 {
     protected static ?string $model = Diary::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-plus';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-plus';
 
     /**
      * @throws Exception
@@ -47,149 +55,136 @@ class DiaryResource extends Resource
                 return $query->orderBy('date', 'desc');
             })
             ->columns([
-                Tables\Columns\TextColumn::make('date')
+                TextColumn::make('date')
                     ->toggleable()
                     ->dateTime('d-m-Y'),
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->numeric()
                     ->searchable()
                     ->toggleable(),
-                Tables\Columns\TextColumn::make('assessment.value')
-                    ->formatStateUsing(fn(string $state
-                    ): string => AssessmentType::description
-                    (AssessmentType::from($state)))
+                TextColumn::make('assessment.value')
+                    ->formatStateUsing(fn (string $state
+                    ): string => AssessmentType::description(AssessmentType::from($state)))
                     ->badge()
-                    ->color(fn(string $state
+                    ->color(fn (string $state
                     ): string => AssessmentType::color(AssessmentType::from($state)))
                     ->toggleable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('activity')
-                    ->formatStateUsing(fn(string $state
-                    ): string => ActivityType::description
-                    (ActivityType::from($state)))
+                TextColumn::make('activity')
+                    ->formatStateUsing(fn (string $state
+                    ): string => ActivityType::description(ActivityType::from($state)))
                     ->badge()
-                    ->color(fn(string $state
+                    ->color(fn (string $state
                     ): string => ActivityType::color(ActivityType::from($state)))
                     ->toggleable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('stress')
-                    ->formatStateUsing(fn(string $state
-                    ): string => StressType::description
-                    (StressType::from($state)))
+                TextColumn::make('stress')
+                    ->formatStateUsing(fn (string $state
+                    ): string => StressType::description(StressType::from($state)))
                     ->badge()
                     ->toggleable()
-                    ->color(fn(string $state
+                    ->color(fn (string $state
                     ): string => StressType::color(StressType::from($state)))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('sleep_time')
-                    ->formatStateUsing(fn(string $state
-                    ): string => SleepTimeType::description
-                    (SleepTimeType::from($state)))
+                TextColumn::make('sleep_time')
+                    ->formatStateUsing(fn (string $state
+                    ): string => SleepTimeType::description(SleepTimeType::from($state)))
                     ->badge()
-                    ->color(fn(string $state
+                    ->color(fn (string $state
                     ): string => SleepTimeType::color(SleepTimeType::from($state)))
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('strength_training')
-                    ->formatStateUsing(fn(string $state
-                    ): string => StrengthTrainingType::description
-                    (StrengthTrainingType::from($state)))
+                TextColumn::make('strength_training')
+                    ->formatStateUsing(fn (string $state
+                    ): string => StrengthTrainingType::description(StrengthTrainingType::from($state)))
                     ->badge()
-                    ->color(fn(string $state
+                    ->color(fn (string $state
                     ): string => StrengthTrainingType::color(StrengthTrainingType::from($state)))
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('sleep_quality')
-                    ->formatStateUsing(fn(string $state
-                    ): string => SleepQualityType::description
-                    (SleepQualityType::from($state)))
+                TextColumn::make('sleep_quality')
+                    ->formatStateUsing(fn (string $state
+                    ): string => SleepQualityType::description(SleepQualityType::from($state)))
                     ->badge()
-                    ->color(fn(string $state
+                    ->color(fn (string $state
                     ): string => SleepQualityType::color(SleepQualityType::from($state)))
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('feeding')
-                    ->formatStateUsing(fn(string $state
-                    ): string => FeedingType::description
-                    (FeedingType::from($state)))
+                TextColumn::make('feeding')
+                    ->formatStateUsing(fn (string $state
+                    ): string => FeedingType::description(FeedingType::from($state)))
                     ->badge()
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->color(fn(string $state
+                    ->color(fn (string $state
                     ): string => FeedingType::color(FeedingType::from($state)))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('preparation')
-                    ->formatStateUsing(fn(string $state
-                    ): string => PreparationType::description
-                    (PreparationType::from($state)))
+                TextColumn::make('preparation')
+                    ->formatStateUsing(fn (string $state
+                    ): string => PreparationType::description(PreparationType::from($state)))
                     ->badge()
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->color(fn(string $state
+                    ->color(fn (string $state
                     ): string => PreparationType::color(PreparationType::from($state)))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('hydration')
-                    ->formatStateUsing(fn(string $state
-                    ): string => HydrationType::description
-                    (HydrationType::from($state)))
+                TextColumn::make('hydration')
+                    ->formatStateUsing(fn (string $state
+                    ): string => HydrationType::description(HydrationType::from($state)))
                     ->badge()
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->color(fn(string $state
+                    ->color(fn (string $state
                     ): string => HydrationType::color(HydrationType::from($state)))
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('intensity')
-                    ->formatStateUsing(fn(string $state
-                    ): string => IntensityType::description
-                    (IntensityType::from($state)))
+                TextColumn::make('intensity')
+                    ->formatStateUsing(fn (string $state
+                    ): string => IntensityType::description(IntensityType::from($state)))
                     ->badge()
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->color(fn(string $state
+                    ->color(fn (string $state
                     ): string => IntensityType::color(IntensityType::from($state)))
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('weight')
+                TextColumn::make('weight')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('screen_hours')
+                TextColumn::make('screen_hours')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('user')
                     ->relationship('user', 'name')
-                    ->searchable()
+                    ->searchable(),
             ])
-            ->actions([
+            ->recordActions([
                 ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make()
-                        ->hidden(!auth()->user()->hasRole('wellness')),
-                    self::assessmentAction()
+                    ViewAction::make(),
+                    EditAction::make()
+                        ->hidden(! auth()->user()->hasRole('wellness')),
+                    self::assessmentAction(),
                 ]),
             ])
-            ->bulkActions([
-                ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make(),
             ]);
     }
 
-    /**
-     * @return Action
-     */
     public static function assessmentAction(): Action
     {
         return Action::make('assessment')
             ->hidden(auth()->user()->hasRole('wellness'))
             ->icon('heroicon-o-star')
-            ->form([
-                Forms\Components\Section::make('Calificar')
+            ->schema([
+                Section::make('Calificar')
                     ->schema([
                         Radio::make('assessment')
                             ->label('')
@@ -207,19 +202,18 @@ class DiaryResource extends Resource
             });
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema(self::getForm());
+        return $schema
+            ->components(self::getForm());
     }
-
 
     public static function getForm(): array
     {
         return [
-            Forms\Components\Section::make('Fecha')
+            Section::make('Fecha')
                 ->schema([
-                    Forms\Components\DatePicker::make('date')
+                    DatePicker::make('date')
                         ->minDate(now()->subMonth())
                         ->maxDate(now())
                         ->weekStartsOnMonday()
@@ -228,7 +222,7 @@ class DiaryResource extends Resource
                         ->required(),
                 ]),
 
-            Forms\Components\Section::make('Como dormiste?')
+            Section::make('Como dormiste?')
                 ->schema([
                     Radio::make('sleep_quality')
                         ->label('')
@@ -237,7 +231,7 @@ class DiaryResource extends Resource
                         ->default(1),
                 ]),
 
-            Forms\Components\Section::make('Nivel de estrés?')
+            Section::make('Nivel de estrés?')
                 ->schema([
                     Radio::make('stress')
                         ->label('')
@@ -246,7 +240,7 @@ class DiaryResource extends Resource
                         ->default(1),
                 ]),
 
-            Forms\Components\Section::make('Cuántas horas dormiste?')
+            Section::make('Cuántas horas dormiste?')
                 ->schema([
                     Radio::make('sleep_time')
                         ->label('')
@@ -254,7 +248,7 @@ class DiaryResource extends Resource
                         ->required()
                         ->default(1),
                 ]),
-            Forms\Components\Section::make('Cuan preparado te sentiste para rendir?')
+            Section::make('Cuan preparado te sentiste para rendir?')
                 ->schema([
                     Radio::make('preparation')
                         ->label('')
@@ -262,7 +256,7 @@ class DiaryResource extends Resource
                         ->required()
                         ->default(1),
                 ]),
-            Forms\Components\Section::make('Qué tan intenso fue el entrenamiento de fuerza?')
+            Section::make('Qué tan intenso fue el entrenamiento de fuerza?')
                 ->schema([
                     Radio::make('strength_training')
                         ->label('')
@@ -270,7 +264,7 @@ class DiaryResource extends Resource
                         ->required()
                         ->default(1),
                 ]),
-            Forms\Components\Section::make('Que actividad realizaste?')
+            Section::make('Que actividad realizaste?')
                 ->schema([
                     Radio::make('activity')
                         ->label('')
@@ -278,7 +272,7 @@ class DiaryResource extends Resource
                         ->required()
                         ->default(1),
                 ]),
-            Forms\Components\Section::make('Qué tan intenso fue el entrenamiento / competición?')
+            Section::make('Qué tan intenso fue el entrenamiento / competición?')
                 ->schema([
                     Radio::make('intensity')
                         ->label('')
@@ -286,7 +280,7 @@ class DiaryResource extends Resource
                         ->required()
                         ->default(1),
                 ]),
-            Forms\Components\Section::make('Cómo te alimentaste?')
+            Section::make('Cómo te alimentaste?')
                 ->schema([
                     Radio::make('feeding')
                         ->label('')
@@ -294,7 +288,7 @@ class DiaryResource extends Resource
                         ->required()
                         ->default(1),
                 ]),
-            Forms\Components\Section::make('Cómo te hidrataste?')
+            Section::make('Cómo te hidrataste?')
                 ->schema([
                     Radio::make('hydration')
                         ->label('')
@@ -302,17 +296,17 @@ class DiaryResource extends Resource
                         ->required()
                         ->default(1),
                 ]),
-            Forms\Components\Section::make('Peso')
+            Section::make('Peso')
                 ->schema([
-                    Forms\Components\TextInput::make('weight')
+                    TextInput::make('weight')
                         ->label('')
                         ->numeric()
                         ->rules(['numeric', 'between:40,199.99']),
                 ]),
 
-            Forms\Components\Section::make('Cuántas horas de pantalla (móvil o tableta) consumió ayer?')
+            Section::make('Cuántas horas de pantalla (móvil o tableta) consumió ayer?')
                 ->schema([
-                    Forms\Components\Select::make('screen_hours')
+                    Select::make('screen_hours')
                         ->label('')
                         ->options([
                             0 => '0 horas',
@@ -344,10 +338,10 @@ class DiaryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDiaries::route('/'),
-            'create' => Pages\CreateDiary::route('/create'),
-            'view' => Pages\ViewDiary::route('/{record}'),
-            'edit' => Pages\EditDiary::route('/{record}/edit'),
+            'index' => ListDiaries::route('/'),
+            'create' => CreateDiary::route('/create'),
+            'view' => ViewDiary::route('/{record}'),
+            'edit' => EditDiary::route('/{record}/edit'),
         ];
     }
 }

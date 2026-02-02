@@ -2,26 +2,28 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Utilities\Get;
 use App\Filament\Helpers\TableFilterDate;
-use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\Pages\CreateUser;
+use App\Filament\Resources\UserResource\Pages\EditUser;
+use App\Filament\Resources\UserResource\Pages\ListUsers;
+use App\Filament\Resources\UserResource\Pages\ViewUser;
 use App\Models\User;
 use Exception;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\RestoreAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\ImageEntry;
-use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\RestoreAction;
-use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -30,24 +32,25 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema(self::getForm());
+        return $schema
+            ->components(self::getForm());
     }
 
     public static function getForm(): array
     {
         return [
-            \Filament\Forms\Components\Section::make('Información personal')
+            Section::make('Información personal')
                 ->columns(3)
                 ->schema([
                     FileUpload::make('image')
@@ -71,11 +74,11 @@ class UserResource extends Resource
                             fn ($file): string => sprintf(
                                 '%s-%s.%s',
                                 now()->format('Y-m-d-His'),
-                                \Illuminate\Support\Str::random(8),
+                                Str::random(8),
                                 $file->getClientOriginalExtension()
                             )
                         ),
-                    \Filament\Forms\Components\Group::make()
+                    Group::make()
                         ->columnSpan(2)
                         ->columns()
                         ->schema([
@@ -105,7 +108,7 @@ class UserResource extends Resource
                         ]),
 
                 ]),
-            \Filament\Forms\Components\Section::make('Wellness user')
+            Section::make('Wellness user')
                 ->columns(3)
                 ->hidden(function (
                     Get $get,
@@ -272,13 +275,13 @@ class UserResource extends Resource
                     ): Builder => $query->where('phone', '!=', null)),
                 TableFilterDate::make(),
             ])
-            ->actions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
                 RestoreAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 //                BulkActionGroup::make([
                 //                    DeleteBulkAction::make(),
                 //                    ForceDeleteBulkAction::make(),
@@ -287,10 +290,10 @@ class UserResource extends Resource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
+        return $schema
+            ->components([
                 Section::make('Información personal')
                     ->columns(3)
                     ->schema([
@@ -338,10 +341,10 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
-            'view' => Pages\ViewUser::route('/{record}'),
+            'index' => ListUsers::route('/'),
+            'create' => CreateUser::route('/create'),
+            'edit' => EditUser::route('/{record}/edit'),
+            'view' => ViewUser::route('/{record}'),
         ];
     }
 

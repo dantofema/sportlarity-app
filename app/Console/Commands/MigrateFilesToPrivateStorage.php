@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use App\Models\Document;
 use App\Models\Feedback;
 use App\Models\User;
@@ -168,7 +169,7 @@ class MigrateFilesToPrivateStorage extends Command
 
                     $this->line("  ✅ Migrated: {$user->name}");
                     $stats['migrated']++;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->error("  ❌ Error migrating {$user->name}: {$e->getMessage()}");
                     $stats['errors']++;
                 }
@@ -221,7 +222,7 @@ class MigrateFilesToPrivateStorage extends Command
 
                     $this->line("  ✅ Migrated document ID: {$document->id}");
                     $stats['migrated']++;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->error("  ❌ Error migrating document {$document->id}: {$e->getMessage()}");
                     $stats['errors']++;
                 }
@@ -274,7 +275,7 @@ class MigrateFilesToPrivateStorage extends Command
 
                     $this->line("  ✅ Migrated document image ID: {$document->id}");
                     $stats['migrated']++;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->error("  ❌ Error migrating document image {$document->id}: {$e->getMessage()}");
                     $stats['errors']++;
                 }
@@ -327,7 +328,7 @@ class MigrateFilesToPrivateStorage extends Command
 
                     $this->line("  ✅ Migrated feedback ID: {$feedback->id}");
                     $stats['migrated']++;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->error("  ❌ Error migrating feedback {$feedback->id}: {$e->getMessage()}");
                     $stats['errors']++;
                 }

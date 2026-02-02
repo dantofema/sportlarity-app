@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
+use Filament\Auth\Notifications\VerifyEmail;
 use App\Filament\Resources\UserResource;
 use App\Models\User;
 use Filament\Facades\Filament;
-use Filament\Notifications\Auth\VerifyEmail;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Hash;
 

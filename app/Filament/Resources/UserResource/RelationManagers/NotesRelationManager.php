@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
+use Filament\Schemas\Schema;
 use App\Filament\Resources\NoteResource;
-use Filament\Forms\Form;
+use Filament\Actions\ViewAction;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -18,10 +18,10 @@ class NotesRelationManager extends RelationManager
         return false;
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema(NoteResource::getForm(self::getOwnerRecord()->id));
+        return $schema
+            ->components(NoteResource::getForm(self::getOwnerRecord()->id));
     }
 
     public function table(Table $table): Table
@@ -38,9 +38,9 @@ class NotesRelationManager extends RelationManager
             ])
             ->filters([])
             ->headerActions([])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                ViewAction::make(),
             ])
-            ->bulkActions([]);
+            ->toolbarActions([]);
     }
 }

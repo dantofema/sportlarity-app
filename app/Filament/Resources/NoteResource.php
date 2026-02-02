@@ -2,23 +2,22 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Group;
 use App\Filament\Resources\NoteResource\Pages\CreateNote;
 use App\Filament\Resources\NoteResource\Pages\EditNote;
 use App\Filament\Resources\NoteResource\Pages\ListNotes;
 use App\Filament\Resources\NoteResource\Pages\ViewNote;
 use App\Models\Note;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Infolists\Components\Group;
-use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,8 +26,7 @@ class NoteResource extends Resource
 {
     protected static ?string $model = Note::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
-
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-pencil-square';
 
     public static function table(Table $table): Table
     {
@@ -37,9 +35,10 @@ class NoteResource extends Resource
             ->modifyQueryUsing(function (Builder $query) {
                 if (auth()->user()->hasRole('wellness')) {
                     return $query->whereHas('users',
-                        fn(Builder $query) => $query
+                        fn (Builder $query) => $query
                             ->where('users.id', auth()->id()));
                 }
+
                 return $query;
             })
             ->columns([
@@ -56,27 +55,27 @@ class NoteResource extends Resource
                     ->toggleable(),
             ])
             ->filters([])
-            ->actions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
             ])
-            ->bulkActions([]);
+            ->toolbarActions([]);
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema(self::getForm());
+        return $schema
+            ->components(self::getForm());
     }
 
     public static function getForm($userId = null): array
     {
         return [
-            \Filament\Forms\Components\Section::make('Note')
+            Section::make('Note')
                 ->columns()
                 ->schema([
-                    \Filament\Forms\Components\Group::make()
+                    Group::make()
                         ->columnSpan(2)
                         ->columns()
                         ->schema([
@@ -86,14 +85,14 @@ class NoteResource extends Resource
                                 ->required()
                                 ->columnSpanFull()
                                 ->toolbarButtons([
-                                    'link'
+                                    'link',
                                 ]),
                             Select::make('goal_id')
                                 ->label('Goal')
                                 ->relationship(
                                     'goal',
                                     'name',
-                                    modifyQueryUsing: fn(Builder $query
+                                    modifyQueryUsing: fn (Builder $query
                                     ) => $query->orderBy('id', 'asc'),
                                 ),
                             Select::make('users')
@@ -103,22 +102,22 @@ class NoteResource extends Resource
                                 ->relationship(
                                     'users',
                                     'name',
-                                    fn(Builder $query
+                                    fn (Builder $query
                                     ) => $query->role('wellness')
                                 )
                                 ->multiple()
                                 ->required(),
                             Select::make('author_id')
                                 ->label('Author')
-                                ->hidden(fn(string $operation
+                                ->hidden(fn (string $operation
                                 ) => $operation == 'create')
                                 ->relationship(
                                     'author',
                                     'name'
                                 )
-                                ->disabled()
-                        ])
-                ])
+                                ->disabled(),
+                        ]),
+                ]),
         ];
     }
 
@@ -139,10 +138,10 @@ class NoteResource extends Resource
         ];
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
+        return $schema
+            ->components([
                 Section::make('Note')
                     ->columns()
                     ->schema([
@@ -166,19 +165,19 @@ class NoteResource extends Resource
                                 TextEntry::make('goal.name')
                                     ->label('Goal')
                                     ->columnSpan(1)
-                                    ->color(fn($record) => 'info')
+                                    ->color(fn ($record) => 'info')
                                     ->badge(),
                                 TextEntry::make('users.name')
                                     ->label('User Wellness')
                                     ->columnSpan(1)
-                                    ->color(fn($record) => 'info')
+                                    ->color(fn ($record) => 'info')
                                     ->badge(),
                             ]),
                         TextEntry::make('content')
                             ->columnSpanFull()
                             ->label('Contenido')
-                            ->html()
-                    ])
+                            ->html(),
+                    ]),
             ]);
     }
 }

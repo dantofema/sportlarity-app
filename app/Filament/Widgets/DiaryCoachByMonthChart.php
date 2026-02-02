@@ -9,7 +9,7 @@ use Flowframe\Trend\TrendValue;
 
 class DiaryCoachByMonthChart extends ChartWidget
 {
-    protected static ?string $heading = 'Diarios creados por mes en el último año';
+    protected ?string $heading = 'Diarios creados por mes en el último año';
     protected static ?int $sort = 250;
 
     public static function canView(): bool

@@ -10,9 +10,9 @@ use Flowframe\Trend\TrendValue;
 class DiaryCoachByDayChart extends ChartWidget
 {
 
-    protected static ?string $heading = 'Diarios creados por día en los últimos 7 días';
+    protected ?string $heading = 'Diarios creados por día en los últimos 7 días';
     protected static ?int $sort = 200;
-    protected static string $color = 'info';
+    protected string $color = 'info';
 
     public static function canView(): bool
     {
