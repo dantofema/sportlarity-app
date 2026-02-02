@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
 use App\Filament\Resources\FeedbackResource\Pages\CreateFeedback;
 use App\Filament\Resources\FeedbackResource\Pages\EditFeedback;
 use App\Filament\Resources\FeedbackResource\Pages\ListFeedbacks;
@@ -28,7 +29,7 @@ class FeedbackResource extends Resource
 
     protected static ?string $pluralLabel = 'Feedbacks';
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-heart';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-heart';
 
     public static function form(Schema $schema): Schema
     {
@@ -92,7 +93,7 @@ class FeedbackResource extends Resource
                     return $query->whereUserId(auth()->user()->id);
                 }
 
-                return $query->orderBy('created_at', 'desc');
+                return $query->latest();
             })
             ->recordUrl(null)
             ->defaultSort('created_at', 'desc')
@@ -100,7 +101,7 @@ class FeedbackResource extends Resource
                 IconColumn::make('file')
                     ->label('')
                     ->icon('heroicon-o-arrow-down-on-square')
-                    ->url(fn (Feedback $feedback) => route('secure.feedback', $feedback->id)),
+                    ->url(fn (Feedback $feedback): string => route('secure.feedback', $feedback->id)),
 
                 TextColumn::make('title')
                     ->searchable()

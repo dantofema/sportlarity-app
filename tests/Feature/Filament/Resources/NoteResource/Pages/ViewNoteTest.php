@@ -7,7 +7,7 @@ use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
     $user = User::factory()->create();
@@ -17,7 +17,7 @@ beforeEach(function () {
     $this->factory = Note::factory();
 });
 
-it('can render view note page', function () {
+it('can render view note page', function (): void {
     $this->get(NoteResource::getUrl('view', [
         'record' => $this->factory->create(),
     ]))->assertSuccessful();

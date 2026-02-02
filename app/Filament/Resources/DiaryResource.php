@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
 use App\Enums\ActivityType;
 use App\Enums\AssessmentType;
 use App\Enums\FeedingType;
@@ -39,7 +40,7 @@ class DiaryResource extends Resource
 {
     protected static ?string $model = Diary::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-plus';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-plus';
 
     /**
      * @throws Exception
@@ -192,7 +193,7 @@ class DiaryResource extends Resource
                             ->required(),
                     ]),
             ])
-            ->action(function (Diary $record, array $data) {
+            ->action(function (Diary $record, array $data): void {
                 $record->assessment()->updateOrCreate([
                     'diary_id' => $record->id,
                 ], [

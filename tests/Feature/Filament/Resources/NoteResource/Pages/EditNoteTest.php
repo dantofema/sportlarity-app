@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 use function Pest\Livewire\livewire;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
     $user = User::factory()->create();
@@ -21,13 +21,13 @@ beforeEach(function () {
     $this->factory = Note::factory();
 });
 
-it('can render page edit note page', function () {
+it('can render page edit note page', function (): void {
     $this->get(NoteResource::getUrl('edit', [
         'record' => $this->factory->create(),
     ]))->assertSuccessful();
 });
 
-it('can retrieve note data', function () {
+it('can retrieve note data', function (): void {
     $record = $this->factory->create();
 
     livewire($this->page, [
@@ -39,7 +39,7 @@ it('can retrieve note data', function () {
         ]);
 });
 
-it('can save', function () {
+it('can save', function (): void {
     $record = $this->factory->create();
     $newData = $this->factory->make();
 
@@ -65,7 +65,7 @@ it('can save', function () {
         ->users->count()->toBe(2);
 });
 
-it('can validate edit note inputs', function () {
+it('can validate edit note inputs', function (): void {
     $record = $this->factory->create();
 
     livewire($this->page, [
@@ -81,7 +81,7 @@ it('can validate edit note inputs', function () {
         ]);
 });
 
-it('can delete', function () {
+it('can delete', function (): void {
     $record = $this->factory->create();
 
     livewire($this->page, [

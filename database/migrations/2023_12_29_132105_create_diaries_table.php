@@ -17,7 +17,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('diaries', function (Blueprint $table) {
+        Schema::create('diaries', function (Blueprint $table): void {
             $table->id();
             $table->dateTime('date');
             $table->foreignId('user_id');

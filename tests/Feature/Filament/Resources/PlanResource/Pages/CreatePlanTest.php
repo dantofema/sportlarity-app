@@ -9,12 +9,12 @@ use Database\Seeders\ShieldSeeder;
 
 use function Pest\Livewire\livewire;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
 });
 
-it('can render create note page', function () {
+it('can render create note page', function (): void {
     $user = User::factory()
         ->create()
         ->assignRole('coach');
@@ -22,7 +22,7 @@ it('can render create note page', function () {
     $this->get(PlanResource::getUrl('create'))->assertSuccessful();
 });
 
-it('can not create note with wellness rol', function () {
+it('can not create note with wellness rol', function (): void {
 
     $user = User::factory()
         ->create()
@@ -32,7 +32,7 @@ it('can not create note with wellness rol', function () {
 
 });
 
-it('can create', function () {
+it('can create', function (): void {
     $user = User::factory()->create()->assignRole('coach');
     $this->actingAs($user);
 
@@ -55,7 +55,7 @@ it('can create', function () {
     ]);
 });
 
-it('can validate note inputs', function () {
+it('can validate note inputs', function (): void {
     $user = User::factory()->create()->assignRole('coach');
     $this->actingAs($user);
 

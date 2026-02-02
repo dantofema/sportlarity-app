@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages\Auth;
 
+use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -16,7 +17,7 @@ class ChangePassword extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-lock-closed';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-lock-closed';
 
     protected static bool $shouldRegisterNavigation = false;
 

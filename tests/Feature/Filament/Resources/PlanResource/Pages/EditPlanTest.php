@@ -10,7 +10,7 @@ use Filament\Actions\DeleteAction;
 
 use function Pest\Livewire\livewire;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
     $user = User::factory()->create();
@@ -20,13 +20,13 @@ beforeEach(function () {
     $this->factory = Plan::factory();
 });
 
-it('can render page edit plan page', function () {
+it('can render page edit plan page', function (): void {
     $this->get(PlanResource::getUrl('edit', [
         'record' => $this->factory->create(),
     ]))->assertSuccessful();
 });
 
-it('can retrieve plan data', function () {
+it('can retrieve plan data', function (): void {
     $record = $this->factory->create();
 
     livewire($this->page, [
@@ -37,7 +37,7 @@ it('can retrieve plan data', function () {
         ]);
 });
 
-it('can save', function () {
+it('can save', function (): void {
     $record = $this->factory->create();
     $newData = $this->factory->make();
 
@@ -59,7 +59,7 @@ it('can save', function () {
         ->user_id->toBe($newData->user_id);
 });
 
-it('can validate edit plan inputs', function () {
+it('can validate edit plan inputs', function (): void {
     $record = $this->factory->create();
 
     livewire($this->page, [
@@ -77,7 +77,7 @@ it('can validate edit plan inputs', function () {
         ]);
 });
 
-it('can delete', function () {
+it('can delete', function (): void {
     $record = $this->factory->create();
 
     livewire($this->page, [

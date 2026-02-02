@@ -9,13 +9,13 @@ use Database\Seeders\ShieldSeeder;
 
 use function Pest\Livewire\livewire;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
 
 });
 
-it('coach can render relation manager', function () {
+it('coach can render relation manager', function (): void {
     $coachUser = User::factory()->create()->assignRole('coach');
     $this->actingAs($coachUser);
 
@@ -31,7 +31,7 @@ it('coach can render relation manager', function () {
         ->assertSuccessful();
 });
 
-it('wellness can render relation manager', function () {
+it('wellness can render relation manager', function (): void {
 
     $wellnessUser = User::factory()
         ->has(Note::factory()->count(5))
@@ -47,7 +47,7 @@ it('wellness can render relation manager', function () {
         ->assertSuccessful();
 });
 
-it('wellness can list notes', function () {
+it('wellness can list notes', function (): void {
     $wellnessUser = User::factory()
         ->has(Note::factory()->count(5))
         ->create()
@@ -63,7 +63,7 @@ it('wellness can list notes', function () {
         ->assertCountTableRecords(5);
 });
 
-it('wellness can list only your notes', function () {
+it('wellness can list only your notes', function (): void {
     $wellnessUser = User::factory()
         ->has(Note::factory()->count(5))
         ->create()

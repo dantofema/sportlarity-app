@@ -37,7 +37,7 @@ class EditUser extends EditRecord
             RestoreAction::make(),
             Action::make('Reset password')
                 ->requiresConfirmation()
-                ->action(function (User $record) {
+                ->action(function (User $record): void {
                     $record->update(['password' => Hash::make('sportlarity')]);
                     Notification::make()
                         ->title('Password reset successfully')
@@ -47,7 +47,7 @@ class EditUser extends EditRecord
                 }),
             Action::make('Validate email')
                 ->requiresConfirmation()
-                ->action(function (User $record) {
+                ->action(function (User $record): void {
                     $record->update(['email_verified_at' => now()]);
                     Notification::make()
                         ->title('Validated email successfully')
@@ -55,7 +55,7 @@ class EditUser extends EditRecord
                         ->send();
 
                 })
-                ->hidden(fn (User $record) => $record->email_verified_at != null),
+                ->hidden(fn (User $record): bool => $record->email_verified_at != null),
         ];
     }
 

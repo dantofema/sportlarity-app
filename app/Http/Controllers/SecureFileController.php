@@ -43,10 +43,8 @@ class SecureFileController extends Controller
         $document = Document::findOrFail($id);
 
         // Verificar permisos: usuarios wellness solo pueden ver sus propios documentos
-        if (auth()->user()->hasRole('wellness')) {
-            if ($document->user_id !== auth()->id()) {
-                abort(403, 'No tienes permiso para acceder a este documento');
-            }
+        if (auth()->user()->hasRole('wellness') && $document->user_id !== auth()->id()) {
+            abort(403, 'No tienes permiso para acceder a este documento');
         }
 
         // Verificar que el archivo existe
@@ -70,10 +68,8 @@ class SecureFileController extends Controller
         $document = Document::findOrFail($id);
 
         // Verificar permisos
-        if (auth()->user()->hasRole('wellness')) {
-            if ($document->user_id !== auth()->id()) {
-                abort(403, 'No tienes permiso para acceder a esta imagen');
-            }
+        if (auth()->user()->hasRole('wellness') && $document->user_id !== auth()->id()) {
+            abort(403, 'No tienes permiso para acceder a esta imagen');
         }
 
         // Verificar que el archivo existe
@@ -97,10 +93,8 @@ class SecureFileController extends Controller
         $feedback = Feedback::findOrFail($id);
 
         // Verificar permisos: usuarios wellness solo pueden ver su propio feedback
-        if (auth()->user()->hasRole('wellness')) {
-            if ($feedback->user_id !== auth()->id()) {
-                abort(403, 'No tienes permiso para acceder a este feedback');
-            }
+        if (auth()->user()->hasRole('wellness') && $feedback->user_id !== auth()->id()) {
+            abort(403, 'No tienes permiso para acceder a este feedback');
         }
 
         // Verificar que el archivo existe

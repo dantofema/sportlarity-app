@@ -9,8 +9,6 @@ use Illuminate\Translation\PotentiallyTranslatedString;
 
 class ValidFileContent implements ValidationRule
 {
-    protected array $allowedMimeTypes;
-
     /**
      * Magic bytes (firmas de archivos) para validación
      */
@@ -29,9 +27,8 @@ class ValidFileContent implements ValidationRule
         'text/csv' => [],
     ];
 
-    public function __construct(array $allowedMimeTypes)
+    public function __construct(protected array $allowedMimeTypes)
     {
-        $this->allowedMimeTypes = $allowedMimeTypes;
     }
 
     /**
@@ -76,7 +73,7 @@ class ValidFileContent implements ValidationRule
         // Verificar que los bytes coincidan con alguna firma válida
         $isValid = false;
         foreach ($this->mimeSignatures[$mimeType] as $signature) {
-            if (str_starts_with(strtoupper($bytes), $signature)) {
+            if (str_starts_with(strtoupper($bytes), (string) $signature)) {
                 $isValid = true;
                 break;
             }

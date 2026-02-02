@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Filament\Resources\DiaryResource\Pages;
 
+use App\Filament\Resources\DiaryResource\Pages\EditDiary;
 use App\Filament\Resources\DiaryResource;
 use App\Models\Diary;
 use App\Models\User;
@@ -10,12 +11,12 @@ use Database\Seeders\ShieldSeeder;
 
 use function Pest\Livewire\livewire;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
     $this->seed(ShieldSeeder::class);
 });
 
-test('can render diary edit page', function () {
+test('can render diary edit page', function (): void {
 
     $user = User::factory()
         ->create()
@@ -27,7 +28,7 @@ test('can render diary edit page', function () {
     ]))->assertSuccessful();
 });
 
-test('can not render diary edit page with coach rol', function () {
+test('can not render diary edit page with coach rol', function (): void {
 
     $user = User::factory()
         ->create()
@@ -39,7 +40,7 @@ test('can not render diary edit page with coach rol', function () {
     ]))->assertForbidden();
 });
 
-test('can update diary', function () {
+test('can update diary', function (): void {
     $user = User::factory()
         ->create()
         ->assignRole('wellness');
@@ -49,7 +50,7 @@ test('can update diary', function () {
 
     $newData = Diary::factory()->make();
 
-    livewire(DiaryResource\Pages\EditDiary::class, [
+    livewire(EditDiary::class, [
         'record' => $diary->id,
     ])->fillForm([
         'date' => $newData->date,
@@ -82,7 +83,7 @@ test('can update diary', function () {
     ]);
 });
 
-test('can not update diary with coach rol', function () {
+test('can not update diary with coach rol', function (): void {
 
     $user = User::factory()
         ->create()
@@ -90,18 +91,18 @@ test('can not update diary with coach rol', function () {
     $this->actingAs($user);
     $diary = Diary::factory()->create();
 
-    livewire(DiaryResource\Pages\EditDiary::class, [
+    livewire(EditDiary::class, [
         'record' => $diary->id,
     ])->assertForbidden();
 });
 
-test('can validate diary inputs', function () {
+test('can validate diary inputs', function (): void {
     $user = User::factory()
         ->create()
         ->assignRole('wellness');
     $this->actingAs($user);
     $diary = Diary::factory()->create();
-    livewire(DiaryResource\Pages\EditDiary::class, [
+    livewire(EditDiary::class, [
         'record' => $diary->id,
     ])->fillForm([
         'date' => null,

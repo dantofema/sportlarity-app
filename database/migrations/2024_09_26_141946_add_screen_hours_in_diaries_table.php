@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('diaries', function (Blueprint $table) {
+        Schema::table('diaries', function (Blueprint $table): void {
             $table->string('screen_hours')
                 ->after('weight')
                 ->nullable();

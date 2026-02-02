@@ -66,12 +66,9 @@ class MigrateFilesToPrivateStorage extends Command
             return Command::SUCCESS;
         }
 
-        if (! $force && ! $dryRun) {
-            if (! $this->confirm('Do you want to proceed with the migration?', true)) {
-                $this->warn('Migration cancelled.');
-
-                return Command::CANCELLED;
-            }
+        if (! $force && !$dryRun && ! $this->confirm('Do you want to proceed with the migration?', true)) {
+            $this->warn('Migration cancelled.');
+            return Command::CANCELLED;
         }
 
         $this->newLine();
@@ -133,7 +130,7 @@ class MigrateFilesToPrivateStorage extends Command
             $oldPath = $user->image;
 
             // Skip if already in private storage
-            if (str_starts_with($oldPath, 'avatars/')) {
+            if (str_starts_with((string) $oldPath, 'avatars/')) {
                 $this->line("  ⏭️  Skipped (already private): {$user->name}");
                 $stats['skipped']++;
 
@@ -149,7 +146,7 @@ class MigrateFilesToPrivateStorage extends Command
             }
 
             // New path (keep original filename)
-            $filename = basename($oldPath);
+            $filename = basename((string) $oldPath);
             $newPath = "avatars/{$filename}";
 
             if ($dryRun) {
@@ -187,7 +184,7 @@ class MigrateFilesToPrivateStorage extends Command
             $oldPath = $document->file;
 
             // Skip if already in private storage
-            if (str_starts_with($oldPath, 'documents/')) {
+            if (str_starts_with((string) $oldPath, 'documents/')) {
                 $stats['skipped']++;
 
                 continue;
@@ -202,7 +199,7 @@ class MigrateFilesToPrivateStorage extends Command
             }
 
             // New path (keep original filename)
-            $filename = basename($oldPath);
+            $filename = basename((string) $oldPath);
             $newPath = "documents/{$filename}";
 
             if ($dryRun) {
@@ -240,7 +237,7 @@ class MigrateFilesToPrivateStorage extends Command
             $oldPath = $document->image;
 
             // Skip if already in private storage
-            if (str_starts_with($oldPath, 'documents/')) {
+            if (str_starts_with((string) $oldPath, 'documents/')) {
                 $stats['skipped']++;
 
                 continue;
@@ -255,7 +252,7 @@ class MigrateFilesToPrivateStorage extends Command
             }
 
             // New path (keep original filename)
-            $filename = basename($oldPath);
+            $filename = basename((string) $oldPath);
             $newPath = "documents/{$filename}";
 
             if ($dryRun) {
@@ -293,7 +290,7 @@ class MigrateFilesToPrivateStorage extends Command
             $oldPath = $feedback->file;
 
             // Skip if already in private storage
-            if (str_starts_with($oldPath, 'feedback/')) {
+            if (str_starts_with((string) $oldPath, 'feedback/')) {
                 $stats['skipped']++;
 
                 continue;
@@ -308,7 +305,7 @@ class MigrateFilesToPrivateStorage extends Command
             }
 
             // New path (keep original filename)
-            $filename = basename($oldPath);
+            $filename = basename((string) $oldPath);
             $newPath = "feedback/{$filename}";
 
             if ($dryRun) {

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
 use App\Filament\Helpers\TableFilterDate;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\Pages\EditUser;
@@ -39,7 +40,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
     public static function form(Schema $schema): Schema
     {
@@ -114,7 +115,7 @@ class UserResource extends Resource
                     Get $get,
                     ?Model $record,
                     string $operation
-                ) {
+                ): bool {
 
                     $rolId = (int) Role::where(
                         'name',
@@ -125,39 +126,24 @@ class UserResource extends Resource
 
                     if ($operation === 'edit') {
 
-                        if (is_null($get('rol')) or empty($get('rol'))) {
+                        if (is_null($get('rol')) || empty($get('rol'))) {
                             return true;
                         }
 
                         $rolSelected = (int) $get('rol')[0];
-
-                        if ($rolSelected === $rolId) {
-                            return false;
-                        }
-
-                        return true;
+                        return $rolSelected !== $rolId;
                     }
 
                     if ($operation === 'create') {
 
-                        if (is_null($get('rol')) or empty($get('rol'))) {
+                        if (is_null($get('rol')) || empty($get('rol'))) {
                             return true;
                         }
 
                         $rolSelected = (int) $get('rol')[0];
-
-                        if ($rolSelected === $rolId) {
-                            return false;
-                        }
-
-                        return true;
+                        return $rolSelected !== $rolId;
                     }
-
-                    if ($record->hasRole(\App\Enums\Role::WELLNESS)) {
-                        return false;
-                    }
-
-                    return true;
+                    return !$record->hasRole(\App\Enums\Role::WELLNESS);
                 })
                 ->schema([
                     Select::make('goal_id')
@@ -267,12 +253,12 @@ class UserResource extends Resource
                     ->label('Tienen Instagram')
                     ->toggle()
                     ->query(fn (Builder $query
-                    ): Builder => $query->where('instagram', '!=', null)),
+                    ): Builder => $query->where('instagram', '!=')),
                 Filter::make('has_phone')
                     ->label('Tienen teléfono')
                     ->toggle()
                     ->query(fn (Builder $query
-                    ): Builder => $query->where('phone', '!=', null)),
+                    ): Builder => $query->where('phone', '!=')),
                 TableFilterDate::make(),
             ])
             ->recordActions([
@@ -321,12 +307,12 @@ class UserResource extends Resource
                     ]),
                 Section::make('Información adicional del usuario wellness')
                     ->hidden(fn (User $record
-                    ) => ! $record->hasRole(\App\Enums\Role::WELLNESS))
+                    ): bool => ! $record->hasRole(\App\Enums\Role::WELLNESS))
                     ->columns(3)
                     ->schema([
                         TextEntry::make('instagram')
                             ->label('Instagram')
-                            ->state(fn (User $record) => '@'.$record->instagram)
+                            ->state(fn (User $record): string => '@'.$record->instagram)
                             ->url(fn (User $record) => $record->instagram_url,
                                 true),
                         TextEntry::make('dob')->label('Fecha de nacimiento'),

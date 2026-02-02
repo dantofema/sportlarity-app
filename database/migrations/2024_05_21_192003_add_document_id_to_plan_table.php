@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('plans', function (Blueprint $table) {
+        Schema::table('plans', function (Blueprint $table): void {
             $table->foreignId('document_id')
                 ->nullable()
                 ->constrained('documents')
@@ -18,7 +18,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('plan', function (Blueprint $table) {
+        Schema::table('plan', function (Blueprint $table): void {
             //
         });
     }

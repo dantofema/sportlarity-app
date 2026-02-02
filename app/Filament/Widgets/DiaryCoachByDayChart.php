@@ -35,10 +35,10 @@ class DiaryCoachByDayChart extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Registros creados',
-                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
+                    'data' => $data->map(fn (TrendValue $value): mixed => $value->aggregate),
                 ],
             ],
-            'labels' => $data->map(fn (TrendValue $value) => $value->date),
+            'labels' => $data->map(fn (TrendValue $value): string => $value->date),
         ];
     }
 

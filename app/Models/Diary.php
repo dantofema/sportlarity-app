@@ -11,12 +11,6 @@ class Diary extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'id' => 'integer',
-        'date' => 'datetime',
-        'user_id' => 'integer',
-    ];
-
     protected $fillable = [
         'date',
         'user_id',
@@ -46,5 +40,13 @@ class Diary extends Model
     public function assessment(): HasOne
     {
         return $this->hasOne(Assessment::class);
+    }
+    protected function casts(): array
+    {
+        return [
+            'id' => 'integer',
+            'date' => 'datetime',
+            'user_id' => 'integer',
+        ];
     }
 }

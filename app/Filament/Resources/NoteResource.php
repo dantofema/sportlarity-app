@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
 use App\Filament\Resources\NoteResource\Pages\CreateNote;
 use App\Filament\Resources\NoteResource\Pages\EditNote;
 use App\Filament\Resources\NoteResource\Pages\ListNotes;
@@ -26,7 +27,7 @@ class NoteResource extends Resource
 {
     protected static ?string $model = Note::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-pencil-square';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil-square';
 
     public static function table(Table $table): Table
     {
@@ -96,9 +97,7 @@ class NoteResource extends Resource
                                     ) => $query->orderBy('id', 'asc'),
                                 ),
                             Select::make('users')
-                                ->hidden(function () use ($userId) {
-                                    return $userId !== null;
-                                })
+                                ->hidden(fn(): bool => $userId !== null)
                                 ->relationship(
                                     'users',
                                     'name',
@@ -110,7 +109,7 @@ class NoteResource extends Resource
                             Select::make('author_id')
                                 ->label('Author')
                                 ->hidden(fn (string $operation
-                                ) => $operation == 'create')
+                                ): bool => $operation === 'create')
                                 ->relationship(
                                     'author',
                                     'name'
@@ -155,22 +154,20 @@ class NoteResource extends Resource
                                 TextEntry::make('author.name')
                                     ->label('Author')
                                     ->columnSpan(1)
-                                    ->url(function ($record) {
-                                        return auth()->user()->can('view_user')
-                                            ? UserResource::getUrl('view',
-                                                ['record' => $record->author_id])
-                                            : null;
-                                    })
+                                    ->url(fn($record): ?string => auth()->user()->can('view_user')
+                                        ? UserResource::getUrl('view',
+                                            ['record' => $record->author_id])
+                                        : null)
                                     ->badge(),
                                 TextEntry::make('goal.name')
                                     ->label('Goal')
                                     ->columnSpan(1)
-                                    ->color(fn ($record) => 'info')
+                                    ->color(fn ($record): string => 'info')
                                     ->badge(),
                                 TextEntry::make('users.name')
                                     ->label('User Wellness')
                                     ->columnSpan(1)
-                                    ->color(fn ($record) => 'info')
+                                    ->color(fn ($record): string => 'info')
                                     ->badge(),
                             ]),
                         TextEntry::make('content')
