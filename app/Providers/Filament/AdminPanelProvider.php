@@ -58,6 +58,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                EnsurePasswordIsChanged::class,
             ])
             ->assets([
                 Css::make('custom-stylesheet', resource_path('css/app.css')),

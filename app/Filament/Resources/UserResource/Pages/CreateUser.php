@@ -16,6 +16,7 @@ class CreateUser extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['password'] = Hash::make('sportlarity');
+        $data['password_change_required'] = true;
 
         return $data;
     }
@@ -27,21 +28,21 @@ class CreateUser extends CreateRecord
         $user = User::create(data_forget($data, 'rol'));
         $user->assignRole($rol);
 
-//        Mail::to($user->email)->send(new UserWelcomeMail($user));
+        //        Mail::to($user->email)->send(new UserWelcomeMail($user));
 
-//        $this->emailVerification($user);
-//
-//        Notification::make()
-//            ->title('Email sent successfully')
-//            ->success()
-//            ->send();
+        //        $this->emailVerification($user);
+        //
+        //        Notification::make()
+        //            ->title('Email sent successfully')
+        //            ->success()
+        //            ->send();
 
         return $user;
     }
 
     private function emailVerification(User $user): void
     {
-        $notification = new VerifyEmail();
+        $notification = new VerifyEmail;
         $notification->url = Filament::getVerifyEmailUrl($user);
         $user->notify($notification);
     }

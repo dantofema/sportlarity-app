@@ -19,8 +19,8 @@ class User extends Authenticatable implements FilamentUser
 {
     use HasFactory;
     use HasRoles;
-    use SoftDeletes;
     use Notifiable;
+    use SoftDeletes;
 
     protected $hidden = [
         'password',
@@ -29,12 +29,14 @@ class User extends Authenticatable implements FilamentUser
     protected $casts = [
         'dob' => 'datetime',
         'deleted_at' => 'timestamp',
+        'password_change_required' => 'boolean',
     ];
 
     protected $fillable = [
         'name',
         'email',
         'password',
+        'password_change_required',
         'dob',
         'instagram',
         'image',
@@ -82,7 +84,7 @@ class User extends Authenticatable implements FilamentUser
     protected function dob(): Attribute
     {
         return Attribute::make(
-            get: fn($value, array $attributes) => $value === null
+            get: fn ($value, array $attributes) => $value === null
                 ? null
                 : Carbon::parse($value)->format('d-m-Y'),
         );
@@ -91,12 +93,21 @@ class User extends Authenticatable implements FilamentUser
     protected function instagramUrl(): Attribute
     {
         return Attribute::make(
-            get: fn(
+            get: fn (
                 $value,
                 array $attributes
             ) => $attributes['instagram'] === null
                 ? null
                 : 'https://www.instagram.com/'.$attributes['instagram'],
+        );
+    }
+
+    protected function avatarUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, array $attributes) => $attributes['image'] === null
+                ? null
+                : route('secure.avatar', ['filename' => basename($attributes['image'])]),
         );
     }
 }
