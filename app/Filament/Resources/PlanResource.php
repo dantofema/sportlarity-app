@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources;
 
-use BackedEnum;
 use App\Filament\Resources\PlanResource\Pages\CreatePlan;
 use App\Filament\Resources\PlanResource\Pages\EditPlan;
 use App\Filament\Resources\PlanResource\Pages\ListPlans;
 use App\Filament\Resources\PlanResource\ViewPlan;
 use App\Models\Plan;
+use BackedEnum;
 use Exception;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -62,14 +62,14 @@ class PlanResource extends Resource
                             ->schema([
                                 TextEntry::make('author.name')
                                     ->label('Author')
-                                    ->url(fn($record): ?string => auth()->user()->can('view_user')
+                                    ->url(fn ($record): ?string => auth()->user()->can('view_user')
                                         ? UserResource::getUrl('view',
                                             ['record' => $record->user_id])
                                         : null)
                                     ->badge(),
                                 TextEntry::make('user.name')
                                     ->label('User Wellness')
-                                    ->url(fn($record): ?string => auth()->user()->can('view_user')
+                                    ->url(fn ($record): ?string => auth()->user()->can('view_user')
                                         ? UserResource::getUrl('view',
                                             ['record' => $record->user_id])
                                         : null)
@@ -187,7 +187,7 @@ class PlanResource extends Resource
                                 ]),
                             Select::make('user_id')
                                 ->label('User wellness')
-                                ->hidden(fn(): bool => $userId !== null)
+                                ->hidden(fn (): bool => $userId !== null)
                                 ->relationship(
                                     'user',
                                     'name',

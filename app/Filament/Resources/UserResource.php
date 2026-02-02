@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use BackedEnum;
 use App\Filament\Helpers\TableFilterDate;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Filament\Resources\UserResource\Pages\ViewUser;
 use App\Models\User;
+use BackedEnum;
 use Exception;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -131,6 +131,7 @@ class UserResource extends Resource
                         }
 
                         $rolSelected = (int) $get('rol')[0];
+
                         return $rolSelected !== $rolId;
                     }
 
@@ -141,9 +142,11 @@ class UserResource extends Resource
                         }
 
                         $rolSelected = (int) $get('rol')[0];
+
                         return $rolSelected !== $rolId;
                     }
-                    return !$record->hasRole(\App\Enums\Role::WELLNESS);
+
+                    return ! $record->hasRole(\App\Enums\Role::WELLNESS);
                 })
                 ->schema([
                     Select::make('goal_id')

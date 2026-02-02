@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Filament\Resources\DiaryResource\Pages;
 
-use App\Filament\Resources\DiaryResource\Pages\EditDiary;
 use App\Filament\Resources\DiaryResource;
+use App\Filament\Resources\DiaryResource\Pages\EditDiary;
 use App\Models\Diary;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;

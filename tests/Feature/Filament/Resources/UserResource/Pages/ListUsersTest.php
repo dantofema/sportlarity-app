@@ -1,7 +1,7 @@
 <?php
 
-use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Filament\Resources\UserResource;
+use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Filament\Tables\Actions\DeleteAction;

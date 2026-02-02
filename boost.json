@@ -1,0 +1,17 @@
+{
+    "agents": [
+        "junie",
+        "opencode",
+        "copilot"
+    ],
+    "guidelines": true,
+    "herd_mcp": false,
+    "mcp": true,
+    "packages": [
+        "filament/filament"
+    ],
+    "sail": true,
+    "skills": [
+        "pest-testing"
+    ]
+}

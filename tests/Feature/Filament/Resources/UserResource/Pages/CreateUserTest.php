@@ -1,7 +1,7 @@
 <?php
 
-use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource;
+use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Mail\UserWelcomeMail;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
@@ -43,7 +43,7 @@ it('can create user', function (string $rolName): void {
 
     $this->assertTrue($user->hasRole($rolName));
 
-    Mail::assertSent(UserWelcomeMail::class, fn($mail) => $mail->hasTo($user->email));
+    Mail::assertSent(UserWelcomeMail::class, fn ($mail) => $mail->hasTo($user->email));
 
 })->with([
     'coach',

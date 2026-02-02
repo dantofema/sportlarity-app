@@ -10,8 +10,8 @@
 | need to change it using the "uses()" function to bind a different classes or traits.
 |
 */
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTruncation;
+use Tests\TestCase;
 
 uses(TestCase::class,
     DatabaseTruncation::class,
@@ -30,7 +30,7 @@ beforeEach(function (): void {});
 |
 */
 
-expect()->extend('toBeOne', fn() => $this->toBe(1));
+expect()->extend('toBeOne', fn () => $this->toBe(1));
 
 /*
 |--------------------------------------------------------------------------

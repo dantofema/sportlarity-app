@@ -41,6 +41,7 @@ class Diary extends Model
     {
         return $this->hasOne(Assessment::class);
     }
+
     protected function casts(): array
     {
         return [

@@ -26,6 +26,7 @@ class Assessment extends Model
     {
         return $this->belongsTo(Diary::class);
     }
+
     protected function casts(): array
     {
         return [

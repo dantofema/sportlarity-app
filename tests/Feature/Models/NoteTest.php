@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Models;
 
-use Illuminate\Database\Eloquent\Collection;
 use App\Models\Note;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
 test('can get the collection of users related to a note',
     function (): void {
