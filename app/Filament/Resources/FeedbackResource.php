@@ -16,7 +16,6 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Storage;
 
 class FeedbackResource extends Resource
 {
@@ -44,7 +43,7 @@ class FeedbackResource extends Resource
                     ->relationship(
                         'user',
                         'name',
-                        fn($query) => $query
+                        fn ($query) => $query
                             ->whereRelation('roles', 'name', '=', 'wellness')
                             ->orderBy('name')
                     )
@@ -52,12 +51,32 @@ class FeedbackResource extends Resource
                     ->required(),
 
                 FileUpload::make('file')
-                    ->disk('public')
-                    ->rule([
+                    ->disk('private_feedback')
+                    ->maxSize(5120)
+                    ->acceptedFileTypes([
+                        'application/pdf',
+                        'application/msword',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    ])
+                    ->rules([
                         'file',
-                        'mimes:pdf,doc,docx',
-                        'max:1024'
-                    ])->helperText('Only PDF, DOC and DOCX files are allowed.'),
+                        'mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        'max:5120',
+                        new ValidFileContent([
+                            'application/pdf',
+                            'application/msword',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        ]),
+                    ])
+                    ->helperText('Solo se permiten archivos PDF, DOC y DOCX. Máximo 5MB.')
+                    ->getUploadedFileNameForStorageUsing(
+                        fn ($file): string => sprintf(
+                            'feedback-%s-%s.%s',
+                            now()->format('Y-m-d-His'),
+                            \Illuminate\Support\Str::random(8),
+                            $file->getClientOriginalExtension()
+                        )
+                    ),
 
             ]);
     }
@@ -78,9 +97,7 @@ class FeedbackResource extends Resource
                 IconColumn::make('file')
                     ->label('')
                     ->icon('heroicon-o-arrow-down-on-square')
-                    ->url(fn(Feedback $feedback
-                    ) => Storage::disk('public')->url($feedback->file),
-                        true),
+                    ->url(fn (Feedback $feedback) => route('secure.feedback', $feedback->id)),
 
                 TextColumn::make('title')
                     ->searchable()
@@ -102,9 +119,9 @@ class FeedbackResource extends Resource
             ])
             ->actions([
                 EditAction::make()
-                    ->hidden(fn() => auth()->user()->hasRole('wellness')),
+                    ->hidden(fn () => auth()->user()->hasRole('wellness')),
                 DeleteAction::make()
-                    ->hidden(fn() => auth()->user()->hasRole('wellness')),
+                    ->hidden(fn () => auth()->user()->hasRole('wellness')),
             ]);
     }
 

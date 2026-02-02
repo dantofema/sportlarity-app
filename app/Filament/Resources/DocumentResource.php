@@ -10,7 +10,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Storage;
 
 class DocumentResource extends Resource
 {
@@ -27,20 +26,63 @@ class DocumentResource extends Resource
                     ->required()
                     ->maxLength(191),
                 Forms\Components\FileUpload::make('image')
-                    ->disk('public')
-                    ->rule([
+                    ->disk('private_documents')
+                    ->image()
+                    ->maxSize(2048)
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->rules([
                         'image',
-                        'mimes:jpeg,png',
-                        'max:1024',
+                        'mimetypes:image/jpeg,image/png,image/webp',
+                        'max:2048',
+                        new ValidFileContent(['image/jpeg', 'image/png', 'image/webp']),
                     ])
-                    ->image(),
+                    ->getUploadedFileNameForStorageUsing(
+                        fn ($file): string => sprintf(
+                            'img-%s-%s.%s',
+                            now()->format('Y-m-d-His'),
+                            \Illuminate\Support\Str::random(8),
+                            $file->getClientOriginalExtension()
+                        )
+                    ),
                 Forms\Components\FileUpload::make('file')
-                    ->disk('public')
+                    ->disk('private_documents')
+                    ->maxSize(5120)
+                    ->acceptedFileTypes([
+                        'application/pdf',
+                        'application/msword',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        'application/vnd.ms-excel',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        'application/vnd.ms-powerpoint',
+                        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                        'text/plain',
+                        'text/csv',
+                    ])
                     ->rules([
                         'file',
-                        'mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar,csv',
-                        'max:1024',
+                        'mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain,text/csv',
+                        'max:5120',
+                        new ValidFileContent([
+                            'application/pdf',
+                            'application/msword',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                            'application/vnd.ms-excel',
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                            'application/vnd.ms-powerpoint',
+                            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                            'text/plain',
+                            'text/csv',
+                        ]),
                     ])
+                    ->helperText('Permitido: PDF, Word, Excel, PowerPoint, TXT, CSV. Máximo 5MB.')
+                    ->getUploadedFileNameForStorageUsing(
+                        fn ($file): string => sprintf(
+                            'doc-%s-%s.%s',
+                            now()->format('Y-m-d-His'),
+                            \Illuminate\Support\Str::random(8),
+                            $file->getClientOriginalExtension()
+                        )
+                    )
                     ->required(),
                 Forms\Components\Textarea::make('description')
                     ->maxLength(65535)
@@ -56,15 +98,14 @@ class DocumentResource extends Resource
                 Tables\Columns\IconColumn::make('file')
                     ->label('')
                     ->icon('heroicon-o-arrow-down-on-square')
-                    ->url(fn(Document $document
-                    ) => Storage::disk('public')->url($document->file),
-                        true),
+                    ->url(fn (Document $document) => route('secure.document', $document->id)),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 ImageColumn::make('image')
-                    ->disk('public')
                     ->label('')
-                    ->circular(),
+                    ->circular()
+                    ->defaultImageUrl(url('/images/placeholder.png'))
+                    ->url(fn (Document $document) => $document->image ? route('secure.document.image', $document->id) : null),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Created by')
                     ->numeric()

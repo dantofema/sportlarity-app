@@ -32,7 +32,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\Permission\Models\Role;
 
-
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
@@ -45,9 +44,6 @@ class UserResource extends Resource
             ->schema(self::getForm());
     }
 
-    /**
-     * @return array
-     */
     public static function getForm(): array
     {
         return [
@@ -56,8 +52,29 @@ class UserResource extends Resource
                 ->schema([
                     FileUpload::make('image')
                         ->label('')
-                        ->disk('public')
-                        ->avatar(),
+                        ->disk('private_avatars')
+                        ->avatar()
+                        ->image()
+                        ->imageResizeMode('cover')
+                        ->imageCropAspectRatio('1:1')
+                        ->imageResizeTargetWidth('400')
+                        ->imageResizeTargetHeight('400')
+                        ->maxSize(2048)
+                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                        ->rules([
+                            'image',
+                            'mimes:jpeg,jpg,png,webp',
+                            'max:2048',
+                            'dimensions:max_width=2000,max_height=2000',
+                        ])
+                        ->getUploadedFileNameForStorageUsing(
+                            fn ($file): string => sprintf(
+                                '%s-%s.%s',
+                                now()->format('Y-m-d-His'),
+                                \Illuminate\Support\Str::random(8),
+                                $file->getClientOriginalExtension()
+                            )
+                        ),
                     \Filament\Forms\Components\Group::make()
                         ->columnSpan(2)
                         ->columns()
@@ -79,7 +96,7 @@ class UserResource extends Resource
                                 ->relationship(
                                     'roles',
                                     'name',
-                                    fn(Builder $query) => $query->where(
+                                    fn (Builder $query) => $query->where(
                                         'name',
                                         '!=',
                                         \App\Enums\Role::SUPER_ADMIN)
@@ -108,7 +125,7 @@ class UserResource extends Resource
                         if (is_null($get('rol')) or empty($get('rol'))) {
                             return true;
                         }
-                        
+
                         $rolSelected = (int) $get('rol')[0];
 
                         if ($rolSelected === $rolId) {
@@ -133,7 +150,6 @@ class UserResource extends Resource
                         return true;
                     }
 
-
                     if ($record->hasRole(\App\Enums\Role::WELLNESS)) {
                         return false;
                     }
@@ -146,7 +162,7 @@ class UserResource extends Resource
                         ->relationship(
                             'goal',
                             'name',
-                            modifyQueryUsing: fn(Builder $query
+                            modifyQueryUsing: fn (Builder $query
                             ) => $query->orderBy('id'),
                         ),
                     DatePicker::make('dob')
@@ -161,7 +177,7 @@ class UserResource extends Resource
                     TextInput::make('height')
                         ->label('Altura')
                         ->numeric(),
-                ])
+                ]),
         ];
     }
 
@@ -174,16 +190,16 @@ class UserResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->modifyQueryUsing(function (Builder $query) {
 
-                if (!auth()->user()->hasRole('super_admin')) {
+                if (! auth()->user()->hasRole('super_admin')) {
                     return $query->whereHas('roles',
-                        fn(Builder $query) => $query->where('name', '!=',
+                        fn (Builder $query) => $query->where('name', '!=',
                             'super_admin')
                     );
                 }
 
                 if (auth()->user()->hasRole('professional')) {
                     return $query->whereHas('roles',
-                        fn(Builder $query) => $query->where('name', '=',
+                        fn (Builder $query) => $query->where('name', '=',
                             'wellness')
                     );
                 }
@@ -192,9 +208,15 @@ class UserResource extends Resource
             })
             ->columns([
                 ImageColumn::make('image')
-                    ->disk('public')
                     ->label('')
-                    ->circular(),
+                    ->circular()
+                    ->getStateUsing(function (User $record): ?string {
+                        if (! $record->image) {
+                            return null;
+                        }
+
+                        return route('secure.avatar', ['filename' => basename($record->image)]);
+                    }),
                 TextColumn::make('name')
                     ->label('Nombre')
                     ->sortable()
@@ -205,14 +227,14 @@ class UserResource extends Resource
                 TextColumn::make('roles.name')
                     ->label('Rol')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'wellness' => 'info',
                         'professional' => 'warning',
                         'coach' => 'success',
                         default => 'danger',
                     }),
                 TextColumn::make('instagram')
-                    ->url(fn(User $record) => $record->instagram_url, true)
+                    ->url(fn (User $record) => $record->instagram_url, true)
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('phone')
                     ->label('Teléfono')
@@ -241,27 +263,27 @@ class UserResource extends Resource
                 Filter::make('has_instagram')
                     ->label('Tienen Instagram')
                     ->toggle()
-                    ->query(fn(Builder $query
+                    ->query(fn (Builder $query
                     ): Builder => $query->where('instagram', '!=', null)),
                 Filter::make('has_phone')
                     ->label('Tienen teléfono')
                     ->toggle()
-                    ->query(fn(Builder $query
+                    ->query(fn (Builder $query
                     ): Builder => $query->where('phone', '!=', null)),
-                TableFilterDate::make()
+                TableFilterDate::make(),
             ])
             ->actions([
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
-                RestoreAction::make()
+                RestoreAction::make(),
             ])
             ->bulkActions([
-//                BulkActionGroup::make([
-//                    DeleteBulkAction::make(),
-//                    ForceDeleteBulkAction::make(),
-//                    RestoreBulkAction::make(),
-//                ]),
+                //                BulkActionGroup::make([
+                //                    DeleteBulkAction::make(),
+                //                    ForceDeleteBulkAction::make(),
+                //                    RestoreBulkAction::make(),
+                //                ]),
             ]);
     }
 
@@ -284,35 +306,34 @@ class UserResource extends Resource
                                 TextEntry::make('roles.name')
                                     ->label('Rol')
                                     ->badge()
-                                    ->color(fn(string $state
+                                    ->color(fn (string $state
                                     ): string => match ($state) {
                                         'wellness' => 'info',
                                         'professional' => 'warning',
                                         'coach' => 'success',
                                         default => 'danger',
                                     }),
-                            ])
+                            ]),
 
                     ]),
                 Section::make('Información adicional del usuario wellness')
-                    ->hidden(fn(User $record
-                    ) => !$record->hasRole(\App\Enums\Role::WELLNESS))
+                    ->hidden(fn (User $record
+                    ) => ! $record->hasRole(\App\Enums\Role::WELLNESS))
                     ->columns(3)
                     ->schema([
                         TextEntry::make('instagram')
                             ->label('Instagram')
-                            ->state(fn(User $record) => '@'.$record->instagram)
-                            ->url(fn(User $record) => $record->instagram_url,
+                            ->state(fn (User $record) => '@'.$record->instagram)
+                            ->url(fn (User $record) => $record->instagram_url,
                                 true),
                         TextEntry::make('dob')->label('Fecha de nacimiento'),
                         TextEntry::make('height')->label('Altura'),
                         TextEntry::make('phone')->label('Teléfono'),
                         TextEntry::make('phone_emergency')->label('Teléfono de emergencias'),
                         TextEntry::make('goal.name')->label('Objetivo'),
-                    ])
+                    ]),
             ]);
     }
-
 
     public static function getPages(): array
     {
