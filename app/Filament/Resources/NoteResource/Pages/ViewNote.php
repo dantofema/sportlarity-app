@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources\NoteResource\Pages;
 
-use Filament\Actions\EditAction;
 use App\Filament\Resources\NoteResource;
-use Filament\Actions;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewNote extends ViewRecord

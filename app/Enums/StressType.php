@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum StressType: int
 {
-
     case LOW = 4;
     case MODERATE = 3;
     case HIGH = 2;

@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
-use Filament\Schemas\Components\Tabs\Tab;
 use App\Filament\Resources\UserResource;
 use App\Models\User;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
 use Spatie\Permission\Models\Role;
 
 class ListUsers extends ListRecords

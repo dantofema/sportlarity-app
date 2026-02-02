@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
 use App\Filament\Resources\DocumentResource\Pages\CreateDocument;
 use App\Filament\Resources\DocumentResource\Pages\EditDocument;
 use App\Filament\Resources\DocumentResource\Pages\ListDocuments;
@@ -14,6 +13,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -24,7 +24,7 @@ class DocumentResource extends Resource
 {
     protected static ?string $model = Document::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-duplicate';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-duplicate';
 
     public static function form(Schema $schema): Schema
     {

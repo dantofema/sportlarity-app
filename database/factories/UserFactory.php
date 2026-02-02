@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'phone_emergency' => '9876-5432',
             'height' => rand(160, 190) / 100,
             'deleted_at' => null,
-            'email_verified_at' => $this->faker->dateTime()
+            'email_verified_at' => $this->faker->dateTime(),
         ];
     }
 }

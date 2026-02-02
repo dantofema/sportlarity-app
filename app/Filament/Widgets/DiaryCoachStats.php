@@ -12,7 +12,7 @@ class DiaryCoachStats extends BaseWidget
 
     public static function canView(): bool
     {
-        return !auth()->user()->hasRole('wellness');
+        return ! auth()->user()->hasRole('wellness');
     }
 
     protected function getStats(): array
@@ -27,7 +27,6 @@ class DiaryCoachStats extends BaseWidget
                 ->color('info')
                 ->icon('heroicon-o-users')
                 ->description('Usuarios wellness activos en la plataforma'),
-
 
             Stat::make('Cantidad de usuarios creados',
                 User::whereDate('created_at', '>', now()->subMonth())->count())

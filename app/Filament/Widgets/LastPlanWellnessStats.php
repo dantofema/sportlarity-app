@@ -15,12 +15,11 @@ class LastPlanWellnessStats extends BaseWidget
 {
     protected static ?int $sort = 10;
 
-
     public static function canView(): bool
     {
         return false;
-//        $diary = Diary::whereUserId(auth()->id())->latest()->first();
-//        return auth()->user()->hasRole('wellness') && !is_null($diary);
+        //        $diary = Diary::whereUserId(auth()->id())->latest()->first();
+        //        return auth()->user()->hasRole('wellness') && !is_null($diary);
     }
 
     protected function getStats(): array
@@ -38,9 +37,10 @@ class LastPlanWellnessStats extends BaseWidget
 
         if (is_null($plan)) {
             return [
-                Stat::make('Plan actual', 'Actualmente no hay plan')
+                Stat::make('Plan actual', 'Actualmente no hay plan'),
             ];
         }
+
         return Stat::make('Plan actual', Str::limit($plan->title, 12))
             ->color('primary')
             ->url(PlanResource::getUrl('view', ['record' => $plan->id]))
@@ -55,9 +55,10 @@ class LastPlanWellnessStats extends BaseWidget
 
         if (is_null($note)) {
             return [
-                Stat::make('Última nota', 'No hay notas aún')
+                Stat::make('Última nota', 'No hay notas aún'),
             ];
         }
+
         return Stat::make('Última nota', Str::limit($note->content, 12))
             ->color('primary')
             ->url(NoteResource::getUrl('view', ['record' => $note->id]))

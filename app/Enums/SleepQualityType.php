@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum SleepQualityType: int
 {
-
     case EXCELLENT = 4;
     case GOOD = 3;
     case REGULAR = 2;

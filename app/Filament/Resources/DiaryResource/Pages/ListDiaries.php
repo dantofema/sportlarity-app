@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources\DiaryResource\Pages;
 
-use Filament\Actions\CreateAction;
 use App\Filament\Resources\DiaryResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListDiaries extends ListRecords
@@ -15,7 +14,7 @@ class ListDiaries extends ListRecords
     {
         return [
             CreateAction::make()
-                ->hidden(!auth()->user()->hasRole('wellness')),
+                ->hidden(! auth()->user()->hasRole('wellness')),
         ];
     }
 }

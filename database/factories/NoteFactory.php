@@ -16,7 +16,7 @@ class NoteFactory extends Factory
             'title' => $this->faker->sentence(),
             'content' => $this->faker->paragraphs(3, true),
             'author_id' => User::factory(),
-            'created_at' => $this->faker->dateTime()
+            'created_at' => $this->faker->dateTime(),
         ];
     }
 }

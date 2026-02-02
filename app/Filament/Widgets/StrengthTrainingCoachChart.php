@@ -10,11 +10,12 @@ use Filament\Widgets\ChartWidget;
 class StrengthTrainingCoachChart extends ChartWidget
 {
     protected ?string $heading = 'Entrenamiento de fuerza en los últimos 30 días';
+
     protected static ?int $sort = 100;
 
     public static function canView(): bool
     {
-        return !auth()->user()->hasRole('wellness');
+        return ! auth()->user()->hasRole('wellness');
     }
 
     protected function getData(): array

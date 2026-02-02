@@ -6,8 +6,8 @@ use App\Models\Note;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
-use function Pest\Livewire\livewire;
 
+use function Pest\Livewire\livewire;
 
 beforeEach(function () {
     $this->seed(RoleSeeder::class);
@@ -54,11 +54,11 @@ it('can validate note inputs', function () {
     livewire(CreateNote::class)
         ->fillForm([
             'content' => null,
-            'users' => null
+            'users' => null,
         ])
         ->call('create')
         ->assertHasFormErrors([
             'content' => 'required',
-            'users' => 'required'
+            'users' => 'required',
         ]);
 });

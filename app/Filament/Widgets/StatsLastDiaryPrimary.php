@@ -22,7 +22,8 @@ class StatsLastDiaryPrimary extends BaseWidget
     public static function canView(): bool
     {
         $diary = Diary::whereUserId(auth()->id())->latest()->first();
-        return auth()->user()->hasRole('wellness') && !is_null($diary);
+
+        return auth()->user()->hasRole('wellness') && ! is_null($diary);
     }
 
     protected function getStats(): array

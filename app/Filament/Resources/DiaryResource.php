@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
 use App\Enums\ActivityType;
 use App\Enums\AssessmentType;
 use App\Enums\FeedingType;
@@ -29,6 +27,8 @@ use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -39,7 +39,7 @@ class DiaryResource extends Resource
 {
     protected static ?string $model = Diary::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-plus';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-plus';
 
     /**
      * @throws Exception

@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum PreparationType: int
 {
-
     case VERY_READY = 4;
     case READY = 3;
     case LITTLE_READY = 2;

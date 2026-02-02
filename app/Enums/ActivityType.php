@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum ActivityType: int
 {
-
     case REST = 1;
     case TRAINING = 3;
     case COMPETENCE = 4;

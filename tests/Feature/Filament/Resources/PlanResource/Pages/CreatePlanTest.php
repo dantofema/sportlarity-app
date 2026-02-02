@@ -6,6 +6,7 @@ use App\Models\Plan;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
@@ -62,7 +63,7 @@ it('can validate note inputs', function () {
         ->fillForm([
             'user_id' => null,
             'content' => null,
-            'title' => null
+            'title' => null,
         ])
         ->call('create')
         ->assertHasFormErrors([

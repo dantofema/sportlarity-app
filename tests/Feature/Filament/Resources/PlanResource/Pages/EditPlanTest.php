@@ -7,6 +7,7 @@ use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
 use Filament\Actions\DeleteAction;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
@@ -57,7 +58,6 @@ it('can save', function () {
         ->description->toBe($newData->description)
         ->user_id->toBe($newData->user_id);
 });
-
 
 it('can validate edit plan inputs', function () {
     $record = $this->factory->create();

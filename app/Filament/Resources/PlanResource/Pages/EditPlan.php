@@ -10,7 +10,6 @@ class EditPlan extends EditRecord
 {
     protected static string $resource = PlanResource::class;
 
-
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $data['author_id'] = auth()->id();

@@ -10,15 +10,20 @@ use Flowframe\Trend\TrendValue;
 class HydrationWellnessChart extends ChartWidget
 {
     protected ?string $heading = 'Hidratación';
+
     protected ?string $description = 'Última semana. Desde 1 (mal) hasta 4 (excelente)';
+
     protected ?string $maxHeight = '200px';
+
     protected string $color = 'info';
+
     protected static ?int $sort = 100;
 
     public static function canView(): bool
     {
         $diary = Diary::whereUserId(auth()->id())->latest()->first();
-        return auth()->user()->hasRole('wellness') && !is_null($diary);
+
+        return auth()->user()->hasRole('wellness') && ! is_null($diary);
     }
 
     protected function getData(): array
@@ -39,11 +44,11 @@ class HydrationWellnessChart extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Hidratación',
-                    'data' => $data->map(fn(TrendValue $value
+                    'data' => $data->map(fn (TrendValue $value
                     ) => $value->aggregate),
                 ],
             ],
-            'labels' => $data->map(fn(TrendValue $value) => $value->date),
+            'labels' => $data->map(fn (TrendValue $value) => $value->date),
         ];
 
     }

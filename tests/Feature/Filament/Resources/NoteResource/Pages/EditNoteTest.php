@@ -8,6 +8,7 @@ use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
 use Filament\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Collection;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
@@ -45,8 +46,8 @@ it('can save', function () {
     $wellnessUsers = User::factory()
         ->count(2)
         ->create()
-        ->each(fn($user) => $user->assignRole('wellness'));
-    
+        ->each(fn ($user) => $user->assignRole('wellness'));
+
     livewire($this->page, [
         'record' => $record->getRouteKey(),
     ])
@@ -63,7 +64,6 @@ it('can save', function () {
         ->users->toBeInstanceOf(Collection::class)
         ->users->count()->toBe(2);
 });
-
 
 it('can validate edit note inputs', function () {
     $record = $this->factory->create();

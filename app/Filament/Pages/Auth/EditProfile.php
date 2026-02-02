@@ -2,9 +2,9 @@
 
 namespace App\Filament\Pages\Auth;
 
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
 
 class EditProfile extends \Filament\Auth\Pages\EditProfile
 {
