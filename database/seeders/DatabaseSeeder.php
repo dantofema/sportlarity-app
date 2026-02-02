@@ -16,9 +16,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             ShieldSeeder::class,
             GoalSeeder::class,
-            UserSeeder::class,
+            SecurityTestSeeder::class,
             DocumentSeeder::class,
-            SecurityTestSeeder::class
         ]);
 
     }
