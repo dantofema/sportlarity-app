@@ -16,7 +16,7 @@ class Plan extends Model
         'title',
         'description',
         'content',
-        'document_id'
+        'document_id',
     ];
 
     public function user(): BelongsTo

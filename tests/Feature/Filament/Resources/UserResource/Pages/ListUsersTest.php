@@ -4,6 +4,7 @@ use App\Filament\Resources\UserResource;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Filament\Tables\Actions\DeleteAction;
+
 use function Pest\Livewire\livewire;
 use function PHPUnit\Framework\assertNotNull;
 
@@ -22,12 +23,11 @@ it('can list users', function () {
     $users = User::factory()
         ->count(5)
         ->create()
-        ->each(fn($user) => $user->assignRole('wellness'));
+        ->each(fn ($user) => $user->assignRole('wellness'));
 
     livewire(UserResource\Pages\ListUsers::class)
         ->assertCanSeeTableRecords($users);
 });
-
 
 it('can render users names, emails & roles.name', function () {
     User::factory()->count(5)->create();
@@ -37,7 +37,6 @@ it('can render users names, emails & roles.name', function () {
         ->assertCanRenderTableColumn('email')
         ->assertCanRenderTableColumn('roles.name');
 });
-
 
 it('can delete user', function () {
     $user = User::factory()->create()->assignRole('wellness');
@@ -49,4 +48,3 @@ it('can delete user', function () {
 
     assertNotNull($user->deleted_at);
 });
-

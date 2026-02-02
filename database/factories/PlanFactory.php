@@ -18,7 +18,7 @@ class PlanFactory extends Factory
             'content' => $this->faker->paragraphs(3, true),
             'user_id' => User::factory()->create()->assignRole('wellness')->id,
             'author_id' => User::factory()->create()->assignRole('coach')->id,
-            'created_at' => $this->faker->dateTime()
+            'created_at' => $this->faker->dateTime(),
         ];
     }
 }

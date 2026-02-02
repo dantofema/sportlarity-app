@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
-use Filament\Schemas\Schema;
 use App\Filament\Resources\PlanResource;
 use Filament\Actions\ViewAction;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 

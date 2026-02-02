@@ -11,8 +11,7 @@ class TableFilterDate
     public static function make(
         string $column = 'created_at',
         string $label = 'Created at'
-    )
-    {
+    ) {
         return Filter::make($column)
             ->label($label)
             ->schema([

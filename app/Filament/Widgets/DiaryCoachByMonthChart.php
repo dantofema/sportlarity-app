@@ -10,11 +10,12 @@ use Flowframe\Trend\TrendValue;
 class DiaryCoachByMonthChart extends ChartWidget
 {
     protected ?string $heading = 'Diarios creados por mes en el último año';
+
     protected static ?int $sort = 250;
 
     public static function canView(): bool
     {
-        return !auth()->user()->hasRole('wellness');
+        return ! auth()->user()->hasRole('wellness');
     }
 
     protected function getData(): array
@@ -33,11 +34,11 @@ class DiaryCoachByMonthChart extends ChartWidget
                 [
                     'label' => 'Registros creados',
                     'data' => $data->map(
-                        fn(TrendValue $value) => $value->aggregate
+                        fn (TrendValue $value) => $value->aggregate
                     ),
                 ],
             ],
-            'labels' => $data->map(fn(TrendValue $value) => $value->date),
+            'labels' => $data->map(fn (TrendValue $value) => $value->date),
         ];
     }
 

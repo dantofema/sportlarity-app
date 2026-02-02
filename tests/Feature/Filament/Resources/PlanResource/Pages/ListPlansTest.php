@@ -7,6 +7,7 @@ use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
 use Filament\Tables\Actions\DeleteAction;
+
 use function Pest\Livewire\livewire;
 use function PHPUnit\Framework\assertNull;
 
@@ -41,7 +42,6 @@ it('can render plans title, user.name & author.name', function () {
 
 it('can sort plans by title', function () {
     $records = Plan::factory()->count(5)->create();
-
 
     livewire($this->list)
         ->sortTable('title')
@@ -86,7 +86,6 @@ it('can search plans by title & user.name', function () {
             }));
 });
 
-
 it('can delete plan', function () {
     $record = Plan::factory()->create();
 
@@ -95,4 +94,3 @@ it('can delete plan', function () {
 
     assertNull(Plan::find($record->id));
 });
-

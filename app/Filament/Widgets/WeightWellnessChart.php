@@ -10,9 +10,13 @@ use Flowframe\Trend\TrendValue;
 class WeightWellnessChart extends ChartWidget
 {
     protected ?string $heading = 'Peso';
+
     protected ?string $description = 'Última semana';
+
     protected ?string $maxHeight = '200px';
+
     protected static ?int $sort = 20;
+
     protected int|string|array $columnSpan = 'full';
 
     public static function canView(): bool
@@ -20,6 +24,7 @@ class WeightWellnessChart extends ChartWidget
         if (auth()->user()->hasRole('wellness')) {
             return true;
         }
+
         return false;
 
     }
@@ -42,11 +47,11 @@ class WeightWellnessChart extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Peso',
-                    'data' => $data->map(fn(TrendValue $value
+                    'data' => $data->map(fn (TrendValue $value
                     ) => $value->aggregate),
                 ],
             ],
-            'labels' => $data->map(fn(TrendValue $value) => $value->date),
+            'labels' => $data->map(fn (TrendValue $value) => $value->date),
         ];
 
     }
@@ -55,5 +60,4 @@ class WeightWellnessChart extends ChartWidget
     {
         return 'bar';
     }
-
 }

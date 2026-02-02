@@ -2,9 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Group;
 use App\Filament\Resources\NoteResource\Pages\CreateNote;
 use App\Filament\Resources\NoteResource\Pages\EditNote;
 use App\Filament\Resources\NoteResource\Pages\ListNotes;
@@ -18,6 +15,9 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,7 +26,7 @@ class NoteResource extends Resource
 {
     protected static ?string $model = Note::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-pencil-square';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-pencil-square';
 
     public static function table(Table $table): Table
     {

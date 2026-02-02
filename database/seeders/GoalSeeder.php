@@ -20,12 +20,12 @@ class GoalSeeder extends Seeder
             'cambio composición corporal',
             'readaptación',
             'hipertrofia',
-            'otro'
+            'otro',
         ];
 
         foreach ($goals as $goal) {
             Goal::factory()->create([
-                'name' => $goal
+                'name' => $goal,
             ]);
         }
     }

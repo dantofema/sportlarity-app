@@ -7,6 +7,7 @@ use App\Models\Plan;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
@@ -70,4 +71,3 @@ it('can list plans in view page', function () {
     ])
         ->assertCanSeeTableRecords($ownerRecord->plans);
 });
-

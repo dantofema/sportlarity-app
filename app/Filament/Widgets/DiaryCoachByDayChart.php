@@ -9,14 +9,15 @@ use Flowframe\Trend\TrendValue;
 
 class DiaryCoachByDayChart extends ChartWidget
 {
-
     protected ?string $heading = 'Diarios creados por día en los últimos 7 días';
+
     protected static ?int $sort = 200;
+
     protected string $color = 'info';
 
     public static function canView(): bool
     {
-        return !auth()->user()->hasRole('wellness');
+        return ! auth()->user()->hasRole('wellness');
     }
 
     protected function getData(): array
@@ -34,10 +35,10 @@ class DiaryCoachByDayChart extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Registros creados',
-                    'data' => $data->map(fn(TrendValue $value) => $value->aggregate),
+                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                 ],
             ],
-            'labels' => $data->map(fn(TrendValue $value) => $value->date),
+            'labels' => $data->map(fn (TrendValue $value) => $value->date),
         ];
     }
 

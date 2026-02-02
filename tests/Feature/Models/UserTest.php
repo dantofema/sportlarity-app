@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
 beforeEach(function () {
     $this->seed([
         RoleSeeder::class,
-        ShieldSeeder::class
+        ShieldSeeder::class,
     ]);
 });
 
@@ -40,7 +40,7 @@ it('can get collection of diaries related to a user', function () {
         ->assignRole('wellness');
     $user->diaries()
         ->create(Diary::factory([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->make()->toArray());
 
     expect($user->diaries)
@@ -57,7 +57,7 @@ it('can get collection of notes related to a user', function () {
     $user = User::factory()->create()->assignRole('coach');
     $user->notes()
         ->create(Note::factory([
-            'author_id' => $user->id
+            'author_id' => $user->id,
         ])->make()->toArray());
 
     expect($user->notes)
@@ -77,7 +77,7 @@ it('can get collection of assessments related to a user with role coach',
             ->assignRole('professional');
 
         Assessment::factory([
-            'author_id' => $user->id
+            'author_id' => $user->id,
         ])->make();
 
         expect($user->assessments)
@@ -95,7 +95,7 @@ it('can get collection of documents related to a user with role coach',
         $user = User::factory()->create()->assignRole('coach');
 
         Document::factory([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->make();
 
         expect($user->documents)
@@ -123,7 +123,7 @@ it("can get the user's instagram url", function () {
 
     $user = User::factory()
         ->create([
-            'instagram' => 'username'
+            'instagram' => 'username',
         ]);
 
     expect($user->instagramUrl)

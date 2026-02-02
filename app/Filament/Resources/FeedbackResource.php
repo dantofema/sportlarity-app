@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
 use App\Filament\Resources\FeedbackResource\Pages\CreateFeedback;
 use App\Filament\Resources\FeedbackResource\Pages\EditFeedback;
 use App\Filament\Resources\FeedbackResource\Pages\ListFeedbacks;
@@ -14,6 +13,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -28,7 +28,7 @@ class FeedbackResource extends Resource
 
     protected static ?string $pluralLabel = 'Feedbacks';
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-heart';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-heart';
 
     public static function form(Schema $schema): Schema
     {

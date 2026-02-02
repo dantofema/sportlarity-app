@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum SleepTimeType: int
 {
-
     case LESS_THAN_4 = 1;
     case BETWEEN_4_AND_6 = 2;
     case BETWEEN_6_AND_8 = 3;
@@ -49,6 +48,4 @@ enum SleepTimeType: int
             self::LESS_THAN_4 => 'heroicon-m-minus-circle',
         };
     }
-
-
 }

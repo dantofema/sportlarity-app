@@ -18,9 +18,7 @@ uses(Tests\TestCase::class,
 
 )->in('Feature');
 
-beforeEach(function () {
-    
-});
+beforeEach(function () {});
 /*
 |--------------------------------------------------------------------------
 | Expectations

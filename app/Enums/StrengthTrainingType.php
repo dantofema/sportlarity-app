@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum StrengthTrainingType: int
 {
-
     case REST = 1;
     case LIGHT = 2;
     case MODERATE = 3;
@@ -49,5 +48,4 @@ enum StrengthTrainingType: int
             self::INTENSIVE => 'heroicon-m-minus-circle',
         };
     }
-
 }

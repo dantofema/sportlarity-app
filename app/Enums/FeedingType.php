@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum FeedingType: int
 {
-
     case WRONG = 1;
     case REGULAR = 2;
     case VERY_WELL = 3;

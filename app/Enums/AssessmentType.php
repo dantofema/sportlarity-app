@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum AssessmentType: int
 {
-
     case RED = 1;
     case YELLOW = 2;
     case GREEN = 3;

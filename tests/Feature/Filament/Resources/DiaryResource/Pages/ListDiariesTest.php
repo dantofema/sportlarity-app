@@ -7,6 +7,7 @@ use App\Models\Diary;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
@@ -40,4 +41,3 @@ test('role coach can view all diaries', function () {
     livewire(ListDiaries::class)
         ->assertCanSeeTableRecords($diaries);
 });
-

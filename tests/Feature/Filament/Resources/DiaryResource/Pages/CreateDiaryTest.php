@@ -7,6 +7,7 @@ use App\Models\Diary;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
@@ -57,7 +58,6 @@ test('can create diary', function () {
 
 });
 
-
 test('can not create diary with coach rol', function () {
 
     $user = User::factory()
@@ -67,4 +67,3 @@ test('can not create diary with coach rol', function () {
     $this->get(CreateDiary::getUrl())->assertForbidden();
 
 });
-

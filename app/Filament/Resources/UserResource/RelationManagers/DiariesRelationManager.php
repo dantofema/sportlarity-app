@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
-use Filament\Schemas\Schema;
 use App\Enums\ActivityType;
 use App\Enums\SleepTimeType;
 use App\Enums\StrengthTrainingType;
@@ -11,6 +10,7 @@ use App\Filament\Resources\DiaryResource;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\ViewAction;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 

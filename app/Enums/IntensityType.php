@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum IntensityType: int
 {
-
     case REST = 1;
     case LIGHT = 2;
     case MODERATE = 3;

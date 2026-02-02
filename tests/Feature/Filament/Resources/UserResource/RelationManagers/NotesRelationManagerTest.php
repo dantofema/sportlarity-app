@@ -6,6 +6,7 @@ use App\Models\Note;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {

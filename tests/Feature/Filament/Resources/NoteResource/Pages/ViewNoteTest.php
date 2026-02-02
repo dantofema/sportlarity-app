@@ -22,4 +22,3 @@ it('can render view note page', function () {
         'record' => $this->factory->create(),
     ]))->assertSuccessful();
 });
-

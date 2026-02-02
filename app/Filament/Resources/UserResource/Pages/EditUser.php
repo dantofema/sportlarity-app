@@ -24,7 +24,7 @@ class EditUser extends EditRecord
         return self::getRecord()->hasRole('wellness')
             ? [
                 NotesRelationManager::class,
-                PlansRelationManager::class
+                PlansRelationManager::class,
             ]
             : [];
     }
@@ -44,7 +44,6 @@ class EditUser extends EditRecord
                         ->success()
                         ->send();
 
-
                 }),
             Action::make('Validate email')
                 ->requiresConfirmation()
@@ -56,13 +55,13 @@ class EditUser extends EditRecord
                         ->send();
 
                 })
-                ->hidden(fn(User $record) => $record->email_verified_at != null)
+                ->hidden(fn (User $record) => $record->email_verified_at != null),
         ];
     }
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $rol = (int)$data['rol'][0];
+        $rol = (int) $data['rol'][0];
 
         /** @var $record User */
         $record->update(data_forget($data, 'rol'));
@@ -70,6 +69,4 @@ class EditUser extends EditRecord
 
         return $record;
     }
-
-
 }

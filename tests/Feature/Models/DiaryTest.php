@@ -24,7 +24,7 @@ test('casts', function () {
 
 test('fillable', function () {
     $diary = Diary::factory([
-        'content' => 'content'
+        'content' => 'content',
     ])->make();
 
     expect($diary->content)->toBeString()
@@ -59,4 +59,3 @@ test('assessment', function () {
     expect($diary->assessment)->toBeInstanceOf(Assessment::class)
         ->and($diary->assessment())->toBeInstanceOf(HasOne::class);
 });
-

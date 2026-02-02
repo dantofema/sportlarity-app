@@ -18,12 +18,12 @@ class ViewUser extends ViewRecord
 
         /** @var User $record */
         $record = self::getRecord();
-        
+
         return $record->hasRole('wellness')
             ? [
                 NotesRelationManager::class,
                 PlansRelationManager::class,
-                DiariesRelationManager::class
+                DiariesRelationManager::class,
             ]
             : [];
     }

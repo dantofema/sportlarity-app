@@ -14,8 +14,8 @@ class DocumentSeeder extends Seeder
     public function run(): void
     {
         User::all()
-            ->filter(fn($user) => $user->hasRole(['coach', 'professional']))
-            ->each(fn($user) => Document::factory()->create([
+            ->filter(fn ($user) => $user->hasRole(['coach', 'professional']))
+            ->each(fn ($user) => Document::factory()->create([
                 'user_id' => $user->id,
             ]));
     }

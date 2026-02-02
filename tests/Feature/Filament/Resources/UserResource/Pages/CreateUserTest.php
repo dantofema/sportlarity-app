@@ -5,6 +5,7 @@ use App\Mail\UserWelcomeMail;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Spatie\Permission\Models\Role;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
@@ -17,7 +18,6 @@ beforeEach(function () {
 it('can render create user page', function () {
     $this->get(UserResource::getUrl('create'))->assertSuccessful();
 });
-
 
 it('can create user', function (string $rolName) {
     Mail::fake();
@@ -51,6 +51,3 @@ it('can create user', function (string $rolName) {
     'wellness',
     'professional',
 ]);
-
-
-

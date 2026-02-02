@@ -22,4 +22,3 @@ it('can render view plan page', function () {
         'record' => $this->factory->create(),
     ]))->assertSuccessful();
 });
-
