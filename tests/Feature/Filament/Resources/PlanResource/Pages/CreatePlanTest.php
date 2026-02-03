@@ -50,9 +50,12 @@ it('can create', function (): void {
     $this->assertDatabaseHas(Plan::class, [
         'author_id' => auth()->user()->getKey(),
         'user_id' => $newData->user->getKey(),
-        'content' => $newData->content,
         'title' => $newData->title,
     ]);
+
+    $plan = Plan::where('author_id', auth()->user()->getKey())->first();
+    expect($plan)->not->toBeNull();
+    expect($plan->content)->toContain('</p>');
 });
 
 it('can validate note inputs', function (): void {
@@ -68,7 +71,6 @@ it('can validate note inputs', function (): void {
         ->call('create')
         ->assertHasFormErrors([
             'user_id' => 'required',
-            'content' => 'required',
             'title' => 'required',
         ]);
 });

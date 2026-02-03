@@ -17,7 +17,7 @@ class NoteFactory extends Factory
     {
         return [
             'title' => fake()->sentence(),
-            'content' => fake()->paragraphs(3, true),
+            'content' => '<p>'.fake()->paragraphs(3, true).'</p>',
             'author_id' => User::factory(),
             'created_at' => fake()->dateTime(),
         ];

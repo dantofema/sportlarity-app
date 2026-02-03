@@ -130,7 +130,8 @@ class UserResource extends Resource
                             return true;
                         }
 
-                        $rolSelected = (int) $get('rol')[0];
+                        $rolValue = $get('rol');
+                        $rolSelected = (int) (is_array($rolValue) ? $rolValue[0] : $rolValue);
 
                         return $rolSelected !== $rolId;
                     }
@@ -141,7 +142,8 @@ class UserResource extends Resource
                             return true;
                         }
 
-                        $rolSelected = (int) $get('rol')[0];
+                        $rolValue = $get('rol');
+                        $rolSelected = (int) (is_array($rolValue) ? $rolValue[0] : $rolValue);
 
                         return $rolSelected !== $rolId;
                     }

@@ -6,7 +6,7 @@ use App\Models\Note;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
-use Filament\Tables\Actions\DeleteAction;
+use Filament\Actions\DeleteAction;
 
 use function Pest\Livewire\livewire;
 use function PHPUnit\Framework\assertNull;

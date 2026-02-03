@@ -10,12 +10,11 @@
 | need to change it using the "uses()" function to bind a different classes or traits.
 |
 */
-use Illuminate\Foundation\Testing\DatabaseTruncation;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 uses(TestCase::class,
-    DatabaseTruncation::class,
-
+    RefreshDatabase::class,
 )->in('Feature');
 
 beforeEach(function (): void {});

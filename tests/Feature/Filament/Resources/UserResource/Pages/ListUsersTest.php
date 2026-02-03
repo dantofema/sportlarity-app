@@ -4,13 +4,15 @@ use App\Filament\Resources\UserResource;
 use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
-use Filament\Tables\Actions\DeleteAction;
+use Database\Seeders\ShieldSeeder;
+use Filament\Actions\DeleteAction;
 
 use function Pest\Livewire\livewire;
 use function PHPUnit\Framework\assertNotNull;
 
 beforeEach(function (): void {
     $this->seed(RoleSeeder::class);
+    $this->seed(ShieldSeeder::class);
     $user = User::factory()->create();
     $user->assignRole('coach');
     $this->actingAs($user);

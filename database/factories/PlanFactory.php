@@ -18,7 +18,7 @@ class PlanFactory extends Factory
         return [
             'title' => fake()->sentence(4),
             'description' => fake()->text(),
-            'content' => fake()->paragraphs(3, true),
+            'content' => '<p>'.fake()->paragraphs(3, true).'</p>',
             'user_id' => User::factory()->create()->assignRole('wellness')->id,
             'author_id' => User::factory()->create()->assignRole('coach')->id,
             'created_at' => fake()->dateTime(),
