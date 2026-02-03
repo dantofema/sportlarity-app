@@ -21,7 +21,7 @@ class NotesRelationManager extends RelationManager
     public function form(Schema $schema): Schema
     {
         return $schema
-            ->components(NoteResource::getForm(self::getOwnerRecord()->id));
+            ->components(NoteResource::getForm($this->getOwnerRecord()->getKey()));
     }
 
     public function table(Table $table): Table

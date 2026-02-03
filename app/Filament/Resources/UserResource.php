@@ -146,7 +146,8 @@ class UserResource extends Resource
                         return $rolSelected !== $rolId;
                     }
 
-                    return ! $record->hasRole(\App\Enums\Role::WELLNESS);
+                    /** @var User|null $record */
+                    return ! $record?->hasRole(\App\Enums\Role::WELLNESS);
                 })
                 ->schema([
                     Select::make('goal_id')
@@ -226,7 +227,7 @@ class UserResource extends Resource
                         default => 'danger',
                     }),
                 TextColumn::make('instagram')
-                    ->url(fn (User $record) => $record->instagram_url, true)
+                    ->url(fn (User $record) => $record->instagram ? 'https://www.instagram.com/'.$record->instagram : null, true)
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('phone')
                     ->label('Teléfono')
@@ -316,7 +317,7 @@ class UserResource extends Resource
                         TextEntry::make('instagram')
                             ->label('Instagram')
                             ->state(fn (User $record): string => '@'.$record->instagram)
-                            ->url(fn (User $record) => $record->instagram_url,
+                            ->url(fn (User $record) => $record->instagram ? 'https://www.instagram.com/'.$record->instagram : null,
                                 true),
                         TextEntry::make('dob')->label('Fecha de nacimiento'),
                         TextEntry::make('height')->label('Altura'),

@@ -102,7 +102,7 @@ class NoteResource extends Resource
                                     'users',
                                     'name',
                                     fn (Builder $query
-                                    ) => $query->role('wellness')
+                                    ) => $query->whereHas('roles', fn (Builder $q) => $q->where('name', 'wellness'))
                                 )
                                 ->multiple()
                                 ->required(),

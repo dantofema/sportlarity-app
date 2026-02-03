@@ -30,7 +30,7 @@ class MigrateFilesToPrivateStorage extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         $dryRun = $this->option('dry-run');
         $force = $this->option('force');
@@ -69,7 +69,7 @@ class MigrateFilesToPrivateStorage extends Command
         if (! $force && ! $dryRun && ! $this->confirm('Do you want to proceed with the migration?', true)) {
             $this->warn('Migration cancelled.');
 
-            return Command::CANCELLED;
+            return Command::FAILURE;
         }
 
         $this->newLine();

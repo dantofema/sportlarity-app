@@ -7,6 +7,7 @@ use App\Filament\Resources\DocumentResource\Pages\EditDocument;
 use App\Filament\Resources\DocumentResource\Pages\ListDocuments;
 use App\Filament\Resources\DocumentResource\Pages\ViewDocument;
 use App\Models\Document;
+use App\Rules\ValidFileContent;
 use BackedEnum;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;

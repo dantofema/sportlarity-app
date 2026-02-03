@@ -4,8 +4,6 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Models\User;
-use Filament\Auth\Notifications\VerifyEmail;
-use Filament\Facades\Filament;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Hash;
 
@@ -38,12 +36,5 @@ class CreateUser extends CreateRecord
         //            ->send();
 
         return $user;
-    }
-
-    private function emailVerification(User $user): void
-    {
-        $notification = new VerifyEmail;
-        $notification->url = Filament::getVerifyEmailUrl($user);
-        $user->notify($notification);
     }
 }
