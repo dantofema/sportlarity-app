@@ -35,7 +35,7 @@ enum AssessmentType: int
         };
     }
 
-    public static function icon(SleepQualityType $type): string
+    public static function icon(AssessmentType $type): string
     {
         return match ($type) {
             self::GREEN => 'heroicon-m-shield-check',

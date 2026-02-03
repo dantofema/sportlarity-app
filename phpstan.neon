@@ -6,3 +6,6 @@ parameters:
     paths:
         - app/
     level: 5  # Incrementar gradualmente hasta 10 (máximo rigor)
+    ignoreErrors:
+        - '#PHPDoc tag @property for property .+::\$form contains unknown class Filament\\Forms\\Form#'
+        - '#Call to method .+\(\) on an unknown class Filament\\Forms\\Form#'

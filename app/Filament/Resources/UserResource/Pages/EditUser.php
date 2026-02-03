@@ -21,7 +21,10 @@ class EditUser extends EditRecord
 
     public function getRelationManagers(): array
     {
-        return self::getRecord()->hasRole('wellness')
+        /** @var User $record */
+        $record = self::getRecord();
+
+        return $record->hasRole('wellness')
             ? [
                 NotesRelationManager::class,
                 PlansRelationManager::class,
@@ -63,7 +66,7 @@ class EditUser extends EditRecord
     {
         $rol = (int) $data['rol'][0];
 
-        /** @var $record User */
+        /** @var User $record */
         $record->update(data_forget($data, 'rol'));
         $record->syncRoles($rol);
 

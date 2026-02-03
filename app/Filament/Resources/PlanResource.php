@@ -78,7 +78,7 @@ class PlanResource extends Resource
                                 TextEntry::make('document.title')
                                     ->color(fn ($record): string => 'info')
                                     ->url(fn (Plan $record
-                                    ): string => Storage::disk('public')->url($record->document?->file),
+                                    ): ?string => $record->document?->file ? Storage::disk('public')->url($record->document->file) : null,
                                         true),
                                 TextEntry::make('created_at')
                                     ->date('d-m-Y H:i:s'),
@@ -192,7 +192,7 @@ class PlanResource extends Resource
                                     'user',
                                     'name',
                                     fn (Builder $query
-                                    ) => $query->role('wellness')
+                                    ) => $query->whereHas('roles', fn (Builder $q) => $q->where('name', 'wellness'))
                                 )
                                 ->required(),
                             Select::make('document_id')

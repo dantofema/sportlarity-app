@@ -6,6 +6,7 @@ use App\Filament\Resources\PlanResource;
 use Filament\Actions\ViewAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class PlansRelationManager extends RelationManager
@@ -20,7 +21,7 @@ class PlansRelationManager extends RelationManager
     public function form(Schema $schema): Schema
     {
         return $schema
-            ->components(PlanResource::getForm(self::getOwnerRecord()->id));
+            ->components(PlanResource::getForm($this->getOwnerRecord()->getKey()));
     }
 
     public function table(Table $table): Table
