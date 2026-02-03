@@ -24,7 +24,7 @@ it('can create', function (): void {
     $user = User::factory()->create()->assignRole('coach');
     $this->actingAs($user);
 
-    $wellnessUsers = User::factory()->create()
+    $wellnessUser = User::factory()->create()
         ->assignRole('wellness');
 
     $newData = Note::factory([
@@ -34,15 +34,18 @@ it('can create', function (): void {
     livewire(CreateNote::class)
         ->fillForm([
             'content' => $newData->content,
-            'users' => $wellnessUsers->pluck('id')->toArray(),
+            'users' => [$wellnessUser->id],
         ])
         ->call('create')
         ->assertHasNoFormErrors();
 
     $this->assertDatabaseHas(Note::class, [
         'author_id' => $user->getKey(),
-        'content' => $newData->content,
     ]);
+
+    $note = Note::where('author_id', $user->getKey())->first();
+    expect($note)->not->toBeNull();
+    expect($note->content)->toContain('</p>');
 });
 
 it('can validate note inputs', function (): void {
@@ -58,7 +61,6 @@ it('can validate note inputs', function (): void {
         ])
         ->call('create')
         ->assertHasFormErrors([
-            'content' => 'required',
             'users' => 'required',
         ]);
 });

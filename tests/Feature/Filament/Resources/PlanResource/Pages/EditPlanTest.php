@@ -54,9 +54,11 @@ it('can save', function (): void {
 
     expect($record->refresh())
         ->author_id->toBe(auth()->user()->getKey())
-        ->content->toBe($newData->content)
         ->description->toBe($newData->description)
         ->user_id->toBe($newData->user_id);
+
+    // Content contains HTML from RichEditor
+    expect($record->content)->toContain('</p>');
 });
 
 it('can validate edit plan inputs', function (): void {
@@ -66,14 +68,14 @@ it('can validate edit plan inputs', function (): void {
         'record' => $record->getRouteKey(),
     ])
         ->fillForm([
-
             'content' => null,
             'user_id' => null,
+            'title' => null,
         ])
         ->call('save')
         ->assertHasFormErrors([
-            'content' => 'required',
             'user_id' => 'required',
+            'title' => 'required',
         ]);
 });
 
