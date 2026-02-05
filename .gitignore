@@ -18,3 +18,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Security - never commit database dumps or backups
+*.sql
+*.sql.gz
+backup.sql
+*.dump
+*.bak

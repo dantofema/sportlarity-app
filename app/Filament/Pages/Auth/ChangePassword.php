@@ -101,12 +101,12 @@ class ChangePassword extends Page implements HasForms
             return;
         }
 
-        // Verificar que la nueva contraseña no sea 'sportlarity'
+        // Verificar que la nueva contraseña no sea una contraseña conocida/débil
         if ($data['password'] === 'sportlarity') {
             Notification::make()
                 ->title('Error')
                 ->danger()
-                ->body('No puedes usar la contraseña temporal como tu nueva contraseña.')
+                ->body('Esta contraseña no está permitida por razones de seguridad.')
                 ->send();
 
             return;
