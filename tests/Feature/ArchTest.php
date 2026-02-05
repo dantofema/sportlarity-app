@@ -33,6 +33,6 @@ arch()
 
 arch()->preset()->php();
 
-//arch()->preset()->strict()->ignoring('App\Filament');
+// arch()->preset()->strict()->ignoring('App\Filament');
 
-//arch()->preset()->laravel();
+// arch()->preset()->laravel();

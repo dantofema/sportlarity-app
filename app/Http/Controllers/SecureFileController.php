@@ -27,7 +27,9 @@ class SecureFileController extends Controller
             abort(404, 'Archivo no encontrado');
         }
 
-        return Storage::disk('local')->download($path);
+        // Usar response() en lugar de download() para mostrar la imagen inline
+        // en lugar de forzar la descarga
+        return Storage::disk('local')->response($path);
     }
 
     /**

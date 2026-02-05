@@ -57,7 +57,8 @@ class UserResource extends Resource
                 ->schema([
                     FileUpload::make('image')
                         ->label('')
-                        ->disk('private_avatars')
+                        ->disk('public')
+                        ->directory('avatars')
                         ->avatar()
                         ->image()
                         ->imageResizeMode('cover')
