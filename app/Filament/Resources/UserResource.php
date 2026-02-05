@@ -8,6 +8,7 @@ use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Filament\Resources\UserResource\Pages\ViewUser;
 use App\Models\User;
+use App\Rules\ValidFileContent;
 use BackedEnum;
 use Exception;
 use Filament\Actions\DeleteAction;
@@ -67,9 +68,10 @@ class UserResource extends Resource
                         ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                         ->rules([
                             'image',
-                            'mimes:jpeg,jpg,png,webp',
+                            'mimetypes:image/jpeg,image/png,image/webp',
                             'max:2048',
                             'dimensions:max_width=2000,max_height=2000',
+                            new ValidFileContent(['image/jpeg', 'image/png', 'image/webp']),
                         ])
                         ->getUploadedFileNameForStorageUsing(
                             fn ($file): string => sprintf(
