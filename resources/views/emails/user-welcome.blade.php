@@ -87,7 +87,7 @@
 
             <ul>
                 <li>Usuario: {{ $user->email }}</li>
-                <li>Password: sportlarity</li>
+                <li>Password: {{ $temporaryPassword }}</li>
             </ul>
             <p>
                 <span style="font-weight : bold;">No olvides cambiar tu password</span>

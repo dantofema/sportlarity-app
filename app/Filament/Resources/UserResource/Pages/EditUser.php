@@ -5,6 +5,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource;
 use App\Filament\Resources\UserResource\RelationManagers\NotesRelationManager;
 use App\Filament\Resources\UserResource\RelationManagers\PlansRelationManager;
+use App\Mail\PasswordResetMail;
 use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
@@ -14,6 +15,8 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class EditUser extends EditRecord
 {
@@ -41,12 +44,21 @@ class EditUser extends EditRecord
             Action::make('Reset password')
                 ->requiresConfirmation()
                 ->action(function (User $record): void {
-                    $record->update(['password' => Hash::make('sportlarity')]);
+                    // Generate a secure random password
+                    $newPassword = Str::password(16);
+
+                    $record->update([
+                        'password' => Hash::make($newPassword),
+                        'password_change_required' => true,
+                    ]);
+
+                    // Send email with new password
+                    Mail::to($record->email)->send(new PasswordResetMail($record, $newPassword));
+
                     Notification::make()
-                        ->title('Password reset successfully')
+                        ->title('Password reset successfully - email sent to user')
                         ->success()
                         ->send();
-
                 }),
             Action::make('Validate email')
                 ->requiresConfirmation()
