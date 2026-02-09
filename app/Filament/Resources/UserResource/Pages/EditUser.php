@@ -76,12 +76,24 @@ class EditUser extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $rolValue = $data['rol'];
-        $rol = (int) (is_array($rolValue) ? $rolValue[0] : $rolValue);
+        if (array_key_exists('rol', $data)) {
+            $rolValue = $data['rol'];
+
+            if (is_array($rolValue) && count($rolValue) > 0) {
+                $rol = (int) $rolValue[0];
+            } elseif (is_numeric($rolValue)) {
+                $rol = (int) $rolValue;
+            } else {
+                $rol = null;
+            }
+
+            if ($rol !== null && $rol > 0) {
+                $record->syncRoles([$rol]);
+            }
+        }
 
         /** @var User $record */
         $record->update(data_forget($data, 'rol'));
-        $record->syncRoles($rol);
 
         return $record;
     }
