@@ -70,6 +70,29 @@ class ThrottleLivewireRequests
         return false;
     }
 
+    private function logBlockedRequest(Request $request, string $reason, ?string $error = null): void
+    {
+        $context = [
+            'reason' => $reason,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'method' => $request->method(),
+            'url' => $request->url(),
+        ];
+
+        if ($error !== null) {
+            $context['error'] = $error;
+        }
+
+        // Log payload preview (limited to avoid huge logs)
+        $content = $request->getContent();
+        if (! empty($content)) {
+            $context['payload_preview'] = substr($content, 0, 500);
+        }
+
+        Log::warning('Livewire request blocked', $context);
+    }
+
     private function validateLivewirePayload(Request $request): array
     {
         $content = $request->getContent();
@@ -98,13 +121,6 @@ class ThrottleLivewireRequests
         return ['valid' => true];
     }
 
-    private function isRateLimited(Request $request): bool
-    {
-        $key = 'livewire:'.($request->user()?->id ?: $request->ip());
-
-        return RateLimiter::tooManyAttempts($key, 60);
-    }
-
     private function isRateLimitedForInvalidRequests(Request $request): bool
     {
         $key = 'livewire-invalid:'.($request->user()?->id ?: $request->ip());
@@ -112,26 +128,16 @@ class ThrottleLivewireRequests
         return ! RateLimiter::attempt($key, 10, function () {}, 60);
     }
 
-    private function logBlockedRequest(Request $request, string $reason, ?string $error = null): void
+    private function isRateLimited(Request $request): bool
     {
-        $context = [
-            'reason' => $reason,
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-            'method' => $request->method(),
-            'url' => $request->url(),
-        ];
+        $key = 'livewire:'.($request->user()?->id ?: $request->ip());
 
-        if ($error !== null) {
-            $context['error'] = $error;
+        if (RateLimiter::tooManyAttempts($key, 60)) {
+            return true;
         }
 
-        // Log payload preview (limited to avoid huge logs)
-        $content = $request->getContent();
-        if (! empty($content)) {
-            $context['payload_preview'] = substr($content, 0, 500);
-        }
+        RateLimiter::hit($key);
 
-        Log::warning('Livewire request blocked', $context);
+        return false;
     }
 }
