@@ -2,10 +2,13 @@
 
 use App\Filament\Resources\UserResource;
 use App\Filament\Resources\UserResource\Pages\EditUser;
+use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
 use Database\Seeders\GoalSeeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 
 use function Pest\Livewire\livewire;
@@ -196,7 +199,7 @@ it('filters out super admin from table view', function (): void {
     $superAdmin->assignRole('super_admin');
 
     // Coach users should not see super_admin users in the list
-    livewire(\App\Filament\Resources\UserResource\Pages\ListUsers::class)
+    livewire(ListUsers::class)
         ->assertCanNotSeeTableRecords([$superAdmin]);
 });
 
@@ -245,4 +248,33 @@ it('does not show relation managers for non wellness users', function (): void {
 
     $relationManagers = $component->instance()->getRelationManagers();
     expect($relationManagers)->toBeEmpty();
+});
+
+it('resets password to sportlarity and sets password_change_required', function (): void {
+    $user = User::factory()->create([
+        'password' => Hash::make('oldpassword'),
+        'password_change_required' => false,
+    ]);
+    $user->assignRole('wellness');
+
+    livewire(EditUser::class, ['record' => $user->id])
+        ->callAction('Reset password');
+
+    $user->refresh();
+
+    expect(Hash::check('sportlarity', $user->password))->toBeTrue()
+        ->and($user->password_change_required)->toBeTrue();
+});
+
+it('does not send email on password reset', function (): void {
+    Mail::fake();
+
+    $user = User::factory()->create();
+    $user->assignRole('wellness');
+
+    livewire(EditUser::class, ['record' => $user->id])
+        ->callAction('Reset password');
+
+    Mail::assertNothingSent();
+    Mail::assertNothingQueued();
 });

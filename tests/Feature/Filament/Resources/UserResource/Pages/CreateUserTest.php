@@ -2,13 +2,13 @@
 
 use App\Filament\Resources\UserResource;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
-use App\Mail\UserWelcomeMail;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ShieldSeeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function (): void {
@@ -50,7 +50,7 @@ it('can create user', function (string $rolName): void {
     'professional',
 ]);
 
-it('sends welcome email on user creation', function (): void {
+it('does not send email on user creation', function (): void {
     Mail::fake();
 
     $newData = User::factory()->make();
@@ -64,14 +64,11 @@ it('sends welcome email on user creation', function (): void {
         ->call('create')
         ->assertHasNoFormErrors();
 
-    Mail::assertQueued(UserWelcomeMail::class, function (UserWelcomeMail $mail) use ($newData): bool {
-        return $mail->hasTo($newData->email);
-    });
+    Mail::assertNothingSent();
+    Mail::assertNothingQueued();
 });
 
-it('sets password_change_required to true on creation', function (): void {
-    Mail::fake();
-
+it('sets password to sportlarity and password_change_required to true on creation', function (): void {
     $newData = User::factory()->make();
 
     livewire(CreateUser::class)
@@ -86,7 +83,7 @@ it('sets password_change_required to true on creation', function (): void {
     $user = User::whereEmail($newData->email)->first();
 
     expect($user->password_change_required)->toBeTrue()
-        ->and(Hash::check($newData->email, $user->password))->toBeFalse();
+        ->and(Hash::check('sportlarity', $user->password))->toBeTrue();
 });
 
 it('validates required fields', function (): void {
